@@ -1,20 +1,37 @@
+from flask import Flask
+from models.db import db
+from config import Config
+from flask_restx import Api  # Flask-RESTPlus import
 
-from flask import Flask, render_template
-from bs4 import BeautifulSoup
+def create_app():
+    # Flask uygulamasını başlat
+    app = Flask(__name__)
 
-app = Flask(__name__)
+    # Konfigürasyonu uygula
+    app.config.from_object(Config)
 
-@app.route('/')
-def home():
-    return render_template("index.html", title="Ana Sayfa")
+    # Veritabanı başlat
+    db.init_app(app)
 
-@app.route('/agenda')
-def agenda():
-    return render_template("agenda.html")
+    # Swagger dokümantasyonu için Api sınıfını başlat
+    api = Api(app, version='1.0', title='Conference API', description='A simple Conference management API')
 
-@app.route('/speakers')
-def speakers():
-    return render_template("speakers.html")
+    # Uygulama başladığında tabloları oluştur (ilk başlatma)
+    @app.before_first_request
+    def create_tables():
+        db.create_all()
 
+    # Routes dosyasını import et ve uygulamaya ekle
+    from routes import speaker_routes, paper_routes, conference_routes, category_routes, hall_routes
+    app.register_blueprint(speaker_routes)
+    app.register_blueprint(paper_routes)
+    app.register_blueprint(conference_routes)
+    app.register_blueprint(category_routes)
+    app.register_blueprint(hall_routes)
+
+    return app
+
+# Eğer doğrudan çalıştırılıyorsa
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app = create_app()
+    app.run(debug=True)
