@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get All Data</title>
+</head>
+<body>
+
+  <h1>Get All Data</h1>
+
+  <!-- Buttons to trigger API calls -->
+  <button id="getPapersBtn">Get All Papers</button>
+  <button id="getHallsBtn">Get All Halls</button>
+  <button id="getSpeakersBtn">Get All Speakers</button>
+  <button id="getConferencesBtn">Get All Conferences</button>
+
+  <h2>Papers</h2>
+  <div id="papersContainer"></div>
+
+  <h2>Halls</h2>
+  <div id="hallsContainer"></div>
+
+  <h2>Speakers</h2>
+  <div id="speakersContainer"></div>
+
+  <h2>Conferences</h2>
+  <div id="conferencesContainer"></div>
+
+  <script>
+    // Function to handle the display of data
+    function displayData(containerId, data) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';  // Clear previous data
+      if (data.length === 0) {
+        container.innerHTML = 'No data found.';
+      } else {
+        const ul = document.createElement('ul');
+        data.forEach(item => {
+          const li = document.createElement('li');
+          li.textContent = JSON.stringify(item, null, 2);  // Display JSON as string
+          ul.appendChild(li);
+        });
+        container.appendChild(ul);
+      }
+    }
+
+    // Get all papers
+    document.getElementById('getPapersBtn').addEventListener('click', function () {
+      fetch('/papers')
+        .then(response => response.json())
+        .then(data => {
+          displayData('papersContainer', data);  // Show data in papersContainer
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    // Get all halls
+    document.getElementById('getHallsBtn').addEventListener('click', function () {
+      fetch('/halls')
+        .then(response => response.json())
+        .then(data => {
+          displayData('hallsContainer', data);  // Show data in hallsContainer
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    // Get all speakers
+    document.getElementById('getSpeakersBtn').addEventListener('click', function () {
+      fetch('/speakers')
+        .then(response => response.json())
+        .then(data => {
+          displayData('speakersContainer', data);  // Show data in speakersContainer
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    // Get all conferences
+    document.getElementById('getConferencesBtn').addEventListener('click', function () {
+      fetch('/conferences')
+        .then(response => response.json())
+        .then(data => {
+          displayData('conferencesContainer', data);  // Show data in conferencesContainer
+        })
+        .catch(error => console.error('Error:', error));
+    });
+  </script>
+
+</body>
+</html>

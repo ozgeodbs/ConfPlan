@@ -1,9 +1,8 @@
-from flask import Flask
-from flask_migrate import migrate, Migrate
+from flask import Flask, render_template
+from flask_migrate import Migrate
 
 from models.db import db
 from config import Config
-from flask_restx import Api  # Flask-RESTPlus import
 
 def create_app():
     # Flask uygulamasını başlat
@@ -15,9 +14,6 @@ def create_app():
     # Veritabanı başlat
     db.init_app(app)
 
-    # Swagger dokümantasyonu için Api sınıfını başlat
-    api = Api(app, version='1.0', title='Conference API', description='A simple Conference management API')
-
     # Routes dosyasını import et ve uygulamaya ekle
     from routes import speaker_routes, paper_routes, conference_routes, category_routes, hall_routes
     app.register_blueprint(speaker_routes)
@@ -25,6 +21,10 @@ def create_app():
     app.register_blueprint(conference_routes)
     app.register_blueprint(category_routes)
     app.register_blueprint(hall_routes)
+
+    @app.route('/')
+    def index():
+        return render_template('get.html')  # HTML sayfası burada döndürülür
 
     return app
 
