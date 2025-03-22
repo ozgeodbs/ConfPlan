@@ -8,8 +8,8 @@ speaker_routes = Blueprint('speaker', __name__)
 # Tüm speakerları listele
 @speaker_routes.route('/speakers', methods=['GET'])
 def get_speakers():
-    speakers = Speaker.query.filter_by(IsDeleted=False).all()  # Filter out deleted speakers
-    return jsonify([speaker.__repr__() for speaker in speakers]), 200
+    speakers = Speaker.query.all()
+    return jsonify([speaker.to_dict() for speaker in speakers])  # ✅ to_dict() ekledik
 
 # Yeni bir speaker oluştur
 @speaker_routes.route('/speakers', methods=['POST'])

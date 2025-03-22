@@ -12,3 +12,13 @@ class Speaker(BaseModel):
     Email = Column(String(100), nullable=False, unique=True)  # Speaker's email (unique)
     Phone = Column(String(20))  # Speaker's phone (optional)
     PhotoUrl = Column(String(255))
+
+    def to_dict(self):
+        return {
+            "Id": self.Id,
+            "FirstName": self.FirstName,
+            "LastName": self.LastName,
+            "Email": self.Email,
+            "Phone": self.Phone,
+            "PhotoUrl": self.PhotoUrl
+        }
