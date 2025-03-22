@@ -1,4 +1,6 @@
 from flask import Flask
+from flask_migrate import migrate, Migrate
+
 from models.db import db
 from config import Config
 from flask_restx import Api  # Flask-RESTPlus import
@@ -16,11 +18,6 @@ def create_app():
     # Swagger dokümantasyonu için Api sınıfını başlat
     api = Api(app, version='1.0', title='Conference API', description='A simple Conference management API')
 
-    # Uygulama başladığında tabloları oluştur (ilk başlatma)
-    @app.before_first_request
-    def create_tables():
-        db.create_all()
-
     # Routes dosyasını import et ve uygulamaya ekle
     from routes import speaker_routes, paper_routes, conference_routes, category_routes, hall_routes
     app.register_blueprint(speaker_routes)
@@ -34,4 +31,5 @@ def create_app():
 # Eğer doğrudan çalıştırılıyorsa
 if __name__ == '__main__':
     app = create_app()
+    migrate = Migrate(app, db)
     app.run(debug=True)

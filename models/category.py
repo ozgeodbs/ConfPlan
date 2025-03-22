@@ -1,11 +1,13 @@
-from sqlalchemy import Column, Integer, String, SmallInteger, Boolean, DateTime
+from sqlalchemy import Column, Integer, String, DateTime
+from models.db import db
 from models.base import BaseModel
 
 class Category(BaseModel):
-    __tablename__ = 'category'
+    __tablename__ = 'Category'
 
-    Id = Column(SmallInteger, primary_key=True)
-    Title = Column(String(100))
+    Id = Column(Integer, primary_key=True, autoincrement=True)
+    Title = Column(String(100), nullable=False)  # Title cannot be null
+    CreatedDate = Column(DateTime, default=db.func.current_timestamp())  # Default to current timestamp
+    ChangedDate = Column(DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())  # Update on change
 
-    def __repr__(self):
-        return f"<Category(id={self.Id}, title={self.Title})>"
+    # You can remove the __repr__ method if you don't need it

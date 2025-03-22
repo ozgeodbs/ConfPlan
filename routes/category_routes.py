@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from models.category import Category
 from app import db
 
-category_routes = Blueprint('category', __name__)
+category_routes = Blueprint('Category', __name__)
 
 # Tüm kategorileri listele
 @category_routes.route('/categories', methods=['GET'])

@@ -1,9 +1,7 @@
 from sqlalchemy import Column, Integer, DateTime, Boolean
-from sqlalchemy.ext.declarative import declarative_base
+from models.db import db
 
-Base = declarative_base()
-
-class BaseModel(Base):
+class BaseModel(db.Model):
     __abstract__ = True  # Bu sınıf bir temel sınıf olduğu için tabloya karşılık gelmez
 
     IsDeleted = Column(Boolean, default=False)

@@ -1,21 +1,21 @@
-from sqlalchemy import Column, Integer, String, SmallInteger, Boolean, DateTime, ForeignKey
-from sqlalchemy.orm import relationship
-from models.base import BaseModel
+from sqlalchemy import Column, Integer, String, Text, ForeignKey
+from models.db import db
+from models.category import Category  # Category modelini içe aktar
 
-class Paper(BaseModel):
-    __tablename__ = 'paper'
+class Paper(db.Model):
+    __tablename__ = 'Paper'  # Tablo adı büyük harflerle
 
-    Id = Column(Integer, primary_key=True)
-    Title = Column(String(150))
-    SpeakerId = Column(Integer, ForeignKey('speaker.Id'))
-    CategoryId = Column(SmallInteger, ForeignKey('category.Id'))
+    Id = Column(Integer, primary_key=True, autoincrement=True)
+    Title = Column(String(255), nullable=False)
+    SpeakerId = Column(Integer, ForeignKey('Speaker.Id'), nullable=False)  # SpeakerId ile ilişki
+    CategoryId = Column(Integer, ForeignKey('Category.Id'), nullable=False)  # CategoryId ile ilişki
     Duration = Column(Integer)
-    Description = Column(String(500))
-    HallId = Column(SmallInteger, ForeignKey('hall.Id'))
+    Description = Column(Text)
+    HallId = Column(Integer, ForeignKey('Hall.Id'), nullable=False)  # HallId ile ilişki
 
-    speaker = relationship("Speaker")
-    category = relationship("Category")
-    hall = relationship("Hall")
+    category = db.relationship('Category', backref='papers')  # Category ile ilişki
+    speaker = db.relationship('Speaker', backref='papers')  # Speaker ile ilişki
+    hall = db.relationship('Hall', backref='papers')  # Hall ile ilişki
 
     def __repr__(self):
-        return f"<Paper(id={self.Id}, title={self.Title}, speaker={self.speaker.FirstName} {self.speaker.LastName})>"
+        return f"<Paper(id={self.Id}, title={self.Title})>"

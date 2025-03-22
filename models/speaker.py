@@ -1,12 +1,13 @@
-from .db import db  # db'yi artık buradan import ediyoruz
+from sqlalchemy import Column, Integer, String
+from models.db import db
 
 class Speaker(db.Model):
-    __tablename__ = 'speakers'
+    __tablename__ = 'Speaker'
 
-    id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(50), nullable=False)
-    last_name = db.Column(db.String(50), nullable=False)
-    bio = db.Column(db.String(500))
+    Id = Column(Integer, primary_key=True)
+    FirstName = Column(String(100), nullable=False)
+    LastName = Column(String(100), nullable=False)
+    Bio = Column(String(255))
 
     def __repr__(self):
-        return f"<Speaker {self.first_name} {self.last_name}>"
+        return f"<Speaker(id={self.Id}, name={self.FirstName} {self.LastName})>"
