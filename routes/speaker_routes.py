@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from datetime import datetime
 from models.speaker import Speaker
 from app import db
 
@@ -7,32 +8,30 @@ speaker_routes = Blueprint('speaker', __name__)
 # Tüm speakerları listele
 @speaker_routes.route('/speakers', methods=['GET'])
 def get_speakers():
-    speakers = Speaker.query.all()
-    return jsonify([speaker.__repr__() for speaker in speakers])
+    speakers = Speaker.query.filter_by(IsDeleted=False).all()  # Filter out deleted speakers
+    return jsonify([speaker.__repr__() for speaker in speakers]), 200
 
 # Yeni bir speaker oluştur
 @speaker_routes.route('/speakers', methods=['POST'])
 def create_speaker():
     data = request.get_json()
+
     new_speaker = Speaker(
         FirstName=data['FirstName'],
         LastName=data['LastName'],
-        Bio=data['Bio'],
+        Bio=data.get('Bio', ''),
         Email=data['Email'],
-        Phone=data['Phone'],
-        PhotoUrl=data['PhotoUrl'],
-        CreatedDate=data['CreatedDate'],
-        CreatedBy=data['CreatedBy']
+        Phone=data.get('Phone', ''),
+        PhotoUrl=data.get('PhotoUrl', '')
     )
-    db.session.add(new_speaker)
-    db.session.commit()
+    new_speaker.save()  # Using the save method from BaseModel
     return jsonify(new_speaker.__repr__()), 201
 
 # ID'ye göre speaker getir
 @speaker_routes.route('/speakers/<int:id>', methods=['GET'])
 def get_speaker(id):
     speaker = Speaker.query.get(id)
-    if speaker:
+    if speaker and not speaker.IsDeleted:
         return jsonify(speaker.__repr__())
     return jsonify({"message": "Speaker not found"}), 404
 
@@ -40,7 +39,7 @@ def get_speaker(id):
 @speaker_routes.route('/speakers/<int:id>', methods=['PUT'])
 def update_speaker(id):
     speaker = Speaker.query.get(id)
-    if speaker:
+    if speaker and not speaker.IsDeleted:
         data = request.get_json()
         speaker.FirstName = data.get('FirstName', speaker.FirstName)
         speaker.LastName = data.get('LastName', speaker.LastName)
@@ -48,10 +47,7 @@ def update_speaker(id):
         speaker.Email = data.get('Email', speaker.Email)
         speaker.Phone = data.get('Phone', speaker.Phone)
         speaker.PhotoUrl = data.get('PhotoUrl', speaker.PhotoUrl)
-        speaker.ChangedDate = data.get('ChangedDate', speaker.ChangedDate)
-        speaker.ChangedBy = data.get('ChangedBy', speaker.ChangedBy)
-
-        db.session.commit()
+        speaker.update()  # Using the update method from BaseModel
         return jsonify(speaker.__repr__())
     return jsonify({"message": "Speaker not found"}), 404
 
@@ -59,8 +55,7 @@ def update_speaker(id):
 @speaker_routes.route('/speakers/<int:id>', methods=['DELETE'])
 def delete_speaker(id):
     speaker = Speaker.query.get(id)
-    if speaker:
-        db.session.delete(speaker)
-        db.session.commit()
+    if speaker and not speaker.IsDeleted:
+        speaker.delete()  # Using the delete method from BaseModel
         return jsonify({"message": "Speaker deleted successfully"})
     return jsonify({"message": "Speaker not found"}), 404

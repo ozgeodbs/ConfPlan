@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from datetime import datetime
 from models.hall import Hall
 from app import db
 
@@ -7,27 +8,24 @@ hall_routes = Blueprint('hall', __name__)
 # Tüm salonları listele
 @hall_routes.route('/halls', methods=['GET'])
 def get_halls():
-    halls = Hall.query.all()
-    return jsonify([hall.__repr__() for hall in halls])
+    halls = Hall.query.filter_by(IsDeleted=False).all()  # Filter out deleted halls
+    return jsonify([hall.__repr__() for hall in halls]), 200
 
 # Yeni bir salon oluştur
 @hall_routes.route('/halls', methods=['POST'])
 def create_hall():
     data = request.get_json()
     new_hall = Hall(
-        Capacity=data['Capacity'],
-        CreatedDate=data['CreatedDate'],
-        CreatedBy=data['CreatedBy']
+        Capacity=data['Capacity']
     )
-    db.session.add(new_hall)
-    db.session.commit()
+    new_hall.save()  # Using the save method from BaseModel
     return jsonify(new_hall.__repr__()), 201
 
 # ID'ye göre salon getir
 @hall_routes.route('/halls/<int:id>', methods=['GET'])
 def get_hall(id):
     hall = Hall.query.get(id)
-    if hall:
+    if hall and not hall.IsDeleted:
         return jsonify(hall.__repr__())
     return jsonify({"message": "Hall not found"}), 404
 
@@ -35,13 +33,10 @@ def get_hall(id):
 @hall_routes.route('/halls/<int:id>', methods=['PUT'])
 def update_hall(id):
     hall = Hall.query.get(id)
-    if hall:
+    if hall and not hall.IsDeleted:
         data = request.get_json()
         hall.Capacity = data.get('Capacity', hall.Capacity)
-        hall.ChangedDate = data.get('ChangedDate', hall.ChangedDate)
-        hall.ChangedBy = data.get('ChangedBy', hall.ChangedBy)
-
-        db.session.commit()
+        hall.update()  # Using the update method from BaseModel
         return jsonify(hall.__repr__())
     return jsonify({"message": "Hall not found"}), 404
 
@@ -49,8 +44,7 @@ def update_hall(id):
 @hall_routes.route('/halls/<int:id>', methods=['DELETE'])
 def delete_hall(id):
     hall = Hall.query.get(id)
-    if hall:
-        db.session.delete(hall)
-        db.session.commit()
+    if hall and not hall.IsDeleted:
+        hall.delete()  # Using the delete method from BaseModel
         return jsonify({"message": "Hall deleted successfully"})
     return jsonify({"message": "Hall not found"}), 404

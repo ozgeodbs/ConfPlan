@@ -1,8 +1,10 @@
 from sqlalchemy import Column, Integer, String, Text, ForeignKey
+
+from models.base import BaseModel
 from models.db import db
 from models.category import Category  # Category modelini içe aktar
 
-class Paper(db.Model):
+class Paper(BaseModel):
     __tablename__ = 'Paper'  # Tablo adı büyük harflerle
 
     Id = Column(Integer, primary_key=True, autoincrement=True)
@@ -17,5 +19,3 @@ class Paper(db.Model):
     speaker = db.relationship('Speaker', backref='papers')  # Speaker ile ilişki
     hall = db.relationship('Hall', backref='papers')  # Hall ile ilişki
 
-    def __repr__(self):
-        return f"<Paper(id={self.Id}, title={self.Title})>"

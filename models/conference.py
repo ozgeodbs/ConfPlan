@@ -1,7 +1,9 @@
 from sqlalchemy import Column, Integer, String, Date
+
+from models.base import BaseModel
 from models.db import db
 
-class Conference(db.Model):
+class Conference(BaseModel):
     __tablename__ = 'Conference'
 
     Id = Column(Integer, primary_key=True, autoincrement=True)
@@ -10,6 +12,3 @@ class Conference(db.Model):
     EndDate = Column(Date, nullable=False)
     Location = Column(String(200), nullable=False)
     Organizer = Column(String(100), nullable=False)
-
-    def __repr__(self):
-        return f"<Conference(id={self.Id}, title={self.Title})>"

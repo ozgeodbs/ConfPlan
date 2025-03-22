@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from datetime import datetime
 from models.category import Category
 from app import db
 
@@ -7,27 +8,24 @@ category_routes = Blueprint('Category', __name__)
 # Tüm kategorileri listele
 @category_routes.route('/categories', methods=['GET'])
 def get_categories():
-    categories = Category.query.all()
-    return jsonify([category.__repr__() for category in categories])
+    categories = Category.query.filter_by(IsDeleted=False).all()
+    return jsonify([category.__repr__() for category in categories]), 200
 
 # Yeni bir kategori oluştur
 @category_routes.route('/categories', methods=['POST'])
 def create_category():
     data = request.get_json()
-    new_category = Category(
-        Title=data['Title'],
-        CreatedDate=data['CreatedDate'],
-        CreatedBy=data['CreatedBy']
-    )
-    db.session.add(new_category)
-    db.session.commit()
+
+    new_category = Category(Title=data['Title'])
+    new_category.save()
+
     return jsonify(new_category.__repr__()), 201
 
 # ID'ye göre kategori getir
 @category_routes.route('/categories/<int:id>', methods=['GET'])
 def get_category(id):
     category = Category.query.get(id)
-    if category:
+    if category and not category.IsDeleted:
         return jsonify(category.__repr__())
     return jsonify({"message": "Category not found"}), 404
 
@@ -35,13 +33,10 @@ def get_category(id):
 @category_routes.route('/categories/<int:id>', methods=['PUT'])
 def update_category(id):
     category = Category.query.get(id)
-    if category:
+    if category and not category.IsDeleted:
         data = request.get_json()
         category.Title = data.get('Title', category.Title)
-        category.ChangedDate = data.get('ChangedDate', category.ChangedDate)
-        category.ChangedBy = data.get('ChangedBy', category.ChangedBy)
-
-        db.session.commit()
+        category.update()
         return jsonify(category.__repr__())
     return jsonify({"message": "Category not found"}), 404
 
@@ -49,8 +44,7 @@ def update_category(id):
 @category_routes.route('/categories/<int:id>', methods=['DELETE'])
 def delete_category(id):
     category = Category.query.get(id)
-    if category:
-        db.session.delete(category)
-        db.session.commit()
+    if category and not category.IsDeleted:
+        category.delete()
         return jsonify({"message": "Category deleted successfully"})
     return jsonify({"message": "Category not found"}), 404

@@ -1,11 +1,10 @@
 from sqlalchemy import Column, Integer
+
+from models.base import BaseModel
 from models.db import db
 
-class Hall(db.Model):
+class Hall(BaseModel):
     __tablename__ = 'Hall'
 
     Id = Column(Integer, primary_key=True, autoincrement=True)
     Capacity = Column(Integer, nullable=False)
-
-    def __repr__(self):
-        return f"<Hall(id={self.Id}, capacity={self.Capacity})>"
