@@ -94,7 +94,7 @@
         .catch(error => console.error('Error:', error));
     });
 
- document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
     fetch('/speakers')  // API'ye istek at
         .then(response => response.json())
         .then(data => {
@@ -102,21 +102,18 @@
             const container = document.getElementById('speakers-container');
             container.innerHTML = '';  // Önce temizle
 
-            // Resimlerin olduğu grid
-            const imageGrid = document.createElement('div');
-            imageGrid.style.display = "grid";
-            imageGrid.style.gridTemplateColumns = "repeat(3, 1fr)"; // 3 sütunlu grid
-            imageGrid.style.gap = "10px"; // Aralık bırak
-
-            // Butonların olduğu grid
-            const buttonGrid = document.createElement('div');
-            buttonGrid.style.display = "grid";
-            buttonGrid.style.gridTemplateColumns = "repeat(3, 1fr)"; // 3 sütunlu grid
-            buttonGrid.style.gap = "10px"; // Aralık bırak
-            buttonGrid.style.marginTop = "10px"; // Resimlerle butonların arasına boşluk
+            // Resimlerin ve butonların olduğu grid
+            const grid = document.createElement('div');
+            grid.style.display = "grid";
+            grid.style.gridTemplateColumns = "repeat(3, 1fr)"; // 3 sütunlu grid
+            grid.style.gap = "20px"; // Aralık bırak
 
             data.forEach(speaker => {
                 console.log("Speaker Object:", speaker); // 🟢 Tek tek speaker objelerini kontrol et
+
+                // Her speaker için bir container oluştur
+                const speakerContainer = document.createElement('div');
+                speakerContainer.style.textAlign = "center"; // Ortalamak için
 
                 // Resim oluştur
                 const img = document.createElement('img');
@@ -125,9 +122,7 @@
                 img.style.width = "100px"; // Resim boyutu
                 img.style.height = "100px";
                 img.style.borderRadius = "50%"; // Yuvarlak fotoğraf
-                img.style.display = "block"; // Ortalamak için block yap
-                img.style.margin = "auto"; // Ortalamak için margin auto
-                imageGrid.appendChild(img); // Grid'e ekle
+                img.style.marginBottom = "10px"; // Buton ile araya boşluk
 
                 // Buton oluştur
                 const button = document.createElement('button');
@@ -137,18 +132,22 @@
                 button.style.borderRadius = "5px";
                 button.style.background = "#f9f9f9";
                 button.style.cursor = "pointer";
-                button.style.display = "block"; // Ortalamak için block yap
-                button.style.margin = "auto"; // Ortalamak için margin auto
                 button.onclick = () => window.location.href = `/speakers/${speaker.Id}`;
-                buttonGrid.appendChild(button); // Grid'e ekle
+
+                // Resmi ve butonu speakerContainer'a ekle
+                speakerContainer.appendChild(img);
+                speakerContainer.appendChild(button);
+
+                // Her speaker'ı grid'e ekle
+                grid.appendChild(speakerContainer);
             });
 
-            // Container'a ekleyelim
-            container.appendChild(imageGrid);
-            container.appendChild(buttonGrid);
+            // Grid'i container'a ekle
+            container.appendChild(grid);
         })
         .catch(error => console.error('Error:', error));
 });
+
 
 
   </script>
