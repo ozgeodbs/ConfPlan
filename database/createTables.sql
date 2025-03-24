@@ -30,6 +30,8 @@ CREATE TABLE Conference (
     EndDate TEXT NOT NULL,
     Location TEXT NOT NULL,
     Organizer TEXT NOT NULL,
+    PhotoUrl TEXT,
+    VideoUrl TEXT,
     IsDeleted BOOLEAN DEFAULT 0,
     CreatedDate TEXT DEFAULT CURRENT_TIMESTAMP,
     CreatedBy INTEGER DEFAULT 1,

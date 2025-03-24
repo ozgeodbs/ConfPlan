@@ -18,4 +18,3 @@ class Paper(BaseModel):
     category = db.relationship('Category', backref='papers')  # Category ile ilişki
     speaker = db.relationship('Speaker', backref='papers')  # Speaker ile ilişki
     hall = db.relationship('Hall', backref='papers')  # Hall ile ilişki
-

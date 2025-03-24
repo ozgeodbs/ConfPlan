@@ -9,7 +9,7 @@ paper_routes = Blueprint('paper', __name__)
 @paper_routes.route('/papers', methods=['GET'])
 def get_papers():
     papers = Paper.query.filter_by(IsDeleted=False).all()  # Assuming IsDeleted field exists
-    return jsonify([paper.__repr__() for paper in papers]), 200
+    return jsonify([paper.to_dict() for paper in papers]), 200
 
 # Yeni bir bildiri oluştur
 @paper_routes.route('/papers', methods=['POST'])
@@ -23,14 +23,14 @@ def create_paper():
         Description=data.get('Description', '')
     )
     new_paper.save()  # Assuming save() is defined in your base model
-    return jsonify(new_paper.__repr__()), 201
+    return jsonify(new_paper.to_dict()), 201
 
 # ID'ye göre bildiri getir
 @paper_routes.route('/papers/<int:id>', methods=['GET'])
 def get_paper(id):
     paper = Paper.query.get(id)
     if paper and not paper.IsDeleted:
-        return jsonify(paper.__repr__())
+        return jsonify(paper.to_dict())
     return jsonify({"message": "Paper not found"}), 404
 
 # Bildiriyi güncelle
@@ -46,7 +46,7 @@ def update_paper(id):
         paper.Description = data.get('Description', paper.Description)
 
         paper.update()  # Assuming update() is defined in your base model
-        return jsonify(paper.__repr__())
+        return jsonify(paper.to_dict())
     return jsonify({"message": "Paper not found"}), 404
 
 # Bildiriyi sil

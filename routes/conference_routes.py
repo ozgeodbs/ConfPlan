@@ -9,7 +9,7 @@ conference_routes = Blueprint('conference', __name__)
 @conference_routes.route('/conferences', methods=['GET'])
 def get_conferences():
     conferences = Conference.query.filter_by(IsDeleted=False).all()
-    return jsonify([conference.__repr__() for conference in conferences]), 200
+    return jsonify([conference.to_dict() for conference in conferences]), 200
 
 # Yeni bir konferans oluştur
 @conference_routes.route('/conferences', methods=['POST'])
@@ -20,17 +20,19 @@ def create_conference():
         StartDate=datetime.strptime(data['StartDate'], "%Y-%m-%d"),
         EndDate=datetime.strptime(data['EndDate'], "%Y-%m-%d"),
         Location=data['Location'],
-        Organizer=data['Organizer']
+        Organizer=data['Organizer'],
+        PhotoUrl=data['PhotoUrl'],
+        VideoUrl=data['VideoUrl'],
     )
     new_conference.save()  # Assuming `save()` is defined in your base model
-    return jsonify(new_conference.__repr__()), 201
+    return jsonify(new_conference.to_dict()), 201
 
 # ID'ye göre konferans getir
 @conference_routes.route('/conferences/<int:id>', methods=['GET'])
 def get_conference(id):
     conference = Conference.query.get(id)
     if conference and not conference.IsDeleted:
-        return jsonify(conference.__repr__())
+        return jsonify(conference.to_dict())
     return jsonify({"message": "Conference not found"}), 404
 
 # Konferansı güncelle
@@ -44,9 +46,11 @@ def update_conference(id):
         conference.EndDate = datetime.strptime(data.get('EndDate', conference.EndDate.strftime("%Y-%m-%d")), "%Y-%m-%d")
         conference.Location = data.get('Location', conference.Location)
         conference.Organizer = data.get('Organizer', conference.Organizer)
+        conference.PhotoUrl = data.get('PhotoUrl', conference.PhotoUrl)
+        conference.VideoUrl = data.get('VideoUrl', conference.VideoUrl)
 
         conference.update()  # Assuming `update()` is defined in your base model
-        return jsonify(conference.__repr__())
+        return jsonify(conference.to_dict())
     return jsonify({"message": "Conference not found"}), 404
 
 # Konferansı sil

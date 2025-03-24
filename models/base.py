@@ -32,7 +32,6 @@ class BaseModel(db.Model):
         self.IsDeleted = True
         db.session.commit()
 
-    def __repr__(self):
-        """Nesne temsilini JSON formatında döndürür."""
+    def to_dict(self):
         columns = {column.name: getattr(self, column.name) for column in self.__table__.columns}
-        return json.dumps(columns, default=str)  # JSON formatında döner
+        return columns

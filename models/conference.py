@@ -12,3 +12,5 @@ class Conference(BaseModel):
     EndDate = Column(Date, nullable=False)
     Location = Column(String(200), nullable=False)
     Organizer = Column(String(100), nullable=False)
+    PhotoUrl = Column(String(300), nullable=False)
+    VideoUrl = Column(String(300), nullable=False)

@@ -24,7 +24,7 @@ def create_app():
 
     @app.route('/')
     def index():
-        return render_template('get.html')  # HTML sayfası burada döndürülür
+        return render_template('main.html')  # HTML sayfası burada döndürülür
 
     return app
 

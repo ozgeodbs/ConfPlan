@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get All Data</title>
+    <link rel="stylesheet" href="/static/mainPage.css">
+</head>
+<body>
+<h1>Get All Data</h1>
+
+<button id="getPapersBtn">Get All Papers</button>
+<button id="getHallsBtn">Get All Halls</button>
+<button id="getSpeakersBtn">Get All Speakers</button>
+<button id="getConferencesBtn">Get All Conferences</button>
+
+<h1> Video</h1>
+<div class="video-container">
+    <video id="background-video" autoplay loop muted playsinline width="100%" height="500px" controls>
+        <source src="https://cdn.sanity.io/files/fhoo4r9z/production/0c4ee2637a354994f8b57ef98d4963b8b8032bea.mp4"
+                type="video/mp4">
+    </video>
+    <div class="main__header-center">
+        <span id="conference-title" class="main__header-title">Loading...</span><br>
+        <span id="conference-date">Loading...</span><br>
+        <span id="conference-location">Loading...</span>
+    </div>
+</div>
+
+<h1>Speakers List</h1>
+<div id="speakers-container">
+    {% for speaker in speakers %}
+        <button onclick="goToSpeaker({{ speaker.Id }})">
+            {{ speaker.FirstName }} {{ speaker.LastName }}
+        </button><br>
+    {% endfor %}
+</div>
+
+<h2>Papers</h2>
+<div id="papersContainer"></div>
+<h2>Halls</h2>
+<div id="hallsContainer"></div>
+<h2>Speakers</h2>
+<div id="speakersContainer"></div>
+<h2>Conferences</h2>
+<div id="conferencesContainer"></div>
+
+<script src="/static/mainPage.js"></script>
+</body>
+</html>

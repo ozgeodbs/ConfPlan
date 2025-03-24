@@ -25,14 +25,14 @@ def create_speaker():
         PhotoUrl=data.get('PhotoUrl', '')
     )
     new_speaker.save()  # Using the save method from BaseModel
-    return jsonify(new_speaker.__repr__()), 201
+    return jsonify(new_speaker.to_dict()), 201
 
 # ID'ye göre speaker getir
 @speaker_routes.route('/speakers/<int:id>', methods=['GET'])
 def get_speaker(id):
     speaker = Speaker.query.get(id)
     if speaker and not speaker.IsDeleted:
-        return jsonify(speaker.__repr__())
+        return jsonify(speaker.to_dict())
     return jsonify({"message": "Speaker not found"}), 404
 
 # Speaker'ı güncelle
@@ -48,7 +48,7 @@ def update_speaker(id):
         speaker.Phone = data.get('Phone', speaker.Phone)
         speaker.PhotoUrl = data.get('PhotoUrl', speaker.PhotoUrl)
         speaker.update()  # Using the update method from BaseModel
-        return jsonify(speaker.__repr__())
+        return jsonify(speaker.to_dict())
     return jsonify({"message": "Speaker not found"}), 404
 
 # Speaker'ı sil

@@ -9,7 +9,7 @@ hall_routes = Blueprint('hall', __name__)
 @hall_routes.route('/halls', methods=['GET'])
 def get_halls():
     halls = Hall.query.filter_by(IsDeleted=False).all()  # Filter out deleted halls
-    return jsonify([hall.__repr__() for hall in halls]), 200
+    return jsonify([hall.to_dict() for hall in halls]), 200
 
 # Yeni bir salon oluştur
 @hall_routes.route('/halls', methods=['POST'])
@@ -19,14 +19,14 @@ def create_hall():
         Capacity=data['Capacity']
     )
     new_hall.save()  # Using the save method from BaseModel
-    return jsonify(new_hall.__repr__()), 201
+    return jsonify(new_hall.to_dict()), 201
 
 # ID'ye göre salon getir
 @hall_routes.route('/halls/<int:id>', methods=['GET'])
 def get_hall(id):
     hall = Hall.query.get(id)
     if hall and not hall.IsDeleted:
-        return jsonify(hall.__repr__())
+        return jsonify(hall.to_dict())
     return jsonify({"message": "Hall not found"}), 404
 
 # Salonu güncelle
@@ -37,7 +37,7 @@ def update_hall(id):
         data = request.get_json()
         hall.Capacity = data.get('Capacity', hall.Capacity)
         hall.update()  # Using the update method from BaseModel
-        return jsonify(hall.__repr__())
+        return jsonify(hall.to_dict())
     return jsonify({"message": "Hall not found"}), 404
 
 # Salonu sil

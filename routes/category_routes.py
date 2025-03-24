@@ -9,7 +9,7 @@ category_routes = Blueprint('Category', __name__)
 @category_routes.route('/categories', methods=['GET'])
 def get_categories():
     categories = Category.query.filter_by(IsDeleted=False).all()
-    return jsonify([category.__repr__() for category in categories]), 200
+    return jsonify([category.to_dict() for category in categories]), 200
 
 # Yeni bir kategori oluştur
 @category_routes.route('/categories', methods=['POST'])
@@ -19,14 +19,14 @@ def create_category():
     new_category = Category(Title=data['Title'])
     new_category.save()
 
-    return jsonify(new_category.__repr__()), 201
+    return jsonify(new_category.to_dict()), 201
 
 # ID'ye göre kategori getir
 @category_routes.route('/categories/<int:id>', methods=['GET'])
 def get_category(id):
     category = Category.query.get(id)
     if category and not category.IsDeleted:
-        return jsonify(category.__repr__())
+        return jsonify(category.to_dict())
     return jsonify({"message": "Category not found"}), 404
 
 # Kategoriyi güncelle
@@ -37,7 +37,7 @@ def update_category(id):
         data = request.get_json()
         category.Title = data.get('Title', category.Title)
         category.update()
-        return jsonify(category.__repr__())
+        return jsonify(category.to_dict())
     return jsonify({"message": "Category not found"}), 404
 
 # Kategoriyi sil
