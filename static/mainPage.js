@@ -84,22 +84,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Fetch conferences
     fetch(`/conferences`)
-    .then(response => response.json())
-    .then(data => {
-        console.log("Conferences API Response:", data);
-        if (data.length === 0) {
-            console.warn("Konferans verisi bulunamadı.");
-            return;
-        }
+        .then(response => response.json())
+        .then(data => {
+            console.log("Conferences API Response:", data);
+            if (data.length === 0) {
+                console.warn("Konferans verisi bulunamadı.");
+                return;
+            }
 
-        const lastConference = data[data.length - 1]; // Son konferansı al
-        console.log("Last Conference:", lastConference);
+            const lastConference = data[data.length - 1]; // Son konferansı al
+            console.log("Last Conference:", lastConference);
 
-        // Veriyi kullanarak başlıkları güncelle
-        document.getElementById("conference-title").textContent = lastConference.Title; // Veri alanı büyük harfle "Title" olabilir
-        document.getElementById("conference-date").textContent = lastConference.StartDate; // Tarih formatı değişmiş olabilir
-        document.getElementById("conference-location").textContent = lastConference.Location; // Konum adı farklı olabilir
-    })
-    .catch(error => console.error("Veri çekme hatası:", error));
+            // Veriyi kullanarak başlıkları güncelle
+            document.getElementById("conference-title").textContent = lastConference.Title; // Veri alanı büyük harfle "Title" olabilir
+            document.getElementById("conference-date").textContent = lastConference.StartDate; // Tarih formatı değişmiş olabilir
+            document.getElementById("conference-location").textContent = lastConference.Location; // Konum adı farklı olabilir
+        })
+        .catch(error => console.error("Veri çekme hatası:", error));
 
 });
