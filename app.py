@@ -5,7 +5,6 @@ from models.db import db
 from config import Config
 
 def create_app():
-    # Flask uygulamasını başlat
     app = Flask(__name__)
 
     # Konfigürasyonu uygula
