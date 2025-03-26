@@ -1,3 +1,28 @@
+:root {
+    --main-bg-color: #d3d3d3;
+    --menu-box-menu-bg-color: #3f80a9;
+    --menu-box-tickets-bg-color: #13b7ad;
+    --page-level-one-color: #01315c;
+    --page-level-two-color: #2a5a90;
+    --page-level-three-color: #0164bd;
+    --page-level-four-color: #13b7ad;
+    --page-level-five-color: #ced7e5;
+    --devs-box-menu-bg-color: #187f9f;
+    --fest-box-menu-bg-color: #bf34cb;
+    --devs-box-tickets-bg-color: #fb9334;
+    --fest-box-tickets-bg-color: #41c1ab;
+    --devs-footer-bg-color: #427469;
+    --fest-footer-bg-color: #563175;
+    --devs-footer-button-bg-color: #ffe890;
+    --fest-footer-button-bg-color: #1766aa;
+    --devs-footer-button-fg-color: #000;
+    --fest-footer-button-fg-color: #fff;
+    --devs-count-btn-bg-color: #ffe890;
+    --fest-count-btn-bg-color: #1766aa;
+    --devs-count-btn-fg-color: #232323;
+    --fest-count-btn-fg-color: #fff;
+}
+
 button {
     margin: 5px;
     padding: 10px;
@@ -132,4 +157,219 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     box-sizing: border-box;
+}
+
+footer {
+    unicode-bidi: isolate;
+}
+
+.footer__conferences.jsx-2563101321 {
+    width: 100%;
+    min-height: 900px;
+    background-color: var(--page-level-three-color);
+}
+
+.footer__partners-and-socials.jsx-2563101321 {
+    display: block;
+    width: 100%;
+    min-height: 600px;
+    background-color: var(--page-level-two-color);
+}
+
+.footer__partners.jsx-2563101321 {
+    display: block;
+    padding: 40px 24px;
+}
+
+.partners.jsx-2096302040 {
+    display: block;
+}
+
+.partners__title.jsx-2096302040 {
+    width: 100%;
+    font-family: 'Playfair Display Medium Italic';
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 36px;
+    text-align: center;
+    color: white;
+    margin: 0px;
+    padding: 0px;
+}
+
+.partners__logos.jsx-2096302040 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+.partners__logo.jsx-2096302040 {
+    margin: 20px 15px;
+    -webkit-transition: opacity 150ms ease-out;
+    transition: opacity 150ms ease-out;
+}
+.footer__links-and-newsletter.jsx-2563101321 {
+    display: block;
+    padding: 5% 10%;
+}
+.newsletter__links__container.jsx-1564649870 {
+    width: 100%;
+    display: block;
+    margin: 0px;
+    padding: 0px;
+}
+.links__subcontainer.jsx-1564649870 {
+    width: 100%;
+    display: grid
+;
+    grid-template-columns: 50% 50%;
+    padding: 0px 0px 0px 0px;
+}
+.links__sub__column.jsx-1564649870 {
+    display: block;
+}
+.links__sub__column.jsx-1564649870 a.jsx-1564649870 {
+    width: 100%;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 24px;
+    color: #FFFFFF;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex
+;
+    -webkit-flex-flow: row nowrap;
+    -ms-flex-flow: row nowrap;
+    flex-flow: row nowrap;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 0px 0px 40px 0px;
+}
+.newsletter__subcontainer.jsx-1564649870 {
+    width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex
+;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-align-content: center;
+    -ms-flex-line-pack: center;
+    align-content: center;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.newsletter__links__info.jsx-1564649870 {
+    width: 100%;
+    text-align: left;
+}
+.newsletter__links__info__text__header.jsx-1564649870 {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 24px;
+    color: #FFFFFF;
+    padding: 40px 0px 12px 0px;
+}
+.newsletter__links__info__text.jsx-1564649870 {
+    width: 100%;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #FFFFFF;
+    padding: 0px 0px 12px 0px;
+}
+.newsletter__container.jsx-3103933071 {
+    width: 100%;
+    display: block;
+    margin: 0px;
+    padding: 0px;
+}
+.empty__subcontainer.jsx-3103933071 {
+    width: 100%;
+    display: grid
+;
+    grid-template-columns: 50% 50%;
+    padding: 0px 0px 0px 0px;
+}
+
+.newsletter__subcontainer.jsx-3103933071 {
+    width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex
+;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-align-content: center;
+    -ms-flex-line-pack: center;
+    align-content: center;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.mailchimp__container.jsx-3103933071 {
+    display: block;
+    width: 100%;
+}
+.newsletter__header.jsx-3103933071 {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 24px;
+    color: #FFFFFF;
+    padding: 40px 0px 12px 0px;
+}
+.mailchimp__form.jsx-3103933071 {
+    display: inline-block;
+    width: 100%;
+    line-height: 56px;
+    vertical-align: bottom;
+}
+.mailchimp__form__email.jsx-3103933071 {
+    width: calc(100% - 150px);
+    height: 56px;
+    background: #FFFFFF;
+    border: 1px solid #FFFFFF;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    color: #5A5A5A;
+    margin: 0px;
+    padding: 0px 10px;
+    vertical-align: bottom;
 }
