@@ -103,3 +103,8 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => console.error("Veri çekme hatası:", error));
 
 });
+
+window.onload = function() {
+    document.querySelector('.marquee').style.setProperty('--play', 'running');
+};
+
