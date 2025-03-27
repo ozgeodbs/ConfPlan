@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get All Data</title>
+</head>
+<body>
+
+  <h1>Get All Data</h1>
+
+  <!-- Buttons to trigger API calls -->
+  <button id="getPapersBtn">Get All Papers</button>
+  <button id="getHallsBtn">Get All Halls</button>
+  <button id="getSpeakersBtn">Get All Speakers</button>
+  <button id="getConferencesBtn">Get All Conferences</button>
+<h1>Speakers List</h1>
+
+    <div id="speakers-container">
+        {% for speaker in speakers %}
+            <button onclick="goToSpeaker({{ speaker.Id }})">
+                {{ speaker.FirstName }} {{ speaker.LastName }}
+            </button>
+            <br>
+        {% endfor %}
+    </div>
+  <h2>Papers</h2>
+  <div id="papersContainer"></div>
+
+  <h2>Halls</h2>
+  <div id="hallsContainer"></div>
+
+  <h2>Speakers</h2>
+  <div id="speakersContainer"></div>
+
+  <h2>Conferences</h2>
+  <div id="conferencesContainer"></div>
+
+  <script>
+    // Function to handle the display of data
+    function displayData(containerId, data) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';  // Clear previous data
+      if (data.length === 0) {
+        container.innerHTML = 'No data found.';
+      } else {
+        const ul = document.createElement('ul');
+        data.forEach(item => {
+          const li = document.createElement('li');
+          li.textContent = JSON.stringify(item, null, 2);  // Display JSON as string
+          ul.appendChild(li);
+        });
+        container.appendChild(ul);
+      }
+    }
+
+    // Get all papers
+    document.getElementById('getPapersBtn').addEventListener('click', function () {
+      fetch('/papers')
+        .then(response => response.json())
+        .then(data => {
+          displayData('papersContainer', data);  // Show data in papersContainer
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    // Get all halls
+    document.getElementById('getHallsBtn').addEventListener('click', function () {
+      fetch('/halls')
+        .then(response => response.json())
+        .then(data => {
+          displayData('hallsContainer', data);  // Show data in hallsContainer
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    // Get all speakers
+    document.getElementById('getSpeakersBtn').addEventListener('click', function () {
+      fetch('/speakers')
+        .then(response => response.json())
+        .then(data => {
+          displayData('speakersContainer', data);  // Show data in speakersContainer
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    // Get all conferences
+    document.getElementById('getConferencesBtn').addEventListener('click', function () {
+      fetch('/conferences')
+        .then(response => response.json())
+        .then(data => {
+          displayData('conferencesContainer', data);  // Show data in conferencesContainer
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+    fetch('/speakers')  // API'ye istek at
+        .then(response => response.json())
+        .then(data => {
+            console.log("Speakers API Response:", data); // 🟢 JSON verisini kontrol et
+            const container = document.getElementById('speakers-container');
+            container.innerHTML = '';  // Önce temizle
+
+            // Resimlerin ve butonların olduğu grid
+            const grid = document.createElement('div');
+            grid.style.display = "grid";
+            grid.style.gridTemplateColumns = "repeat(3, 1fr)"; // 3 sütunlu grid
+            grid.style.gap = "20px"; // Aralık bırak
+
+            data.forEach(speaker => {
+                console.log("Speaker Object:", speaker); // 🟢 Tek tek speaker objelerini kontrol et
+
+                // Her speaker için bir container oluştur
+                const speakerContainer = document.createElement('div');
+                speakerContainer.style.textAlign = "center"; // Ortalamak için
+
+                // Resim oluştur
+                const img = document.createElement('img');
+                img.src = speaker.PhotoUrl; // 📷 Fotoğraf URL'si
+                img.alt = `${speaker.FirstName} ${speaker.LastName}`;
+                img.style.width = "100px"; // Resim boyutu
+                img.style.height = "100px";
+                img.style.borderRadius = "50%"; // Yuvarlak fotoğraf
+                img.style.marginBottom = "10px"; // Buton ile araya boşluk
+
+                // Buton oluştur
+                const button = document.createElement('button');
+                button.textContent = `${speaker.FirstName} ${speaker.LastName}`;
+                button.style.padding = "10px";
+                button.style.border = "1px solid #ccc";
+                button.style.borderRadius = "5px";
+                button.style.background = "#f9f9f9";
+                button.style.cursor = "pointer";
+                button.onclick = () => window.location.href = `/speakers/${speaker.Id}`;
+
+                // Resmi ve butonu speakerContainer'a ekle
+                speakerContainer.appendChild(img);
+                speakerContainer.appendChild(button);
+
+                // Her speaker'ı grid'e ekle
+                grid.appendChild(speakerContainer);
+            });
+
+            // Grid'i container'a ekle
+            container.appendChild(grid);
+        })
+        .catch(error => console.error('Error:', error));
+});
+
+
+
+  </script>
+
+</body>
+</html>
