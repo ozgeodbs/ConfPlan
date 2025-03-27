@@ -18,35 +18,6 @@ function displayData(containerId, data) {
     }
 }
 
-document.getElementById('getPapersBtn').addEventListener('click', function () {
-    console.log('Get Papers button clicked');
-    fetch('/papers')
-        .then(response => response.json())
-        .then(data => displayData('papersContainer', data))
-        .catch(error => console.error('Error:', error));
-});
-
-document.getElementById('getHallsBtn').addEventListener('click', function () {
-    fetch('/halls')
-        .then(response => response.json())
-        .then(data => displayData('hallsContainer', data))
-        .catch(error => console.error('Error:', error));
-});
-
-document.getElementById('getSpeakersBtn').addEventListener('click', function () {
-    fetch('/speakers')
-        .then(response => response.json())
-        .then(data => displayData('speakersContainer', data))
-        .catch(error => console.error('Error:', error));
-});
-
-document.getElementById('getConferencesBtn').addEventListener('click', function () {
-    fetch('/conferences')
-        .then(response => response.json())
-        .then(data => displayData('conferencesContainer', data))
-        .catch(error => console.error('Error:', error));
-});
-
 function goToSpeaker(speakerId) {
     // Navigate to the speaker's page based on the speaker's ID
     window.location.href = `/speakers/${speakerId}`;
@@ -83,28 +54,45 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => console.error('Error:', error));
 
     // Fetch conferences
-    fetch(`/conferences`)
+    const conferenceId = window.location.pathname.split("/").pop();
+
+    fetch(`http://127.0.0.1:5000/conferences/${conferenceId}`)
         .then(response => response.json())
         .then(data => {
-            console.log("Conferences API Response:", data);
-            if (data.length === 0) {
-                console.warn("Konferans verisi bulunamadı.");
+            if (data.error) {
+                console.warn("Konferans bulunamadı.");
                 return;
             }
 
-            const lastConference = data[data.length - 1]; // Son konferansı al
-            console.log("Last Conference:", lastConference);
+            // HTML öğelerine API'den gelen veriyi ata
+            document.getElementById("conference-title").textContent = data.Title;
+            document.getElementById("conference-date").textContent = `${data.StartDate} - ${data.EndDate}`;
+            document.getElementById("conference-location").textContent = data.Location;
 
-            // Veriyi kullanarak başlıkları güncelle
-            document.getElementById("conference-title").textContent = lastConference.Title; // Veri alanı büyük harfle "Title" olabilir
-            document.getElementById("conference-date").textContent = lastConference.StartDate; // Tarih formatı değişmiş olabilir
-            document.getElementById("conference-location").textContent = lastConference.Location; // Konum adı farklı olabilir
+            // Video varsa göster, yoksa fotoğrafı göster
+            const videoContainer = document.getElementById("video-container");
+            const videoElement = document.getElementById("background-video");
+            const videoSource = document.getElementById("video-source");
+            const conferenceImage = document.getElementById("conference-image");
+
+            if (data.VideoUrl && data.VideoUrl.trim() !== "null") {
+                // Video varsa
+                videoSource.src = data.VideoUrl;
+                videoElement.load(); // Yeni video kaynağını yükle
+                videoElement.style.display = "block"; // Videoyu göster
+                conferenceImage.style.display = "none"; // Fotoğrafı gizle
+            } else {
+                // Video yoksa
+                videoElement.style.display = "none"; // Video konteynerini gizle
+                conferenceImage.src = data.PhotoUrl; // Fotoğraf URL'sini ata
+                conferenceImage.style.display = "block"; // Fotoğrafı göster
+            }
         })
         .catch(error => console.error("Veri çekme hatası:", error));
 
 });
 
-window.onload = function() {
+window.onload = function () {
     document.querySelector('.marquee').style.setProperty('--play', 'running');
 };
 

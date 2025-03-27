@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from flask_migrate import Migrate
-
+from models import Conference
 from models.db import db
 from config import Config
 
@@ -21,10 +21,13 @@ def create_app():
     app.register_blueprint(category_routes)
     app.register_blueprint(hall_routes)
 
-    @app.route('/')
-    def index():
-        return render_template('main.html')  # HTML sayfası burada döndürülür
+    @app.route('/<int:conference_id>', methods=['GET'])
+    def get_conference(conference_id):
+        conference = Conference.query.get(conference_id)
 
+        # HTML sayfasına konferans bilgilerini gönder
+        return render_template('main.html',
+                               conference_id=conference.Id)
     return app
 
 # Eğer doğrudan çalıştırılıyorsa
