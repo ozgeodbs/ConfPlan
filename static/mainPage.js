@@ -108,3 +108,7 @@ window.onload = function() {
     document.querySelector('.marquee').style.setProperty('--play', 'running');
 };
 
+window.onload = function() {
+    document.querySelector('.marqueee').style.setProperty('--play', 'running');
+};
+
