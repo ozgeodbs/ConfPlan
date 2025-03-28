@@ -4,22 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Get All Data</title>
-    <link rel="stylesheet" href="/static/mainPage.css">
+    <link rel="stylesheet" href="/static/css/header.css">
+    <link rel="stylesheet" href="/static/css/mainPage.css">
 </head>
 <header>
     <nav class="navbar">
         <div class="logo">
-            <a href="/{{ conference_id }}">
+            <a href="{{base_url }}/{{ conference_id }}">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Historical_peninsula_and_modern_skyline_of_Istanbul.jpg/640px-Historical_peninsula_and_modern_skyline_of_Istanbul.jpg"
-                     alt="IDC Logo">
+                     alt="Logo">
             </a>
         </div>
         <ul class="nav-links">
-            <li><a href="/{{ conference_id }}/papers">Etkinlik Ajandası</a></li>
-            <li><a href="/{{ conference_id }}/speakers">Konuşmacılar</a></li>
-            <li><a href="/{{ conference_id }}/venue">Partners</a></li>
-            <li><a href="/{{ conference_id }}/sponsors">About</a></li>
-            <li><a href="/{{ conference_id }}/contact">Contact</a></li>
+            <li><a href="{{base_url }}/{{ conference_id }}/papers">Calender</a></li>
+            <li><a href="{{base_url }}/{{ conference_id }}/speakers">Speakers</a></li>
+            <li><a href="{{base_url }}/{{ conference_id }}/partners">Partners</a></li>
+            <li><a href="{{base_url }}/{{ conference_id }}/about">About</a></li>
+            <li><a href="{{base_url }}/{{ conference_id }}/contact">Contact</a></li>
         </ul>
     </nav>
 </header>

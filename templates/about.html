@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ Title }}</title>
+    <link rel="stylesheet" href="/static/css/header.css">
+    <link rel="stylesheet" href="/static/css/mainPage.css">
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="{{base_url }}/{{ conference_id }}">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Historical_peninsula_and_modern_skyline_of_Istanbul.jpg/640px-Historical_peninsula_and_modern_skyline_of_Istanbul.jpg"
+                     alt="Logo">
+            </a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="{{base_url }}/{{ conference_id }}/papers">Calender</a></li>
+            <li><a href="{{base_url }}/{{ conference_id }}/speakers">Speakers</a></li>
+            <li><a href="{{base_url }}/{{ conference_id }}/partners">Partners</a></li>
+            <li><a href="{{base_url }}/{{ conference_id }}/about">About</a></li>
+            <li><a href="{{base_url }}/{{ conference_id }}/contact">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="about-container">
+    <p><strong>Tarih:</strong> {{ base_url }}</p>
+    <p><strong>Mekan:</strong> 1</p>
+    <p><strong>Açıklama:</strong> {{ conference_id }}</p>
+</section>
+
+<script src="/static/js/about.js"></script>
+</body>
+</html>

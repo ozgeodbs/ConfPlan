@@ -21,18 +21,28 @@ def create_app():
     app.register_blueprint(category_routes)
     app.register_blueprint(hall_routes)
 
+    base_url = "http://127.0.0.1:5000"
     @app.route('/<int:conference_id>', methods=['GET'])
     def get_conference(conference_id):
         conference = Conference.query.get(conference_id)
-
-        return render_template('main.html', conference_id=conference.Id)
+        if not conference:
+            return "Conference not found", 404
+        return render_template('main.html', base_url = base_url, conference_id=conference.Id)
 
     @app.route('/<int:conference_id>/contact')
     def contact(conference_id):
         conference = Conference.query.get(conference_id)
+        if not conference:
+            return "Conference not found", 404
 
-        return render_template("contact.html", conference_id=conference.Id, title="Contact")
+        return render_template("contact.html", base_url = base_url, conference_id=conference.Id, title="Contact")
 
+    @app.route('/<int:conference_id>/about')
+    def about(conference_id):
+        conference = Conference.query.get(conference_id)
+        if not conference:
+            return "Conference not found", 404
+        return render_template("about.html", base_url = base_url, conference_id=conference.Id, title="About")
     return app
 
 # Eğer doğrudan çalıştırılıyorsa
