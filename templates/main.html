@@ -7,93 +7,19 @@
     <link rel="stylesheet" href="/static/mainPage.css">
 </head>
 <header>
-    <nav>
-        <div class="root-button logo-count-2 has-divider">
-
-
-            <a href="https://www.idc.com">
-                <span class="show-for-sr">Visit IDC website</span>
-                <img alt="IDC" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Historical_peninsula_and_modern_skyline_of_Istanbul.jpg/640px-Historical_peninsula_and_modern_skyline_of_Istanbul.jpg">
+    <nav class="navbar">
+        <div class="logo">
+            <a href="/{{ conference_id }}">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Historical_peninsula_and_modern_skyline_of_Istanbul.jpg/640px-Historical_peninsula_and_modern_skyline_of_Istanbul.jpg"
+                     alt="IDC Logo">
             </a>
-            <span class="divider"></span>
-            <a href="https://www.cio.com/">
-                <span class="show-for-sr">Visit CIO website</span>
-                <img alt="CIO" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Historical_peninsula_and_modern_skyline_of_Istanbul.jpg/640px-Historical_peninsula_and_modern_skyline_of_Istanbul.jpg">
-            </a>
-
-            <span class="invisible-divider"></span>
-            <p class="produced-by">Presents</p>
         </div>
-
-        <ul class="main-menu">
-            <li>
-                <a data-qa="event-category-item" href="#section_7" onclick="goToCategory(7)">Overview</a>
-            </li>
-
-
-            <li class="is-persistent has-submenu nav-more" style="">
-                <button type="button" aria-label="Sub-navigation: expand to access remaining event sections"
-                        aria-expanded="false">More...
-                </button>
-                <ul class="submenu">
-                    <li>
-                        <a data-qa="event-category-item" href="#section_4267" onclick="goToCategory(4267)">Key
-                            Themes</a>
-                    </li>
-                    <li>
-                        <a data-qa="event-category-item" href="#section_4269" onclick="goToCategory(4269)">CIO
-                            Awards</a>
-                    </li>
-                    <li>
-                        <a data-qa="event-category-item" href="#section_64" onclick="goToCategory(64)">Advisory
-                            Board</a>
-                    </li>
-                    <li>
-                        <a data-qa="event-category-item" href="#section_10" onclick="goToCategory(10)">Agenda</a>
-                    </li>
-                    <li>
-                        <a data-qa="event-category-item" href="#section_11" onclick="goToCategory(11)">Speakers</a>
-                    </li>
-                    <li>
-                        <a data-qa="event-category-item" href="#section_59" onclick="goToCategory(59)">Venue</a>
-                    </li>
-                    <li>
-                        <a data-qa="event-category-item" href="#section_15" onclick="goToCategory(15)">Partners</a>
-                    </li>
-                    <li>
-                        <a data-qa="event-category-item" href="#section_4268" onclick="goToCategory(4268)">2024 Events
-                            Highlights</a>
-                    </li>
-                    <li>
-                        <a data-qa="event-category-item" href="#section_4266" onclick="goToCategory(4266)">Knowledge
-                            Hub</a>
-                    </li>
-                </ul>
-            </li>
-
-            <li class="is-persistent no-hover-background">
-
-                <a href="https://events.idc.com/d/9vqw43/4W?RefID=Google" data-qa="registration-button"
-                   class="button-register bg-blue button is-large">
-
-                    Register Now
-                </a>
-            </li>
-
-            <li class="is-persistent has-submenu">
-                <button type="button"
-                        aria-label="Content language sub-navigation: expand to access list of available languages"
-                        aria-expanded="false">ENG<span class="icom icom-arrow-head"></span></button>
-                <ul class="submenu">
-                    <li>
-                        <a href="https://www.idc.com/mea/events/71842-idc-turkiye-cio-summit-2025?g_clang=TR&amp;RefId=Google">TR</a>
-                    </li>
-                </ul>
-            </li>
-            <li class="is-persistent contact-us">
-                <button type="button" onclick="goToCategory('contact')" title="Contact Us"><i
-                        class="icom icom-email"></i></button>
-            </li>
+        <ul class="nav-links">
+            <li><a href="/{{ conference_id }}/papers">Calender</a></li>
+            <li><a href="/{{ conference_id }}/speakers">Speakers</a></li>
+            <li><a href="/{{ conference_id }}/venue">Partners</a></li>
+            <li><a href="/{{ conference_id }}/sponsors">About</a></li>
+            <li><a href="/{{ conference_id }}/contact">Contact</a></li>
         </ul>
     </nav>
 </header>
@@ -114,7 +40,6 @@
     </div>
 </div>
 
-<h1>Speakers List</h1>
 <div id="speakers-container">
     {% for speaker in speakers %}
         <button onclick="goToSpeaker({{ speaker.Id }})">
@@ -123,7 +48,6 @@
     {% endfor %}
 </div>
 
-<h1>Partners</h1>
 <div>
     <div class="jsx-2659488190 partners__block">
         <div class="jsx-2659488190 partners__block__container">
@@ -239,15 +163,6 @@
         </div>
     </div>
 </div>
-
-<h2>Papers</h2>
-<div id="papersContainer"></div>
-<h2>Halls</h2>
-<div id="hallsContainer"></div>
-<h2>Speakers</h2>
-<div id="speakersContainer"></div>
-<h2>Conferences</h2>
-<div id="conferencesContainer"></div>
 
 <footer class="jsx-2563101321 footer__container">
     <div class="jsx-2563101321 footer__partners-and-socials">

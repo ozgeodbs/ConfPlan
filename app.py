@@ -25,9 +25,14 @@ def create_app():
     def get_conference(conference_id):
         conference = Conference.query.get(conference_id)
 
-        # HTML sayfasına konferans bilgilerini gönder
-        return render_template('main.html',
-                               conference_id=conference.Id)
+        return render_template('main.html', conference_id=conference.Id)
+
+    @app.route('/<int:conference_id>/contact')
+    def contact(conference_id):
+        conference = Conference.query.get(conference_id)
+
+        return render_template("contact.html", conference_id=conference.Id, title="Contact")
+
     return app
 
 # Eğer doğrudan çalıştırılıyorsa

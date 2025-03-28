@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Fetch conferences
     const conferenceId = window.location.pathname.split("/").pop();
 
-    fetch(`http://127.0.0.1:5000/conferences/${conferenceId}`)
+    fetch(`/conferences/${conferenceId}`)
         .then(response => response.json())
         .then(data => {
             if (data.error) {
