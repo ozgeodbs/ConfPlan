@@ -27,7 +27,7 @@ def create_app():
         conference = Conference.query.get(conference_id)
         if not conference:
             return "Conference not found", 404
-        return render_template('main.html', base_url = base_url, conference_id=conference.Id)
+        return render_template('main.html', base_url = base_url, conference_id=conference.Id, title = "Home")
 
     @app.route('/<int:conference_id>/contact')
     def contact(conference_id):
@@ -43,6 +43,28 @@ def create_app():
         if not conference:
             return "Conference not found", 404
         return render_template("about.html", base_url = base_url, conference_id=conference.Id, title="About")
+
+    @app.route('/<int:conference_id>/speakers')
+    def speakers(conference_id):
+        conference = Conference.query.get(conference_id)
+        if not conference:
+            return "Conference not found", 404
+        return render_template("speakers.html", base_url=base_url, conference_id=conference.Id, title="Speakers")
+
+    @app.route('/<int:conference_id>/partners')
+    def partners(conference_id):
+        conference = Conference.query.get(conference_id)
+        if not conference:
+            return "Conference not found", 404
+        return render_template("partners.html", base_url=base_url, conference_id=conference.Id, title="Partners")
+
+    @app.route('/<int:conference_id>/papers')
+    def calender(conference_id):
+        conference = Conference.query.get(conference_id)
+        if not conference:
+            return "Conference not found", 404
+        return render_template("papers.html", base_url=base_url, conference_id=conference.Id, title="Calender")
+
     return app
 
 # Eğer doğrudan çalıştırılıyorsa
