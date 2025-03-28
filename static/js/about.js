@@ -1,8 +1,3 @@
-const CONFIG = {
-    BASE_URL: "http://127.0.0.1:5000/"
-};
-
-
 document.addEventListener("DOMContentLoaded", function () {
     // Fetch conferences
     const conferenceId = window.location.pathname.split("/")[1];
