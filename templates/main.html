@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title}}</title>
+    <title>{{ title }}</title>
     <link rel="stylesheet" href="/static/css/header.css">
     <link rel="stylesheet" href="/static/css/mainPage.css">
 </head>
 <header>
     <nav class="navbar">
         <div class="logo">
-            <a href="{{base_url}}/{{ conference_id }}">
+            <a href="{{ base_url }}/{{ conference_id }}">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Historical_peninsula_and_modern_skyline_of_Istanbul.jpg/640px-Historical_peninsula_and_modern_skyline_of_Istanbul.jpg"
                      alt="Logo">
             </a>
         </div>
         <ul class="nav-links">
-            <li><a href="{{base_url }}/{{ conference_id }}/papers">Calender</a></li>
-            <li><a href="{{base_url }}/{{ conference_id }}/speakers">Speakers</a></li>
-            <li><a href="{{base_url }}/{{ conference_id }}/partners">Partners</a></li>
-            <li><a href="{{base_url }}/{{ conference_id }}/about">About</a></li>
-            <li><a href="{{base_url }}/{{ conference_id }}/contact">Contact</a></li>
+            <li><a href="{{ base_url }}/{{ conference_id }}/papers">Calender</a></li>
+            <li><a href="{{ base_url }}/{{ conference_id }}/speakers">Speakers</a></li>
+            <li><a href="{{ base_url }}/{{ conference_id }}/partners">Partners</a></li>
+            <li><a href="{{ base_url }}/{{ conference_id }}/about">About</a></li>
+            <li><a href="{{ base_url }}/{{ conference_id }}/contact">Contact</a></li>
         </ul>
     </nav>
 </header>
@@ -286,12 +286,13 @@
                 </div>
                 <div class="jsx-1564649870 newsletter__subcontainer">
                     <div class="jsx-1564649870 newsletter__links__info">
-                        <div class="jsx-1564649870 newsletter__links__info__text__header">NDC Conferences AS</div>
-                        <div class="jsx-1564649870 newsletter__links__info__text">Skippergata 17a <br
-                                class="jsx-1564649870">0152 Oslo, Norway
+                        <div class="jsx-1564649870 newsletter__links__info__text__header" id="conference-title-footer">
+                            Loading...
                         </div>
-                        <div class="jsx-1564649870 newsletter__links__info__text"> info@ndcconferences.com</div>
-                        <div class="jsx-1564649870 newsletter__links__info__text">MVA: 963201141</div>
+                        <div class="jsx-1564649870 newsletter__links__info__text" id = "conference-location-footer">Loading....
+                        </div>
+                        <div class="jsx-1564649870 newsletter__links__info__text" id="conference-email"> Loading.....
+                        </div>
                     </div>
                 </div>
             </div>

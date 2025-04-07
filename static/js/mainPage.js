@@ -48,6 +48,9 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("conference-title").textContent = data.Title;
             document.getElementById("conference-date").textContent = `${data.StartDate} - ${data.EndDate}`;
             document.getElementById("conference-location").textContent = data.Location;
+            document.getElementById("conference-location-footer").textContent = data.Location;
+            document.getElementById("conference-title-footer").textContent = data.Title;
+            document.getElementById("conference-email").textContent = data.Organizer;
 
             // Video varsa göster, yoksa fotoğrafı göster
             const videoContainer = document.getElementById("video-container");
