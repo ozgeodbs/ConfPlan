@@ -59,12 +59,3 @@ def delete_speaker(id):
         speaker.delete()  # Using the delete method from BaseModel
         return jsonify({"message": "Speaker deleted successfully"})
     return jsonify({"message": "Speaker not found"}), 404
-
-# 📌 Belirli bir konferans ve konuşmacıya ait bildirileri getir
-@speaker_routes.route('/<int:conference_id>/speaker/<int:speaker_id>', methods=['GET'])
-def get_conference_speaker(conference_id, speaker_id):
-    speaker = Speaker.query.get(speaker_id)
-    if speaker and not speaker.IsDeleted:
-        speaker.delete()  # Using the delete method from BaseModel
-        return jsonify({"message": "Speaker deleted successfully"})
-    return jsonify({"message": "Speaker not found"}), 404

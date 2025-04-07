@@ -1,6 +1,5 @@
 from sqlalchemy import Column, Integer, String
 from models.base import BaseModel
-from models.db import db
 
 class Speaker(BaseModel):
     __tablename__ = 'Speaker'

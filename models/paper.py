@@ -1,8 +1,6 @@
 from sqlalchemy import Column, Integer, String, Text, ForeignKey
-
 from models.base import BaseModel
 from models.db import db
-from models.category import Category  # Category modelini içe aktar
 
 class Paper(BaseModel):
     __tablename__ = 'Paper'  # Tablo adı büyük harflerle

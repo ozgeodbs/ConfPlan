@@ -1,19 +1,3 @@
-function displayData(containerId, data) {
-    const container = document.getElementById(containerId);
-    container.innerHTML = '';
-    if (data.length === 0) {
-        container.innerHTML = 'No data found.';
-    } else {
-        const ul = document.createElement('ul');
-        data.forEach(item => {
-            const li = document.createElement('li');
-            li.textContent = JSON.stringify(item, null, 2);
-            ul.appendChild(li);
-        });
-        container.appendChild(ul);
-    }
-}
-
 function goToSpeaker(speakerId, conferenceId) {
     // Yeni URL'yi oluştur ve yönlendir
     window.location.href = `/${conferenceId}/speakers/${speakerId}`;

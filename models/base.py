@@ -1,5 +1,3 @@
-import json
-from datetime import datetime
 from sqlalchemy import Column, Integer, Boolean, DateTime
 from models.db import db
 

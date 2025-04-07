@@ -6,8 +6,8 @@
     <title>{{ title }}</title>
     <link rel="stylesheet" href="/static/css/header.css">
     <link rel="stylesheet" href="/static/css/mainPage.css">
+    <link rel="stylesheet" href="/static/css/speaker.css">
 </head>
-
 <header>
     <nav class="navbar">
         <div class="logo">
@@ -28,17 +28,10 @@
 
 <body>
 
-<h1>Speakers List</h1>
+<div class="container" id="speaker-details">
+        <p>Yükleniyor...</p>
+    </div>
 
-<div id="speakers-container">
-    {% for speaker in speakers %}
-        <button onclick="goToSpeaker({{ speaker.Id }}, {{ conference_id }})">
-            {{ speaker.FirstName }} {{ speaker.LastName}}
-        </button>
-        <br>
-    {% endfor %}
-</div>
-
-<script src="/static/js/speakers.js"></script>
+<script src="/static/js/speaker.js"></script>
 </body>
 </html>

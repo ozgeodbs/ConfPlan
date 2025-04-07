@@ -1,5 +1,4 @@
 from sqlalchemy import Column, Integer, String, DateTime
-from models.db import db
 from models.base import BaseModel
 
 class Category(BaseModel):

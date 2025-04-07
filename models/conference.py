@@ -1,7 +1,6 @@
 from sqlalchemy import Column, Integer, String, Date
 
 from models.base import BaseModel
-from models.db import db
 
 class Conference(BaseModel):
     __tablename__ = 'Conference'
