@@ -6,32 +6,50 @@
     <title>{{ title }}</title>
     <link rel="stylesheet" href="/static/css/header.css">
     <link rel="stylesheet" href="/static/css/mainPage.css">
+    <link rel="stylesheet" href="/static/css/papers.css">
 </head>
 <body>
 
 <header>
     <nav class="navbar">
         <div class="logo">
-            <a href="{{base_url }}/{{ conference_id }}">
+            <a href="{{ base_url }}/{{ conference_id }}">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Historical_peninsula_and_modern_skyline_of_Istanbul.jpg/640px-Historical_peninsula_and_modern_skyline_of_Istanbul.jpg"
                      alt="Logo">
             </a>
         </div>
         <ul class="nav-links">
-            <li><a href="{{base_url }}/{{ conference_id }}/papers">Calender</a></li>
-            <li><a href="{{base_url }}/{{ conference_id }}/speakers">Speakers</a></li>
-            <li><a href="{{base_url }}/{{ conference_id }}/partners">Partners</a></li>
-            <li><a href="{{base_url }}/{{ conference_id }}/about">About</a></li>
-            <li><a href="{{base_url }}/{{ conference_id }}/contact">Contact</a></li>
+            <li><a href="{{ base_url }}/{{ conference_id }}/papers">Calender</a></li>
+            <li><a href="{{ base_url }}/{{ conference_id }}/speakers">Speakers</a></li>
+            <li><a href="{{ base_url }}/{{ conference_id }}/partners">Partners</a></li>
+            <li><a href="{{ base_url }}/{{ conference_id }}/about">About</a></li>
+            <li><a href="{{ base_url }}/{{ conference_id }}/contact">Contact</a></li>
         </ul>
     </nav>
 </header>
 
-<section class="about-container">
-    <p><strong>Tarih:</strong> {{ base_url }}</p>
-    <p><strong>Mekan:</strong> 1</p>
-    <p><strong>Açıklama:</strong> {{ conference_id }}</p>
-</section>
+
+<h1>{{ title }} for Conference {{ conference_id }}</h1>
+<div id="papers-container">
+    <h2>Papers</h2>
+    {% for paper in papers %}
+        <div class="paper-item">
+            <h3>{{ paper.Title }}</h3>
+            <p>{{ paper.Description }}</p>
+            <h4>Similar Papers:</h4>
+            <ul>
+                {% for similarity in similarities %}
+                    {% if similarity.paper_id == paper.Id %}
+                        <li class="similarity-item">
+                            Similar to paper {{ similarity.other_paper_id }} with
+                            score: {{ similarity.similarity_score | round(2) }}
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+</div>
 
 <script src="/static/js/about.js"></script>
 </body>

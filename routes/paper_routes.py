@@ -1,7 +1,5 @@
 from flask import Blueprint, request, jsonify
-from datetime import datetime
 from models.paper import Paper
-from app import db
 
 paper_routes = Blueprint('paper', __name__)
 
@@ -10,22 +8,6 @@ paper_routes = Blueprint('paper', __name__)
 def get_papers():
     papers = Paper.query.filter_by(IsDeleted=False).all()  # Assuming IsDeleted field exists
     return jsonify([paper.to_dict() for paper in papers]), 200
-
-# 📌 Belirli bir konferansa ait bildirileri getir
-@paper_routes.route('/papers/conference/<int:conference_id>', methods=['GET'])
-def get_papers_by_conference(conference_id):
-    papers = Paper.query.filter_by(ConferenceId=conference_id, IsDeleted=False).all()
-    if papers:
-        return jsonify([paper.to_dict() for paper in papers]), 200
-    return jsonify({"message": "No papers found for this conference"}), 404
-
-# 📌 Belirli bir konferans ve konuşmacıya ait bildirileri getir
-@paper_routes.route('/papers/conference/<int:conference_id>/speaker/<int:speaker_id>', methods=['GET'])
-def get_papers_by_conference_and_speaker(conference_id, speaker_id):
-    papers = Paper.query.filter_by(ConferenceId=conference_id, SpeakerId=speaker_id, IsDeleted=False).all()
-    if papers:
-        return jsonify([paper.to_dict() for paper in papers]), 200
-    return jsonify({"message": "No papers found for this conference and speaker"}), 404
 
 # Yeni bir bildiri oluştur
 @paper_routes.route('/papers', methods=['POST'])
@@ -73,3 +55,19 @@ def delete_paper(id):
         paper.delete()  # Assuming delete() is defined in your base model
         return jsonify({"message": "Paper deleted successfully"})
     return jsonify({"message": "Paper not found"}), 404
+
+# 📌 Belirli bir konferansa ait bildirileri getir
+@paper_routes.route('/<int:conference_id>/papers/get/all', methods=['GET'])
+def get_papers_by_conference(conference_id):
+    papers = Paper.query.filter_by(ConferenceId=conference_id, IsDeleted=False).all()
+    if papers:
+        return jsonify([paper.to_dict() for paper in papers]), 200
+    return jsonify({"message": "No papers found for this conference"}), 404
+
+# 📌 Belirli bir konferans ve konuşmacıya ait bildirileri getir
+@paper_routes.route('/<int:conference_id>/papers/speaker/<int:speaker_id>/get/all', methods=['GET'])
+def get_papers_by_conference_and_speaker(conference_id, speaker_id):
+    papers = Paper.query.filter_by(ConferenceId=conference_id, SpeakerId=speaker_id, IsDeleted=False).all()
+    if papers:
+        return jsonify([paper.to_dict() for paper in papers]), 200
+    return jsonify({"message": "No papers found for this conference and speaker"}), 404

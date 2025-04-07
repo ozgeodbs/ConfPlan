@@ -1,7 +1,5 @@
 from flask import Blueprint, request, jsonify
-from datetime import datetime
 from models.category import Category
-from app import db
 
 category_routes = Blueprint('Category', __name__)
 

@@ -1,7 +1,5 @@
 from flask import Blueprint, request, jsonify
-from datetime import datetime
 from models.hall import Hall
-from app import db
 
 hall_routes = Blueprint('hall', __name__)
 

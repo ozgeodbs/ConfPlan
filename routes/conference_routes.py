@@ -1,7 +1,6 @@
 from flask import Blueprint, request, jsonify
 from datetime import datetime
 from models.conference import Conference
-from app import db
 
 conference_routes = Blueprint('conference', __name__)
 

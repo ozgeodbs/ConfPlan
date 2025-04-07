@@ -1,8 +1,10 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 from flask_migrate import Migrate
 from models import Conference
 from models.db import db
 from config import Config
+import requests
+from similarity import calculate_similarities  # similarity.py dosyasındaki fonksiyonu import et
 
 def create_app():
     app = Flask(__name__)
@@ -75,12 +77,32 @@ def create_app():
         return render_template("partners.html", base_url=base_url, conference_id=conference.Id, title="Partners")
 
     @app.route('/<int:conference_id>/papers')
-    def calender(conference_id):
+    def calendar(conference_id):
+        # Konferansı al
         conference = Conference.query.get(conference_id)
         if not conference:
             return "Conference not found", 404
-        return render_template("papers.html", base_url=base_url, conference_id=conference.Id, title="Calender")
 
+        # API'den bildirileri al
+        response = requests.get(f'http://127.0.0.1:5000/{conference_id}/papers/get/all')
+        if response.status_code != 200:
+            return "Error fetching papers", 500
+        papers = response.json()
+
+        if not papers:
+            return jsonify({"message": "No papers found for this conference"}), 404
+
+        # Benzerlikleri hesapla (similarity.py içindeki fonksiyon kullanılarak)
+        similarities = calculate_similarities(papers)
+
+        # Sonuçları render et
+        return render_template(
+            "papers.html",
+            conference_id=conference.Id,
+            title="Papers",
+            papers=papers,
+            similarities=similarities
+        )
     return app
 
 # Eğer doğrudan çalıştırılıyorsa

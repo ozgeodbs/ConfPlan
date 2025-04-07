@@ -1,7 +1,5 @@
 from flask import Blueprint, request, jsonify
-from datetime import datetime
 from models.speaker import Speaker
-from app import db
 
 speaker_routes = Blueprint('speaker', __name__)
 
