@@ -4,7 +4,7 @@ from models import Conference
 from models.db import db
 from config import Config
 import requests
-from similarity import calculate_similarities  # similarity.py dosyasındaki fonksiyonu import et
+import similarity   # similarity.py dosyasındaki fonksiyonu import et
 
 def create_app():
     app = Flask(__name__)
@@ -93,15 +93,16 @@ def create_app():
             return jsonify({"message": "No papers found for this conference"}), 404
 
         # Benzerlikleri hesapla (similarity.py içindeki fonksiyon kullanılarak)
-        similarities = calculate_similarities(papers)
+        similarities = similarity.calculate_similarities(papers)
+        events = similarity.create_calendar_events(similarities, papers)
 
-        # Sonuçları render et
         return render_template(
             "papers.html",
             conference_id=conference.Id,
-            title="Papers",
-            papers=papers,
-            similarities=similarities
+            title="Calendar",
+            events=events,
+            papers = papers,
+            similarities = similarities
         )
     return app
 

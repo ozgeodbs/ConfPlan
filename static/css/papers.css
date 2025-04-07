@@ -11,3 +11,93 @@
     border: 1px solid #ddd;
     border-radius: 3px;
 }
+
+/* Sayfa genel stil ayarları */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Başlık stili */
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-top: 30px;
+}
+
+h3 {
+    text-align: center;
+    font-size: 18px;
+    color: #7f8c8d;
+}
+
+/* Takvim tablosunun stil ayarları */
+table {
+    width: 80%;
+    margin: 40px auto;
+    border-collapse: collapse;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 12px 20px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+/* Başlık hücreleri */
+th {
+    background-color: #3498db;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Satır arka plan renkleri */
+tr:nth-child(even) {
+    background-color: #ecf0f1;
+}
+
+tr:hover {
+    background-color: #d1e0e0;
+}
+
+/* Etkinlik detayları listesi */
+ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+td li {
+    background-color: #f39c12;
+    color: white;
+    padding: 6px;
+    margin: 4px 0;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Etkinlik zamanları */
+td:nth-child(2), td:nth-child(3) {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+/* Etkinlik başlığı */
+td:nth-child(1) {
+    font-size: 16px;
+    font-weight: bold;
+    color: #2980b9;
+}
+
+/* Başlık ve metin hizalaması */
+h2 {
+    text-align: center;
+    font-size: 24px;
+    color: #34495e;
+    margin-top: 40px;
+}

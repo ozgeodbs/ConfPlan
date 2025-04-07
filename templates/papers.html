@@ -28,28 +28,36 @@
     </nav>
 </header>
 
+<h1>{{ title }}</h1>
+<h3>Conference ID: {{ conference_id }}</h3>
 
-<h1>{{ title }} for Conference {{ conference_id }}</h1>
-<div id="papers-container">
-    <h2>Papers</h2>
-    {% for paper in papers %}
-        <div class="paper-item">
-            <h3>{{ paper.Title }}</h3>
-            <p>{{ paper.Description }}</p>
-            <h4>Similar Papers:</h4>
-            <ul>
-                {% for similarity in similarities %}
-                    {% if similarity.paper_id == paper.Id %}
-                        <li class="similarity-item">
-                            Similar to paper {{ similarity.other_paper_id }} with
-                            score: {{ similarity.similarity_score | round(2) }}
-                        </li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
-        </div>
+<h2>Calendar of Paper Similarity Events</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Event Title</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Similar Papers</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for event in events %}
+        <tr>
+            <td>{{ event.title }}</td>
+            <td>{{ event.start_date.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td>{{ event.end_date.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td>
+                <ul>
+                    {% for similar_paper in event.similar_papers %}
+                        <li>{{ similar_paper.title }} (Similarity: {{ similar_paper.similarity_score }})</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
     {% endfor %}
-</div>
+    </tbody>
+</table>
 
 <script src="/static/js/about.js"></script>
 </body>
