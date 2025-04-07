@@ -19,6 +19,7 @@ function goToSpeaker(speakerId, conferenceId) {
     window.location.href = `/${conferenceId}/speakers/${speakerId}`;
 }
 
+
 document.addEventListener("DOMContentLoaded", function () {
     // Fetch speakers
     fetch('/speakers')

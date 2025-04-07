@@ -43,9 +43,10 @@
 
 <div id="speakers-container">
     {% for speaker in speakers %}
-        <button onclick="goToSpeaker({{ speaker.Id }})">
+        <button onclick="goToSpeaker({{ speaker.Id }}, {{ conference_id }})">
             {{ speaker.FirstName }} {{ speaker.LastName }}
-        </button><br>
+        </button>
+        <br>
     {% endfor %}
 </div>
 

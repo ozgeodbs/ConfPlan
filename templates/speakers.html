@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="/static/css/header.css">
     <link rel="stylesheet" href="/static/css/mainPage.css">
 </head>
-<body>
 
 <header>
     <nav class="navbar">
@@ -27,12 +26,19 @@
     </nav>
 </header>
 
-<section class="about-container">
-    <p><strong>Tarih:</strong> {{ base_url }}</p>
-    <p><strong>Mekan:</strong> 1</p>
-    <p><strong>Açıklama:</strong> {{ conference_id }}</p>
-</section>
+<body>
 
-<script src="/static/js/about.js"></script>
+<h1>Speakers List</h1>
+
+<div id="speakers-container">
+    {% for speaker in speakers %}
+        <button onclick="goToSpeaker({{ speaker.Id }}, {{ conference_id }})">
+            {{ speaker.FirstName }} {{ speaker.LastName }}
+        </button>
+        <br>
+    {% endfor %}
+</div>
+
+<script src="/static/js/speaker.js"></script>
 </body>
 </html>
