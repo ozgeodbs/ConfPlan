@@ -1,5 +1,7 @@
 from flask import Blueprint, request, jsonify
 from models.paper import Paper
+import pandas as pd
+import requests
 
 paper_routes = Blueprint('paper', __name__)
 
@@ -71,3 +73,87 @@ def get_papers_by_conference_and_speaker(conference_id, speaker_id):
     if papers:
         return jsonify([paper.to_dict() for paper in papers]), 200
     return jsonify({"message": "No papers found for this conference and speaker"}), 404
+
+@paper_routes.route('/import/papers', methods=['POST'])
+def import_papers():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+
+    try:
+        df = pd.read_excel(file)
+    except Exception as e:
+        return jsonify({'error': f'Invalid Excel file: {str(e)}'}), 400
+
+    errors = []
+    created = []
+
+    for index, row in df.iterrows():
+        row_number = index + 2
+
+        title = row.get('Title')
+        conference_id = row.get('ConferenceId')
+        speaker_id = row.get('SpeakerId')
+        category_id = row.get('CategoryId')
+        duration = row.get('Duration')
+        description = row.get('Description')
+        hall_id = row.get('HallId')
+
+        # Zorunlu alanlar validasyonu
+        if not title or not isinstance(title, str):
+            errors.append(f"Row {row_number}: Title is required and must be a string.")
+            continue
+
+        conference_response = requests.get(f"/conference/{conference_id}")
+        if conference_response.status_code != 200:
+            errors.append(f"Row {row_number}: Conference with ID {conference_id} not found or deleted.")
+            continue
+
+        # Speaker Kontrolü
+        speaker_response = requests.get(f"/speaker/{speaker_id}")
+        if speaker_response.status_code != 200:
+            errors.append(f"Row {row_number}: Speaker with ID {speaker_id} not found or deleted.")
+            continue
+
+        # Category Kontrolü
+        category_response = requests.get(f"/category/{category_id}")
+        if category_response.status_code != 200:
+            errors.append(f"Row {row_number}: Category with ID {category_id} not found or deleted.")
+            continue
+
+        # Hall Kontrolü
+        hall_response = requests.get(f"/hall/{hall_id}")
+        if hall_response.status_code != 200:
+            errors.append(f"Row {row_number}: Hall with ID {hall_id} not found or deleted.")
+            continue
+
+        # Duration kontrolü (isteğe bağlı ama sayısal olmalı)
+        if duration and not isinstance(duration, (int, float)):
+            errors.append(f"Row {row_number}: Duration must be a number.")
+            continue
+
+        paper = Paper(
+            Title=title.strip(),
+            ConferenceId=conference_id,
+            SpeakerId=speaker_id,
+            CategoryId=category_id,
+            Duration=int(duration) if duration else None,
+            Description=description.strip() if isinstance(description, str) else None,
+            HallId=hall_id
+        )
+
+        try:
+            paper.save()
+            created.append(title)
+        except Exception as e:
+            errors.append(f"Row {row_number}: Database error - {str(e)}")
+
+    return jsonify({
+        'message': f'{len(created)} papers imported successfully.',
+        'created': created,
+        'errors': errors
+    }), 200
+

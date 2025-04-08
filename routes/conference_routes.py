@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from datetime import datetime
 from models.conference import Conference
+import pandas as pd
 
 conference_routes = Blueprint('conference', __name__)
 
@@ -60,3 +61,57 @@ def delete_conference(id):
         conference.delete()  # Assuming `delete()` is defined in your base model
         return jsonify({"message": "Conference deleted successfully"})
     return jsonify({"message": "Conference not found"}), 404
+
+@conference_routes.route('/import/conferences', methods=['POST'])
+def import_conferences():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+
+    try:
+        df = pd.read_excel(file)
+    except Exception as e:
+        return jsonify({'error': f'Invalid Excel file: {str(e)}'}), 400
+
+    errors = []
+    created = []
+
+    required_fields = ['Title', 'StartDate', 'EndDate', 'Location', 'Organizer', 'PhotoUrl', 'VideoUrl']
+
+    for index, row in df.iterrows():
+        missing_fields = [field for field in required_fields if pd.isna(row.get(field))]
+        if missing_fields:
+            errors.append(f"Row {index + 2}: Missing fields - {', '.join(missing_fields)}")
+            continue
+
+        try:
+            start_date = pd.to_datetime(row['StartDate']).date()
+            end_date = pd.to_datetime(row['EndDate']).date()
+        except Exception:
+            errors.append(f"Row {index + 2}: Invalid date format in StartDate or EndDate")
+            continue
+
+        conference = Conference(
+            Title=str(row['Title']).strip(),
+            StartDate=start_date,
+            EndDate=end_date,
+            Location=str(row['Location']).strip(),
+            Organizer=str(row['Organizer']).strip(),
+            PhotoUrl=str(row['PhotoUrl']).strip(),
+            VideoUrl=str(row['VideoUrl']).strip()
+        )
+
+        try:
+            conference.save()
+            created.append(conference.Title)
+        except Exception as e:
+            errors.append(f"Row {index + 2}: Database error - {str(e)}")
+
+    return jsonify({
+        'message': f'{len(created)} conferences imported successfully.',
+        'created': created,
+        'errors': errors
+    }), 200

@@ -1,28 +1,18 @@
-from sqlalchemy import Column, Integer, Boolean, DateTime
+from sqlalchemy import Column, Boolean, DateTime, func
 from models.db import db
-
-DEFAULT_USER_ID = 1  # Varsayılan kullanıcı ID'si (Geliştirme aşamasında sabit kullanıcı)
 
 class BaseModel(db.Model):
     __abstract__ = True  # Bu sınıf bir temel sınıf olduğu için tabloya karşılık gelmez
 
     IsDeleted = Column(Boolean, default=False)
-    CreatedDate = Column(DateTime, default=db.func.current_timestamp())
-    CreatedBy = Column(Integer, default=DEFAULT_USER_ID)
-    ChangedDate = Column(DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
-    ChangedBy = Column(Integer, default=DEFAULT_USER_ID)
+    CreatedDate = Column(DateTime, default= func.now())
+    ChangedDate = Column(DateTime, default=func.now(), onupdate=func.now())
 
-    def save(self, created_by=DEFAULT_USER_ID):
-        """Yeni bir nesne kaydedildiğinde CreatedBy ve ChangedBy otomatik olarak atanır."""
-        if not self.CreatedBy:
-            self.CreatedBy = created_by
-        self.ChangedBy = created_by
+    def save(self):
         db.session.add(self)
         db.session.commit()
 
-    def update(self, changed_by=DEFAULT_USER_ID):
-        """Var olan bir nesneyi güncellerken ChangedBy otomatik olarak atanır."""
-        self.ChangedBy = changed_by
+    def update(self):
         db.session.commit()
 
     def delete(self):

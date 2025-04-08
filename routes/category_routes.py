@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+import pandas as pd
 from models.category import Category
 
 category_routes = Blueprint('Category', __name__)
@@ -46,3 +47,42 @@ def delete_category(id):
         category.delete()
         return jsonify({"message": "Category deleted successfully"})
     return jsonify({"message": "Category not found"}), 404
+
+
+@category_routes.route('/import/categories', methods=['POST'])
+def import_categories():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+
+    try:
+        df = pd.read_excel(file)
+    except Exception as e:
+        return jsonify({'error': f'Invalid Excel file: {str(e)}'}), 400
+
+    errors = []
+    created = []
+
+    for index, row in df.iterrows():
+        title = str(row.get('Title')).strip()
+
+        if not title:
+            errors.append(f"Row {index + 2}: Title is required and must be a non-empty string.")
+            continue
+
+        if Category.query.filter_by(Title=title).first():
+            errors.append(f"Row {index + 2}: Duplicate title '{title}' already exists.")
+            continue
+
+        category = Category(Title=title)
+        category.save()
+        created.append(title)
+
+    return jsonify({
+        'message': f'{len(created)} categories imported successfully.',
+        'created': created,
+        'errors': errors
+    }), 200

@@ -4,7 +4,8 @@ from models import Conference
 from models.db import db
 from config import Config
 import requests
-import similarity   # similarity.py dosyasındaki fonksiyonu import et
+import similarity
+import generate_excel as ge
 
 def create_app():
     app = Flask(__name__)
@@ -104,6 +105,10 @@ def create_app():
             papers = papers,
             similarities = similarities
         )
+
+    @app.route('/generate_excel_template')
+    def generate_excel_template():
+        return ge.generate_excel();
     return app
 
 # Eğer doğrudan çalıştırılıyorsa

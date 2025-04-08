@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from models.speaker import Speaker
+import pandas as pd
 
 speaker_routes = Blueprint('speaker', __name__)
 
@@ -57,3 +58,67 @@ def delete_speaker(id):
         speaker.delete()  # Using the delete method from BaseModel
         return jsonify({"message": "Speaker deleted successfully"})
     return jsonify({"message": "Speaker not found"}), 404
+
+@speaker_routes.route('/import/speakers', methods=['POST'])
+def import_speakers():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+
+    try:
+        df = pd.read_excel(file)
+    except Exception as e:
+        return jsonify({'error': f'Invalid Excel file: {str(e)}'}), 400
+
+    errors = []
+    created = []
+
+    for index, row in df.iterrows():
+        first_name = row.get('FirstName')
+        last_name = row.get('LastName')
+        email = row.get('Email')
+        bio = row.get('Bio')
+        phone = row.get('Phone')
+        photo_url = row.get('PhotoUrl')
+
+        row_number = index + 2  # Excel rows start at 1, header is row 1
+
+        if not first_name or not isinstance(first_name, str):
+            errors.append(f"Row {row_number}: FirstName is required and must be a string.")
+            continue
+        if not last_name or not isinstance(last_name, str):
+            errors.append(f"Row {row_number}: LastName is required and must be a string.")
+            continue
+        if not email or not isinstance(email, str):
+            errors.append(f"Row {row_number}: Email is required and must be a string.")
+            continue
+
+        # Check for duplicate email in DB
+        existing = Speaker.query.filter_by(Email=email).first()
+        if existing:
+            errors.append(f"Row {row_number}: Email '{email}' already exists.")
+            continue
+
+        speaker = Speaker(
+            FirstName=first_name.strip(),
+            LastName=last_name.strip(),
+            Email=email.strip(),
+            Bio=bio.strip() if isinstance(bio, str) else None,
+            Phone=phone.strip() if isinstance(phone, str) else None,
+            PhotoUrl=photo_url.strip() if isinstance(photo_url, str) else None
+        )
+
+        try:
+            speaker.save()
+            created.append(email)
+        except Exception as e:
+            errors.append(f"Row {row_number}: Database error - {str(e)}")
+
+    return jsonify({
+        'message': f'{len(created)} speakers imported successfully.',
+        'created': created,
+        'errors': errors
+    }), 200
