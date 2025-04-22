@@ -5,22 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
     <link rel="stylesheet" href="/static/css/header.css">
-    <link rel="stylesheet" href="/static/css/mainPage.css">
+    <link rel="stylesheet" href="/static/css/speakers.css">
+    <link rel="stylesheet" href="/static/css/footer.css">
 </head>
 
 <body>
 
 {% include 'header.html' %}
 
-<h1>Speakers List</h1>
+<div class="container">
+    <h1>Speakers</h1>
+    <div id="speakers-container" class="speakers-wrapper">
+        {% for speaker in speakers %}
+            <div class="speaker-card">
+                <div class="avatar-placeholder">
+                    <span>{{ speaker.FirstName }} {{ speaker.LastName }}</span>
+                </div>
+                <div class="speaker-info">
+                    <h3>{{ speaker.FirstName }} {{ speaker.LastName }}</h3>
 
-<div id="speakers-container">
-    {% for speaker in speakers %}
-        <button onclick="goToSpeaker({{ speaker.Id }}, {{ conference_id }})">
-            {{ speaker.FirstName }} {{ speaker.LastName}}
-        </button>
-        <br>
-    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 </div>
 
 {% include 'footer.html' %}

@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from models import Paper
 from models.speaker import Speaker
 import pandas as pd
 
@@ -122,3 +123,25 @@ def import_speakers():
         'created': created,
         'errors': errors
     }), 200
+
+@speaker_routes.route('/<int:conference_id>/speakers/get/all')
+def get_speakers_by_conference(conference_id):
+    # İlgili konferanstaki Paper'ları getir
+    papers = Paper.query.filter_by(ConferenceId=conference_id, IsDeleted=False).all()
+
+    # Paper'lardaki SpeakerId'leri al
+    speaker_ids = {paper.SpeakerId for paper in papers}
+
+    # Speaker tablolarını al
+    speakers = Speaker.query.filter(Speaker.Id.in_(speaker_ids), Speaker.IsDeleted == False).all()
+
+    # JSON olarak döndür
+    return jsonify([{
+        "Id": s.Id,
+        "FirstName": s.FirstName,
+        "LastName": s.LastName,
+        "Email": s.Email,
+        "Bio": s.Bio,
+        "PhotoUrl": s.PhotoUrl,
+        "Title": next((p.Title for p in papers if p.SpeakerId == s.Id), None)
+    } for s in speakers])

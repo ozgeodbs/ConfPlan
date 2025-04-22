@@ -23,7 +23,8 @@ header {
 }
 
 .logo img {
-    height: 5rem;
+    width: 90%;
+    height: 7vh;
     border-radius: 8px;
     object-fit: cover;
     transition: transform 0.3s ease;
@@ -34,9 +35,8 @@ header {
 }
 
 .conference-title {
-    font-size: 1.5rem;
+    font-size: 2vh;
     font-weight: 600;
-    padding-left: 2rem;
     color: #f0f0f0;
     white-space: nowrap;
 }
@@ -59,6 +59,7 @@ header {
     transition: color 0.2s ease-in-out;
     position: relative;
     padding-bottom: 3px;
+    padding: 0.2vw;
 }
 
 .nav-links a::after {
