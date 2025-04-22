@@ -8,28 +8,15 @@
     <link rel="stylesheet" href="/static/css/mainPage.css">
     <link rel="stylesheet" href="/static/css/speaker.css">
 </head>
-<header>
-    <nav class="navbar">
-        <div class="logo">
-            <a href="{{base_url }}/{{ conference_id }}">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Historical_peninsula_and_modern_skyline_of_Istanbul.jpg/640px-Historical_peninsula_and_modern_skyline_of_Istanbul.jpg"
-                     alt="Logo">
-            </a>
-        </div>
-        <ul class="nav-links">
-            <li><a href="{{base_url }}/{{ conference_id }}/papers">Calender</a></li>
-            <li><a href="{{base_url }}/{{ conference_id }}/speakers">Speakers</a></li>
-            <li><a href="{{base_url }}/{{ conference_id }}/about">About</a></li>
-            <li><a href="{{base_url }}/{{ conference_id }}/contact">Contact</a></li>
-        </ul>
-    </nav>
-</header>
 
 <body>
+{% include 'header.html' %}
 
 <div class="container" id="speaker-details">
         <p>Yükleniyor...</p>
     </div>
+
+{% include 'footer.html' %}
 
 <script src="/static/js/speaker.js"></script>
 </body>
