@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             // Konferans bilgilerini sayfaya ekle
-            document.getElementById("conference-title").textContent = data.Title;
+            document.getElementById("title").textContent = data.Title;
             document.getElementById("conference-date").textContent = `${data.StartDate} - ${data.EndDate}`;
             document.getElementById("conference-location").textContent = data.Location;
 
