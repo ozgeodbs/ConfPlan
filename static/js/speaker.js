@@ -5,26 +5,52 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch(`/speakers/${speakerId}`)
         .then(response => response.json())
         .then(speaker => {
+            const container = document.getElementById("speaker-details");
+
             if (speaker.message) {
-                document.getElementById("speaker-details").innerHTML = "<p>Konuşmacı bulunamadı.</p>";
+                container.innerHTML = "<p>Konuşmacı bulunamadı.</p>";
                 return;
             }
 
-            const container = document.getElementById("speaker-details");
             container.innerHTML = `
-                        <img class="photo" src="${speaker.PhotoUrl || '/static/default.jpg'}" alt="${speaker.FirstName} ${speaker.LastName}">
+                <div class="speaker-profile-vertical">
+                    <img class="speaker-img-top" src="${speaker.PhotoUrl || '/static/img/default-avatar.png'}" alt="${speaker.FirstName} ${speaker.LastName}">
+                    <div class="speaker-info-block">
                         <h2>${speaker.FirstName} ${speaker.LastName}</h2>
-                        <p><strong>Email:</strong> ${speaker.Email}</p>
-                        <p><strong>Telefon:</strong> ${speaker.Phone || 'Belirtilmemiş'}</p>
-                        <div class="info">
-                            <h3>Biyografi</h3>
-                            <p>${speaker.Bio || 'Biyografi bulunmamaktadır.'}</p>
+                        <p class="bio">${speaker.Bio || 'Biyografi bulunmamaktadır.'}</p>
+                        <div class="speaker-contact">
+                            <p><strong>Email:</strong> ${speaker.Email}</p>
+                            <p><strong>Telefon:</strong> ${speaker.Phone || 'Belirtilmemiş'}</p>
                         </div>
-                    `;
+                    </div>
+                </div>
+            `;
         })
         .catch(error => {
             console.error("Hata:", error);
             document.getElementById("speaker-details").innerHTML = "<p>Veri alınırken bir hata oluştu.</p>";
         });
-});
 
+    fetch(`/speakers/${speakerId}/conferences`)
+        .then(response => response.json())
+        .then(data => {
+            const section = document.createElement("section");
+            section.classList.add("speaker-sessions");
+
+            const list = document.createElement("ul");
+            list.classList.add("conference-list");
+
+            data.forEach(item => {
+                const li = document.createElement("li");
+                li.innerHTML = `<strong>${item.conference_title}</strong>
+                                <em>${item.paper_title}</em>`;
+                list.appendChild(li);
+            });
+
+            section.appendChild(list);
+
+            document.getElementById("speaker-details").appendChild(section);
+        })
+        .catch(error => console.error("Konferans verisi alınamadı:", error));
+
+});

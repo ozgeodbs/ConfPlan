@@ -1,130 +1,99 @@
-/* Reset & base styling */
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
-
-html, body {
+body {
     margin: 0;
-    padding: 0;
-    overflow-x: hidden; /* Taşmayı önler */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f9f9f9;
+    background-color: #f8f8f8;
     color: #333;
 }
 
-/* Container setup */
 .container {
-    max-width: 1100px;
+    max-width: 850px;
     margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-}
-.speakers-wrapper{
-
-    display: flex;           /* Bu olmalı */
-    align-items: center;     /* Dikeyde hizalama */
-    justify-content: center;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 }
 
-/* Page title */
-h1 {
+/* Speaker Profile */
+.speaker-profile-vertical {
     text-align: center;
-    font-size: 2.5em;
-    margin-bottom: 40px;
-    color: #2a2a2a;
-}
-
-/* Speaker card wrapper */
-.speaker-card-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    gap: 3vw;
-    flex-wrap: wrap;
 }
 
-/* Speaker card */
-.speaker-card {
-    width: 100%;
-    max-width: 240px;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    text-align: center;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.speaker-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 8px 24px rgba(0, 123, 255, 0.15);
-}
-
-/* Speaker image */
-.speaker-card img {
-    width: 100%;
-    height: auto;
-    max-width: 200px;
-    border-radius: 50%;
+.speaker-img-top {
+    width: 180px;
+    height: 180px;
     object-fit: cover;
-    display: block;
-    margin: 0 auto 15px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* Avatar placeholder */
-.avatar-placeholder {
-    width: 100px;
-    height: 100px;
-    background-color: #007BFF;
-    color: white;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.6em;
-    font-weight: bold;
-    margin: 0 auto 15px;
+    border: 5px solid #ccc;
+    margin-bottom: 20px;
 }
 
-/* Speaker info */
-.speaker-info h3 {
-    font-size: 1.2em;
+.speaker-info-block {
+    text-align: center;
+}
+
+.speaker-info-block h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.bio {
+    font-size: 1em;
+    color: #555;
+    margin: 10px 0 20px;
+    line-height: 1.6;
+}
+
+.speaker-contact {
+    font-size: 1em;
+    color: #444;
+}
+
+.speaker-contact p {
+    margin: 4px 0;
+}
+
+/* Conference List */
+.speaker-sessions {
+    margin-top: 40px;
+    text-align: left;
+}
+
+.speaker-sessions h3 {
+    font-size: 1.4em;
     color: #222;
+    margin-bottom: 20px;
+}
+
+.conference-list {
+    list-style: none;
+    padding: 0;
     margin: 0;
 }
 
-button,
-.view-btn {
-    padding: 10px 22px;
-    background-color: transparent;
-    border: 2px solid #333;
-    color: #333;
+.conference-list li {
+    background-color: #f2f2f2;
+    padding: 14px 18px;
     border-radius: 10px;
-    font-size: 1em;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.25s ease;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
 }
 
-button:hover,
-.view-btn:hover {
-    background-color: #c0c0c0;
-    color: white;
-    box-shadow: 0 4px 10px rgba(51, 51, 51, 0.3);
+.conference-list li:hover {
+    transform: scale(1.02);
 }
 
-
-.speaker-photo {
-    width: 100%;
-    max-width: 200px;
-    height: auto;
-    border-radius: 50%;
-    object-fit: cover;
+.conference-list li strong {
+    color: #333;
     display: block;
-    margin: 0 auto 15px;
+    margin-bottom: 4px;
+}
+
+.conference-list li em {
+    color: #666;
+    font-style: italic;
 }

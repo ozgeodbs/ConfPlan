@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from models import Paper
+from models import Paper, Conference
 from models.speaker import Speaker
 import pandas as pd
 
@@ -145,3 +145,17 @@ def get_speakers_by_conference(conference_id):
         "PhotoUrl": s.PhotoUrl,
         "Title": next((p.Title for p in papers if p.SpeakerId == s.Id), None)
     } for s in speakers])
+
+
+@speaker_routes.route("/speakers/<int:speaker_id>/conferences")
+def get_speaker_conferences(speaker_id):
+    papers = Paper.query.filter_by(SpeakerId=speaker_id, IsDeleted=False).all()
+    conferences= []
+    for paper in papers:  # paper modelinde ilişki kurulmuş varsayımıyla
+            conference = Conference.query.get(paper.ConferenceId)
+            conferences.append({
+                "conference_title": conference.Title,
+                "paper_title": paper.Title,
+            })
+
+    return jsonify(conferences)
