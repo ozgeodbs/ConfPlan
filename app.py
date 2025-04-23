@@ -1,10 +1,8 @@
 from flask import Flask, render_template, jsonify
 from flask_migrate import Migrate
-from models import Conference
+from models import Conference, Paper
 from models.db import db
 from config import Config
-import requests
-import similarity
 import generate_excel as ge
 
 def create_app():
@@ -85,26 +83,15 @@ def create_app():
         if not conference:
             return "Conference not found", 404
 
-        # API'den bildirileri al
-        response = requests.get(f'http://127.0.0.1:5000/{conference_id}/papers/get/all')
-        if response.status_code != 200:
-            return "Error fetching papers", 500
-        papers = response.json()
-
+        papers = Paper.query.filter(Paper.ConferenceId == conference.Id).all()
         if not papers:
             return jsonify({"message": "No papers found for this conference"}), 404
-
-        # Benzerlikleri hesapla (similarity.py içindeki fonksiyon kullanılarak)
-        similarities = similarity.calculate_similarities(papers)
-        events = similarity.create_calendar_events(similarities, papers)
 
         return render_template(
             "papers.html",
             conference_id=conference.Id,
             title="Calendar",
-            events=events,
-            papers = papers,
-            similarities = similarities
+            papers = [paper.to_dict() for paper in papers],
         )
 
     @app.route('/generate_excel_template')

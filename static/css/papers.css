@@ -1,103 +1,82 @@
-.paper-item {
-    border: 1px solid #ccc;
-    margin: 10px;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-.similarity-item {
-    margin: 5px 0;
-    padding: 5px;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-}
-
-/* Sayfa genel stil ayarları */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f7fa;
-    color: #333;
+    background-color: #f3f4f6;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
+    color: #333;
 }
 
-/* Başlık stili */
+.container {
+    max-width: 1100px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+h1, h2, h3 {
+    margin-top: 0;
+    color: #222;
+}
+
 h1 {
-    color: #2c3e50;
-    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+h2 {
+    font-size: 1.5rem;
     margin-top: 30px;
+    text-align: center;
 }
 
 h3 {
-    text-align: center;
-    font-size: 18px;
-    color: #7f8c8d;
+    color: #555;
+    font-weight: normal;
 }
 
-/* Takvim tablosunun stil ayarları */
 table {
-    width: 80%;
-    margin: 40px auto;
+    width: 100%;
     border-collapse: collapse;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 25px;
 }
 
 th, td {
-    padding: 12px 20px;
-    text-align: center;
-    border: 1px solid #ddd;
+    padding: 14px 18px;
+    border: 1px solid #e0e0e0;
+    text-align: left;
+    vertical-align: top;
 }
 
-/* Başlık hücreleri */
 th {
-    background-color: #3498db;
-    color: white;
-    font-weight: bold;
-    text-transform: uppercase;
+    background-color: #f9fafb;
+    font-weight: 600;
+    color: #444;
 }
 
-/* Satır arka plan renkleri */
 tr:nth-child(even) {
-    background-color: #ecf0f1;
+    background-color: #fcfcfc;
 }
 
-tr:hover {
-    background-color: #d1e0e0;
-}
-
-/* Etkinlik detayları listesi */
-ul {
-    list-style-type: none;
+ul.similar-list {
+    list-style: none;
     padding-left: 0;
     margin: 0;
 }
 
-td li {
-    background-color: #f39c12;
-    color: white;
-    padding: 6px;
-    margin: 4px 0;
-    border-radius: 4px;
-    font-size: 14px;
+ul.similar-list li {
+    background-color: #f1f5f9;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+    font-size: 0.95rem;
 }
 
-/* Etkinlik zamanları */
-td:nth-child(2), td:nth-child(3) {
-    font-weight: bold;
-    color: #2c3e50;
-}
-
-/* Etkinlik başlığı */
-td:nth-child(1) {
-    font-size: 16px;
-    font-weight: bold;
-    color: #2980b9;
-}
-
-/* Başlık ve metin hizalaması */
-h2 {
-    text-align: center;
-    font-size: 24px;
-    color: #34495e;
-    margin-top: 40px;
+ul.similar-list li span {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.85rem;
+    color: #666;
 }

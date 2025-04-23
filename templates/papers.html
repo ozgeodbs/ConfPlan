@@ -12,39 +12,28 @@
 
 {% include 'header.html' %}
 
-<h1>{{ title }}</h1>
-<h3>Conference ID: {{ conference_id }}</h3>
-
-<h2>Calendar of Paper Similarity Events</h2>
-<table border="1">
-    <thead>
-    <tr>
-        <th>Event Title</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-        <th>Similar Papers</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for event in events %}
-        <tr>
-            <td>{{ event.title }}</td>
-            <td>{{ event.start_date.strftime('%Y-%m-%d %H:%M') }}</td>
-            <td>{{ event.end_date.strftime('%Y-%m-%d %H:%M') }}</td>
-            <td>
-                <ul>
-                    {% for similar_paper in event.similar_papers %}
-                        <li>{{ similar_paper.title }} (Similarity: {{ similar_paper.similarity_score }})</li>
-                    {% endfor %}
-                </ul>
-            </td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+<div class="container">
+    <h2>Calender</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Paper Title</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Similar Papers</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
 
 {% include 'footer.html' %}
 
+<script>
+    const conferenceId = {{ conference_id }};
+</script>
 <script src="/static/js/papers.js"></script>
+
 </body>
 </html>

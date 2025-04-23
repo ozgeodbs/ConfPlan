@@ -27,26 +27,28 @@ def calculate_similarities(papers):
             "paper_title": paper.Title,
             "other_paper_id": other_paper.Id,
             "other_paper_title": other_paper.Title,
-            "similarity_score": similarity_matrix[i][j]
+            "similarity_score": round(similarity_matrix[i][j],2)
         }
         for i, paper in enumerate(papers)
         for j, other_paper in enumerate(papers)
         if i != j
     ]
-    return sorted(similarities, key=lambda x: x['similarity_score'], reverse=True)
+    return similarities
 
 def save_similarities(papers):
     similarities = calculate_similarities(papers)
     saved_similarities = []
 
     for similarity in similarities:
+        similarity_score_rounded = round(similarity['similarity_score'], 2)
+
         similarity_entry = Similarity(
             PaperId=similarity['paper_id'],
             PaperTitle=similarity['paper_title'],
             SimilarPaperId=similarity['other_paper_id'],
-            SimilarPaperTitle=similarity['other_paper_title'],
-            SimilarityScore=similarity['similarity_score']
+            SimilarPaperTitle=similarity['other_paper_title']
         )
+        similarity_entry.SimilarityScore =float(similarity_score_rounded)
         similarity_entry.save()
         saved_similarities.append(similarity_entry)
 
