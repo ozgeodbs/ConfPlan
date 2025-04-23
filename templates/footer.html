@@ -1,15 +1,12 @@
 <footer class="site-footer">
     <div class="footer-container">
         <div class="footer-logo">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Historical_peninsula_and_modern_skyline_of_Istanbul.jpg/640px-Historical_peninsula_and_modern_skyline_of_Istanbul.jpg" alt="Logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Historical_peninsula_and_modern_skyline_of_Istanbul.jpg/640px-Historical_peninsula_and_modern_skyline_of_Istanbul.jpg"
+                 alt="Logo">
         </div>
         <div class="footer-links">
-            <p>Other Conferences</p>
-            <ul>
-                <li><a href="{{ base_url }}/1">IstanbulTechConf 2024</a></li>
-                <li><a href="{{ base_url }}/2">DataFuture Summit</a></li>
-                <li><a href="{{ base_url }}/3">AI Horizons Europe</a></li>
-                <li><a href="{{ base_url }}/4">CodeBeyond Oslo</a></li>
+            <p>Conferences</p>
+            <ul id="other-conferences">
             </ul>
         </div>
         <div class="footer-info">
@@ -17,3 +14,25 @@
         </div>
     </div>
 </footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("/conferences")
+        .then(res => res.json())
+        .then(data => {
+            const list = document.getElementById("other-conferences");
+            list.innerHTML = ""; // varsa temizle
+
+            data.forEach(conference => {
+                const li = document.createElement("li");
+                const a = document.createElement("a");
+
+                a.href = `/${conference.Id}`;
+                a.textContent = conference.Title;
+                li.appendChild(a);
+                list.appendChild(li);
+            });
+        })
+        .catch(error => console.error("Diğer konferanslar yüklenemedi:", error));
+});
+</script>
