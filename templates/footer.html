@@ -1,38 +1,57 @@
 <footer class="site-footer">
     <div class="footer-container">
-        <div class="footer-logo">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Historical_peninsula_and_modern_skyline_of_Istanbul.jpg/640px-Historical_peninsula_and_modern_skyline_of_Istanbul.jpg"
-                 alt="Logo">
-        </div>
         <div class="footer-links">
             <p>Conferences</p>
             <ul id="other-conferences">
             </ul>
         </div>
         <div class="footer-info">
+            <br> <br>
+            <p id="current-conference-info"></p>
+            <br> <br>
             <p>&copy; 2025 Conference Portal. All rights reserved.</p>
         </div>
     </div>
 </footer>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    fetch("/conferences")
-        .then(res => res.json())
-        .then(data => {
-            const list = document.getElementById("other-conferences");
-            list.innerHTML = ""; // varsa temizle
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch("/conferences")
+            .then(res => res.json())
+            .then(data => {
+                const list = document.getElementById("other-conferences");
+                list.innerHTML = ""; // varsa temizle
 
-            data.forEach(conference => {
-                const li = document.createElement("li");
-                const a = document.createElement("a");
+                // Son 10 konferansı al
+                const recentConferences = data.slice(0, 20);
 
-                a.href = `/${conference.Id}`;
-                a.textContent = conference.Title;
-                li.appendChild(a);
-                list.appendChild(li);
-            });
-        })
-        .catch(error => console.error("Diğer konferanslar yüklenemedi:", error));
-});
+                recentConferences.forEach(conference => {
+                    const div = document.createElement("div");
+                    const a = document.createElement("a");
+
+                    a.href = `/${conference.Id}`;
+                    a.textContent = conference.Title;
+                    div.appendChild(a);
+                    list.appendChild(div);
+                });
+            })
+            .catch(error => console.error("Diğer konferanslar yüklenemedi:", error));
+
+        const pathSegments = window.location.pathname.split("/");
+        const conferenceId = pathSegments[1];
+
+        fetch(`/conferences/${conferenceId}`) // Bu endpoint’i backend’de oluşturman gerekebilir
+            .then(res => res.json())
+            .then(currentConference => {
+                const currentConferenceInfo = document.getElementById("current-conference-info");
+
+                // Konferans bilgilerini footer'a ekle
+                currentConferenceInfo.innerHTML = `
+                <strong> ${currentConference.Title}</strong><br>
+                <strong> ${currentConference.Location}</strong><br>
+                <strong> ${currentConference.StartDate} - ${currentConference.EndDate}</strong>
+            `;
+            })
+            .catch(error => console.error("Şu anki konferans bilgileri yüklenemedi:", error));
+    });
 </script>
