@@ -31,14 +31,6 @@ def create_app():
             return "Conference not found", 404
         return render_template('main.html', base_url = base_url, conference_id=conference.Id, title = "Home")
 
-    @app.route('/<int:conference_id>/contact')
-    def contact(conference_id):
-        conference = Conference.query.get(conference_id)
-        if not conference:
-            return "Conference not found", 404
-
-        return render_template("contact.html", base_url = base_url, conference_id=conference.Id, title="Contact")
-
     @app.route('/<int:conference_id>/about')
     def about(conference_id):
         conference = Conference.query.get(conference_id)
