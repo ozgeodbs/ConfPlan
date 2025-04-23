@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="/static/css/speakers.css">
     <link rel="stylesheet" href="/static/css/footer.css">
 </head>
-
 <body>
 
 {% include 'header.html' %}
@@ -20,14 +19,14 @@
             {% for speaker in speakers %}
             <div class="speaker-card">
                 <div class="avatar-placeholder">
-                    <span>{{ speaker.FirstName }} {{ speaker.LastName }}</span>
+                    <span>{{ speaker.FirstName[0] }}{{ speaker.LastName[0] }}</span> <!-- Initials -->
                 </div>
                 <div class="speaker-info">
                     <h3>{{ speaker.FirstName }} {{ speaker.LastName }}</h3>
-
+                    <button onclick="goToSpeaker({{ speaker.Id }}, {{ conference_id }})">View Profile</button>
                 </div>
             </div>
-        {% endfor %}
+            {% endfor %}
         </div>
     </div>
 </div>
@@ -35,5 +34,6 @@
 {% include 'footer.html' %}
 
 <script src="/static/js/speakers.js"></script>
+
 </body>
 </html>

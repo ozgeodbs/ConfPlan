@@ -4,10 +4,10 @@ function goToSpeaker(speakerId, conferenceId) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-
     const pathSegments = window.location.pathname.split("/");
     const conferenceId = pathSegments[1];
-    // Fetch speakers
+
+    // Speakers bilgilerini al
     fetch(`/${conferenceId}/speakers/get/all`)
         .then(response => response.json())
         .then(data => {
@@ -18,23 +18,26 @@ document.addEventListener("DOMContentLoaded", function () {
             grid.style.display = "flex";
             grid.style.flexWrap = "wrap";
             grid.style.justifyContent = "center";
-            grid.style.gap = "7vw";
+            grid.style.gap = "30px";
             grid.style.width = "100%";
+
             data.forEach(speaker => {
-                console.log("Speaker Object:", speaker);
                 const speakerContainer = document.createElement('div');
-                speakerContainer.style.textAlign = "center";
+                speakerContainer.classList.add("speaker-card");
                 const img = document.createElement('img');
-                img.src = speaker.PhotoUrl;
+                img.src = speaker.PhotoUrl || 'default-avatar.jpg'; // Default avatar if no photo
                 img.alt = `${speaker.FirstName} ${speaker.LastName}`;
-                img.classList.add("speaker-photo");  // Burada sınıf ekleniyor
+                img.classList.add("speaker-photo");
+
                 const button = document.createElement('button');
-                button.textContent = `${speaker.FirstName} ${speaker.LastName} `;
-                button.onclick = () => window.location.href = `/${conferenceId}/speakers/${speaker.Id}`;
+                button.textContent = `${speaker.FirstName} ${speaker.LastName}`;
+                button.onclick = () => goToSpeaker(speaker.Id, conferenceId);
+
                 speakerContainer.appendChild(img);
                 speakerContainer.appendChild(button);
                 grid.appendChild(speakerContainer);
             });
+
             container.appendChild(grid);
         })
         .catch(error => console.error('Error:', error));
@@ -43,4 +46,3 @@ document.addEventListener("DOMContentLoaded", function () {
 window.onload = function () {
     document.querySelector('.marquee').style.setProperty('--play', 'running');
 };
-
