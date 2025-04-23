@@ -16,7 +16,8 @@
 <div class="container">
     <h1>Speakers</h1>
     <div id="speakers-container" class="speakers-wrapper">
-        {% for speaker in speakers %}
+        <div class="speaker-card-container">
+            {% for speaker in speakers %}
             <div class="speaker-card">
                 <div class="avatar-placeholder">
                     <span>{{ speaker.FirstName }} {{ speaker.LastName }}</span>
@@ -27,6 +28,7 @@
                 </div>
             </div>
         {% endfor %}
+        </div>
     </div>
 </div>
 

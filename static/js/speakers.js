@@ -15,9 +15,11 @@ document.addEventListener("DOMContentLoaded", function () {
             const container = document.getElementById('speakers-container');
             container.innerHTML = '';
             const grid = document.createElement('div');
-            grid.style.display = "grid";
-            grid.style.gridTemplateColumns = "repeat(3, 1fr)";
-            grid.style.gap = "20px";
+            grid.style.display = "flex";
+            grid.style.flexWrap = "wrap";
+            grid.style.justifyContent = "center";
+            grid.style.gap = "7vw";
+            grid.style.width = "100%";
             data.forEach(speaker => {
                 console.log("Speaker Object:", speaker);
                 const speakerContainer = document.createElement('div');
@@ -25,6 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const img = document.createElement('img');
                 img.src = speaker.PhotoUrl;
                 img.alt = `${speaker.FirstName} ${speaker.LastName}`;
+                img.classList.add("speaker-photo");  // Burada sınıf ekleniyor
                 const button = document.createElement('button');
                 button.textContent = `${speaker.FirstName} ${speaker.LastName} `;
                 button.onclick = () => window.location.href = `/${conferenceId}/speakers/${speaker.Id}`;
