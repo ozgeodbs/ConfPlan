@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, ForeignKey
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, DateTime
 from models.base import BaseModel
 from models.db import db
 
@@ -13,6 +13,8 @@ class Paper(BaseModel):
     Duration = Column(Integer)
     Description = Column(Text)
     HallId = Column(Integer, ForeignKey('Hall.Id'), nullable=False)  # HallId ile ilişki
+    StartTime = Column(DateTime, nullable=True)
+    EndTime = Column(DateTime, nullable=True)
 
     conference = db.relationship('Conference', backref='papers')  # Conference ile ilişki
     category = db.relationship('Category', backref='papers')  # Category ile ilişki

@@ -3,6 +3,7 @@ from transformers import BertTokenizer, BertModel
 import torch
 from sklearn.metrics.pairwise import cosine_similarity
 from datetime import datetime, timedelta
+from models.similarity import Similarity
 
 # BERT modelini yükle
 tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
@@ -17,14 +18,15 @@ def get_bert_embedding(text):
 
 # Makaleler arasındaki benzerlikleri hesapla
 def calculate_similarities(papers):
-    embeddings = [get_bert_embedding(paper['Description']) for paper in papers]
+    embeddings = [get_bert_embedding(paper.Description) for paper in papers]
     similarity_matrix = cosine_similarity(embeddings)
 
-    # Benzerlik skorlarını çıkart ve sıralama
     similarities = [
         {
-            "paper_id": paper['Id'],
-            "other_paper_id": other_paper['Id'],
+            "paper_id": paper.Id,
+            "paper_title": paper.Title,
+            "other_paper_id": other_paper.Id,
+            "other_paper_title": other_paper.Title,
             "similarity_score": similarity_matrix[i][j]
         }
         for i, paper in enumerate(papers)
@@ -32,6 +34,23 @@ def calculate_similarities(papers):
         if i != j
     ]
     return sorted(similarities, key=lambda x: x['similarity_score'], reverse=True)
+
+def save_similarities(papers):
+    similarities = calculate_similarities(papers)
+    saved_similarities = []
+
+    for similarity in similarities:
+        similarity_entry = Similarity(
+            PaperId=similarity['paper_id'],
+            PaperTitle=similarity['paper_title'],
+            SimilarPaperId=similarity['other_paper_id'],
+            SimilarPaperTitle=similarity['other_paper_title'],
+            SimilarityScore=similarity['similarity_score']
+        )
+        similarity_entry.save()
+        saved_similarities.append(similarity_entry)
+
+    return saved_similarities
 
 def create_calendar_events(similarities, papers):
     events = []

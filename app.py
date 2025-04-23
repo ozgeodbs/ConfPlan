@@ -17,12 +17,13 @@ def create_app():
     db.init_app(app)
 
     # Routes dosyasını import et ve uygulamaya ekle
-    from routes import speaker_routes, paper_routes, conference_routes, category_routes, hall_routes
+    from routes import speaker_routes, paper_routes, conference_routes, category_routes, hall_routes,similarity_routes
     app.register_blueprint(speaker_routes)
     app.register_blueprint(paper_routes)
     app.register_blueprint(conference_routes)
     app.register_blueprint(category_routes)
     app.register_blueprint(hall_routes)
+    app.register_blueprint(similarity_routes)
 
     base_url = "http://127.0.0.1:5000"
     @app.route('/<int:conference_id>', methods=['GET'])
