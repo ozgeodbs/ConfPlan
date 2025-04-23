@@ -25,6 +25,7 @@ h1 {
 h2 {
     color: #444;
     margin-top: 30px;
+    font-size: 2em;
 }
 
 ul {
@@ -37,6 +38,28 @@ a {
     text-decoration: none;
 }
 
+p{
+    font-size: 1.1em;
+}
+
 a:hover {
     text-decoration: underline;
+}
+
+.speaker-info {
+    display: flex;
+    align-items: center;
+    gap: 2vh; /* Aradaki boşluk */
+    padding-bottom: 2vh;
+}
+
+.speaker-info h3 {
+    margin: 0;
+    font-size: 1.1em;
+}
+
+.speaker-info p {
+    margin: 0;
+    font-size: 1.1em;
+    color: #555;
 }

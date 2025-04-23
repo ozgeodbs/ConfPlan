@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Fetch conferences
+    // Konferans ID'sini URL'den al
     const conferenceId = window.location.pathname.split("/")[1];
 
+    // Konferans bilgilerini al
     fetch(`/conferences/${conferenceId}`)
         .then(response => response.json())
         .then(data => {
@@ -10,35 +11,34 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            // HTML öğelerine API'den gelen veriyi ata
+            // Konferans bilgilerini sayfaya ekle
             document.getElementById("conference-title").textContent = data.Title;
             document.getElementById("conference-date").textContent = `${data.StartDate} - ${data.EndDate}`;
             document.getElementById("conference-location").textContent = data.Location;
 
-            // Video varsa göster, yoksa fotoğrafı göster
-            const videoContainer = document.getElementById("video-container");
-            const videoElement = document.getElementById("background-video");
-            const videoSource = document.getElementById("video-source");
-            const conferenceImage = document.getElementById("conference-image");
+            // Konuşmacıları al
+            fetch(`/${conferenceId}/speakers/get/all`)
+                .then(response => response.json())
+                .then(speakers => {
+                    const speakersContainer = document.getElementById("speakers-container");
+                    speakers.forEach(speaker => {
+                        const speakerCard = document.createElement("div");
+                        speakerCard.classList.add("speaker-card");
+                        speakerCard.innerHTML = `
+                            <div class="speaker-info">
+                                <h3>${speaker.FirstName} ${speaker.LastName}</h3> -
+                                <p>${speaker.Bio}</p>
+                            </div>
+                        `;
+                        speakersContainer.appendChild(speakerCard);
+                    });
+                })
+                .catch(error => console.error("Konuşmacılar verisi çekilemedi:", error));
 
-            if (data.VideoUrl && data.VideoUrl.trim() !== "null") {
-                // Video varsa
-                videoSource.src = data.VideoUrl;
-                videoElement.load(); // Yeni video kaynağını yükle
-                videoElement.style.display = "block"; // Videoyu göster
-                conferenceImage.style.display = "none"; // Fotoğrafı gizle
-            } else {
-                // Video yoksa
-                videoElement.style.display = "none"; // Video konteynerini gizle
-                conferenceImage.src = data.PhotoUrl; // Fotoğraf URL'sini ata
-                conferenceImage.style.display = "block"; // Fotoğrafı göster
-            }
         })
         .catch(error => console.error("Veri çekme hatası:", error));
-
 });
 
 window.onload = function () {
     document.querySelector('.marquee').style.setProperty('--play', 'running');
 };
-

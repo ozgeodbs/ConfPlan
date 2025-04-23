@@ -10,43 +10,28 @@
 </head>
 
 <body>
+
 {% include 'header.html' %}
 
     <div class="container">
-        <h1>About the Conference</h1>
-        <p>
-            <strong>Conflan</strong> is an annual international conference focusing on innovative research across multiple fields of computer science, engineering, and applied mathematics.
-        </p>
+        <h1 id="conference-title">Loading...</h1>
 
-        <h2>Objectives</h2>
-        <ul>
-            <li>Bring together researchers, professionals, and students to share their latest findings.</li>
-            <li>Facilitate interdisciplinary collaboration.</li>
-            <li>Support early-career researchers with a platform to present their work.</li>
-        </ul>
+        <p><strong>Konferans Tarihi:</strong> <span id="conference-date">Loading...</span></p>
+        <p><strong>Konferans Yeri:</strong> <span id="conference-location">Loading...</span></p>
 
-        <h2>Conference Topics</h2>
-        <p>The conference accepts papers on, but not limited to:</p>
-        <ul>
-            <li>Machine Learning and AI</li>
-            <li>Optimization and Operations Research</li>
-            <li>Software Engineering</li>
-            <li>Data Science and Big Data</li>
-            <li>Cybersecurity and Networks</li>
-        </ul>
+        <!-- Video veya Fotoğraf Alanı -->
+        <div id="video-container" style="display: none;">
+            <video id="background-video" width="100%" height="auto" autoplay muted loop>
+                <source id="video-source" />
+            </video>
+        </div>
+        <img id="conference-image" src="" alt="Conference Image" style="display: none; width: 100%; height: auto;">
 
-        <h2>Important Dates</h2>
-        <ul>
-            <li>Paper Submission Deadline: <strong>July 15, 2025</strong></li>
-            <li>Notification of Acceptance: <strong>August 10, 2025</strong></li>
-            <li>Conference Dates: <strong>September 25-27, 2025</strong></li>
-        </ul>
+        <h2>Speakers</h2>
+        <div id="speakers-container">
+            <!-- Konuşmacılar burada dinamik olarak yüklenecek -->
+        </div>
 
-        <h2>Organizing Committee</h2>
-        <p>Chaired by Dr. Jane Smith (University of Techland) and Prof. John Doe (Global AI Institute)</p>
-
-        <h2>Contact</h2>
-        <p>For inquiries, please contact us at <a href="mailto:info@conflan.org">info@conflan.org</a></p>
     </div>
 
 {% include 'footer.html' %}
