@@ -1,5 +1,7 @@
 from flask import Blueprint, request, jsonify
 from datetime import datetime
+
+import config
 from models.conference import Conference
 import pandas as pd
 
@@ -64,6 +66,10 @@ def delete_conference(id):
 
 @conference_routes.route('/import/conferences', methods=['POST'])
 def import_conferences():
+    token = request.headers.get('token')
+    if not token or token != config.Config.API_SECRET_TOKEN:
+        return jsonify({'message': 'Unauthorized'}), 401
+
     if 'file' not in request.files:
         return jsonify({'error': 'No file part'}), 400
 

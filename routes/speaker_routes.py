@@ -1,4 +1,6 @@
 from flask import Blueprint, request, jsonify
+
+import config
 from models import Paper, Conference
 from models.speaker import Speaker
 import pandas as pd
@@ -62,6 +64,10 @@ def delete_speaker(id):
 
 @speaker_routes.route('/import/speakers', methods=['POST'])
 def import_speakers():
+    token = request.headers.get('token')
+    if not token or token != config.Config.API_SECRET_TOKEN:
+        return jsonify({'message': 'Unauthorized'}), 401
+
     if 'file' not in request.files:
         return jsonify({'error': 'No file part'}), 400
 

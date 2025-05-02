@@ -1,5 +1,7 @@
 from flask import Blueprint, request, jsonify
 import pandas as pd
+
+import config
 from models.category import Category
 
 category_routes = Blueprint('Category', __name__)
@@ -51,6 +53,10 @@ def delete_category(id):
 
 @category_routes.route('/import/categories', methods=['POST'])
 def import_categories():
+    token = request.headers.get('token')
+    if not token or token != config.Config.API_SECRET_TOKEN:
+        return jsonify({'message': 'Unauthorized'}), 401
+
     if 'file' not in request.files:
         return jsonify({'error': 'No file part'}), 400
 

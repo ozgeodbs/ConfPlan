@@ -1,4 +1,6 @@
 from flask import Blueprint, request, jsonify
+
+import config
 from models.hall import Hall
 import pandas as pd
 
@@ -50,6 +52,10 @@ def delete_hall(id):
 
 @hall_routes.route('/import/halls', methods=['POST'])
 def import_halls():
+    token = request.headers.get('token')
+    if not token or token != config.Config.API_SECRET_TOKEN:
+        return jsonify({'message': 'Unauthorized'}), 401
+
     if 'file' not in request.files:
         return jsonify({'error': 'No file part'}), 400
 
