@@ -3,3 +3,4 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     API_SECRET_TOKEN = "abcs"
     BASE_URL = "http://127.0.0.1:5000"
+    OPTIMIZATION_URL = "https://external.api/schedule"

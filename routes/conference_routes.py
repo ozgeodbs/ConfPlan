@@ -8,10 +8,12 @@ import schedule_papers
 
 conference_routes = Blueprint('conference', __name__)
 
+
 @conference_routes.route('/conferences', methods=['GET'])
 def get_conferences():
     conferences = Conference.query.filter_by(IsDeleted=False).all()
     return jsonify([conference.to_dict() for conference in conferences]), 200
+
 
 @conference_routes.route('/conferences', methods=['POST'])
 def create_conference():
@@ -28,6 +30,7 @@ def create_conference():
     new_conference.save()
     return jsonify(new_conference.to_dict()), 201
 
+
 @conference_routes.route('/conferences/<int:id>', methods=['GET'])
 def get_conference(id):
     conference = Conference.query.get(id)
@@ -35,13 +38,15 @@ def get_conference(id):
         return jsonify(conference.to_dict())
     return jsonify({"message": "Conference not found"}), 404
 
+
 @conference_routes.route('/conferences/<int:id>', methods=['PUT'])
 def update_conference(id):
     conference = Conference.query.get(id)
     if conference and not conference.IsDeleted:
         data = request.get_json()
         conference.Title = data.get('Title', conference.Title)
-        conference.StartDate = datetime.strptime(data.get('StartDate', conference.StartDate.strftime("%Y-%m-%d")), "%Y-%m-%d")
+        conference.StartDate = datetime.strptime(data.get('StartDate', conference.StartDate.strftime("%Y-%m-%d")),
+                                                 "%Y-%m-%d")
         conference.EndDate = datetime.strptime(data.get('EndDate', conference.EndDate.strftime("%Y-%m-%d")), "%Y-%m-%d")
         conference.Location = data.get('Location', conference.Location)
         conference.Organizer = data.get('Organizer', conference.Organizer)
@@ -52,6 +57,7 @@ def update_conference(id):
         return jsonify(conference.to_dict())
     return jsonify({"message": "Conference not found"}), 404
 
+
 @conference_routes.route('/conferences/<int:id>', methods=['DELETE'])
 def delete_conference(id):
     conference = Conference.query.get(id)
@@ -59,6 +65,7 @@ def delete_conference(id):
         conference.delete()
         return jsonify({"message": "Conference deleted successfully"})
     return jsonify({"message": "Conference not found"}), 404
+
 
 @conference_routes.route('/import/conferences', methods=['POST'])
 def import_conferences():
@@ -136,6 +143,7 @@ def import_conferences():
         'errors': errors
     }), 200
 
+
 @conference_routes.route('/<int:conference_id>/schedule', methods=['POST'])
 def schedule_conference_papers(conference_id):
     token = request.headers.get('token')
@@ -143,8 +151,14 @@ def schedule_conference_papers(conference_id):
         return jsonify({'message': 'Unauthorized'}), 401
 
     try:
-        result = schedule_papers.schedule_papers(conference_id)
-        return jsonify({"message": "Scheduling completed successfully.", "details": result}), 200
+        result = schedule_papers.send_to_external_scheduler(conference_id)
+        if result != 200:
+            result = schedule_papers.schedule_papers(conference_id)
+            if result == 200:
+                return jsonify({"message": "Scheduling completed successfully."}), 200
+            else:
+                return jsonify({"error": "Scheduling failed.", "details": result}), 404
+
     except ValueError as ve:
         return jsonify({"error": str(ve)}), 404
     except Exception as e:
