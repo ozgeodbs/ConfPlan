@@ -4,6 +4,7 @@ from datetime import datetime
 import config
 from models.conference import Conference
 import pandas as pd
+import schedule_papers
 
 conference_routes = Blueprint('conference', __name__)
 
@@ -121,3 +122,17 @@ def import_conferences():
         'created': created,
         'errors': errors
     }), 200
+
+@conference_routes.route('/<int:conference_id>/schedule', methods=['POST'])
+def schedule_conference_papers(conference_id):
+    token = request.headers.get('token')
+    if not token or token != config.Config.API_SECRET_TOKEN:
+        return jsonify({'message': 'Unauthorized'}), 401
+
+    try:
+        result = schedule_papers.schedule_papers(conference_id)
+        return jsonify({"message": "📅 Scheduling completed successfully.", "details": result}), 200
+    except ValueError as ve:
+        return jsonify({"error": str(ve)}), 404
+    except Exception as e:
+        return jsonify({"error": "Unexpected error", "details": str(e)}), 500
