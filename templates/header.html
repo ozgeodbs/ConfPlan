@@ -5,7 +5,7 @@
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Historical_peninsula_and_modern_skyline_of_Istanbul.jpg/640px-Historical_peninsula_and_modern_skyline_of_Istanbul.jpg"
                      alt="Logo">
             </a>
-            <span id="conference-title" class="conference-title"></span>
+            <span id="conference-title-header" class="conference-title"></span>
         </div>
         <ul class="nav-links">
             <li><a href="{{ base_url }}/{{ conference_id }}/similarities">Similarities</a></li>
@@ -24,9 +24,9 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(response => response.json())
         .then(data => {
             if (data && data.Title) {
-                document.getElementById("conference-title").textContent = data.Title;
+                document.getElementById("conference-title-header").textContent = data.Title;
             } else {
-                document.getElementById("conference-title").textContent = "";
+                document.getElementById("conference-title-header").textContent = "";
             }
         })
         .catch(error => {

@@ -1,41 +1,43 @@
-function goToSpeaker(speakerId, conferenceId) {
-    // Yeni URL'yi oluştur ve yönlendir
-    window.location.href = `/${conferenceId}/speakers/${speakerId}`;
-}
-
 document.addEventListener("DOMContentLoaded", function () {
-    // Fetch speakers
+    // Konferans ID'yi URL'den al
+    const conferenceId = window.location.pathname.split("/").pop();
+
+    // Konuşmacıları getir
     fetch('/speakers')
         .then(response => response.json())
         .then(data => {
-            console.log("Speakers API Response:", data);
             const container = document.getElementById('speakers-container');
             container.innerHTML = '';
+
             const grid = document.createElement('div');
             grid.style.display = "grid";
-            grid.style.gridTemplateColumns = "repeat(3, 1fr)";
-            grid.style.gap = "20px";
+            grid.style.gridTemplateColumns = "repeat(auto-fit, minmax(220px, 1fr))";
+            grid.style.gap = "30px";
+            grid.style.padding = "30px";
+
             data.forEach(speaker => {
-                console.log("Speaker Object:", speaker);
-                const speakerContainer = document.createElement('div');
-                speakerContainer.style.textAlign = "center";
+                const card = document.createElement('div');
+                card.className = "speaker-card";
+
                 const img = document.createElement('img');
                 img.src = speaker.PhotoUrl;
                 img.alt = `${speaker.FirstName} ${speaker.LastName}`;
-                const button = document.createElement('button');
-                button.textContent = `${speaker.FirstName} ${speaker.LastName}`;
-                button.onclick = () => window.location.href = `/speakers/${speaker.Id}`;
-                speakerContainer.appendChild(img);
-                speakerContainer.appendChild(button);
-                grid.appendChild(speakerContainer);
+                img.className = "speaker-photo";
+
+                const nameBtn = document.createElement('button');
+                nameBtn.textContent = `${speaker.FirstName} ${speaker.LastName}`;
+                nameBtn.onclick = () => window.location.href = `/${conferenceId}/speakers/${speaker.Id}`;
+
+                card.appendChild(img);
+                card.appendChild(nameBtn);
+                grid.appendChild(card);
             });
+
             container.appendChild(grid);
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => console.error('Konuşmacı verileri alınamadı:', error));
 
-    // Fetch conferences
-    const conferenceId = window.location.pathname.split("/").pop();
-
+    // Konferans bilgilerini getir
     fetch(`/conferences/${conferenceId}`)
         .then(response => response.json())
         .then(data => {
@@ -44,38 +46,24 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            // HTML öğelerine API'den gelen veriyi ata
             document.getElementById("conference-title").textContent = data.Title;
             document.getElementById("conference-date").textContent = `${data.StartDate} - ${data.EndDate}`;
             document.getElementById("conference-location").textContent = data.Location;
-            document.getElementById("conference-location-footer").textContent = data.Location;
-            document.getElementById("conference-title-footer").textContent = data.Title;
-            document.getElementById("conference-email").textContent = data.Organizer;
 
-            // Video varsa göster, yoksa fotoğrafı göster
-            const videoContainer = document.getElementById("video-container");
             const videoElement = document.getElementById("background-video");
             const videoSource = document.getElementById("video-source");
             const conferenceImage = document.getElementById("conference-image");
 
             if (data.VideoUrl && data.VideoUrl.trim() !== "null") {
-                // Video varsa
                 videoSource.src = data.VideoUrl;
-                videoElement.load(); // Yeni video kaynağını yükle
-                videoElement.style.display = "block"; // Videoyu göster
-                conferenceImage.style.display = "none"; // Fotoğrafı gizle
+                videoElement.load();
+                videoElement.style.display = "block";
+                conferenceImage.style.display = "none";
             } else {
-                // Video yoksa
-                videoElement.style.display = "none"; // Video konteynerini gizle
-                conferenceImage.src = data.PhotoUrl; // Fotoğraf URL'sini ata
-                conferenceImage.style.display = "block"; // Fotoğrafı göster
+                videoElement.style.display = "none";
+                conferenceImage.src = data.PhotoUrl || '/static/background.jpg';
+                conferenceImage.style.display = "block";
             }
         })
-        .catch(error => console.error("Veri çekme hatası:", error));
-
+        .catch(error => console.error("Konferans verisi çekme hatası:", error));
 });
-
-window.onload = function () {
-    document.querySelector('.marquee').style.setProperty('--play', 'running');
-};
-

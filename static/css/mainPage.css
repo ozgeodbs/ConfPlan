@@ -53,14 +53,6 @@ body {
     position: relative;
 }
 
-.main__header-canvas-text {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1;
-    width: 100%;
-}
 
 .video-container {
     position: relative;
@@ -72,7 +64,7 @@ body {
 }
 
 .video-photo-container{
-    opacity: 70%;
+    opacity: 40%;
 }
 
 #background-video {
@@ -113,12 +105,22 @@ body {
     box-sizing: border-box;
     margin: auto;
     font-style: normal;
-    color: black;
+    color: var(--main-bg-color);
     font-size: 26px;
     font-weight: 600;
     text-align: center;
     line-height: 40px;
     opacity: 100%;
+    background-color: black;
+}
+
+.main__header-canvas-text {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    width: 100%;
 }
 
 #speakers-container{
