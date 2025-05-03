@@ -21,11 +21,15 @@ document.addEventListener("DOMContentLoaded", function () {
             grid.style.gap = "30px";
             grid.style.width = "100%";
 
-            data.forEach(speaker => {
+            data.forEach(paper => {
+                const speaker = paper.Speaker;
+                if (!speaker) return;
+
                 const speakerContainer = document.createElement('div');
                 speakerContainer.classList.add("speaker-card");
+
                 const img = document.createElement('img');
-                img.src = speaker.PhotoUrl || 'default-avatar.jpg'; // Default avatar if no photo
+                img.src = speaker.PhotoUrl || '/static/defaultImage.png'; // Default avatar if no photo
                 img.alt = `${speaker.FirstName} ${speaker.LastName}`;
                 img.classList.add("speaker-photo");
 

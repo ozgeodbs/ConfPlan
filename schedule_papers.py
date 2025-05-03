@@ -31,7 +31,7 @@ def schedule_papers(conference_id: int):
     # Gruplama (benzerlik bazlı) – mevcut algoritmadan aynen alınmış
     from collections import defaultdict
 
-    similarity_threshold = 0.7
+    similarity_threshold = 0.8
     groups = []
     visited = set()
     paper_graph = defaultdict(set)

@@ -153,7 +153,8 @@ def get_speakers_by_conference(conference_id):
             "Speaker": {
                 "Id": speaker.Id,
                 "FirstName": speaker.FirstName,
-                "LastName": speaker.LastName
+                "LastName": speaker.LastName,
+                "PhotoUrl": speaker.PhotoUrl,
             } if (speaker := speaker_map.get(paper.SpeakerId)) else None
         }
         for paper in papers
