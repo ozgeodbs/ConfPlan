@@ -2,14 +2,13 @@
     <nav class="navbar">
         <div class="logo-and-title">
             <a href="{{ base_url }}/{{ conference_id }}" class="logo">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Historical_peninsula_and_modern_skyline_of_Istanbul.jpg/640px-Historical_peninsula_and_modern_skyline_of_Istanbul.jpg"
-                     alt="Logo">
+                <img id="conference-logo">
             </a>
             <span id="conference-title-header" class="conference-title"></span>
         </div>
         <ul class="nav-links">
             <li><a href="{{ base_url }}/{{ conference_id }}/similarities">Similarities</a></li>
-            <li><a href="{{ base_url }}/{{ conference_id }}/papers">Calender</a></li>
+            <li><a href="{{ base_url }}/{{ conference_id }}/papers">Calendar</a></li>
             <li><a href="{{ base_url }}/{{ conference_id }}/speakers">Speakers</a></li>
             <li><a href="{{ base_url }}/{{ conference_id }}/about">About</a></li>
         </ul>
@@ -19,19 +18,27 @@
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const conferenceId = window.location.pathname.split("/")[1]; // URL'den ID'yi al
+    const titleElement = document.getElementById("conference-title-header");
+    const logoImg = document.getElementById("conference-logo");
 
     fetch(`/conferences/${conferenceId}`) // API endpointine istek at
         .then(response => response.json())
         .then(data => {
             if (data && data.Title) {
-                document.getElementById("conference-title-header").textContent = data.Title;
+                titleElement.textContent = data.Title;
             } else {
-                document.getElementById("conference-title-header").textContent = "";
+                titleElement.textContent = "";
+            }
+
+            if (data && data.LogoUrl) {
+                logoImg.src = data.LogoUrl;
+                logoImg.style.border = "3px solid rgb(108, 117, 125)";
+                logoImg.style.borderRadius = "8px"; // isteğe bağlı
             }
         })
         .catch(error => {
-            console.error("Konferans adı alınamadı:", error);
-            document.getElementById("conference-title").textContent = "Conference";
+            console.error("Konferans bilgileri alınamadı:", error);
+            titleElement.textContent = "Conference";
         });
 });
 </script>

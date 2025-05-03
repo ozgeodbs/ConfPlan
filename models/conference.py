@@ -13,3 +13,4 @@ class Conference(BaseModel):
     Organizer = Column(String(100), nullable=False)
     PhotoUrl = Column(String(300), nullable=False)
     VideoUrl = Column(String(300), nullable=False)
+    LogoUrl = Column(String(300), nullable=True)
