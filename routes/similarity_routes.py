@@ -7,7 +7,6 @@ import config
 
 similarity_routes = Blueprint('similarity', __name__)
 
-# Tüm Similarity'leri listele
 @similarity_routes.route('/similarities', methods=['GET'])
 def get_similarities():
     similarities = Similarity.query.all()
@@ -20,7 +19,6 @@ def get_similarities():
         'SimilarPaperTitle': similarity.SimilarPaperTitle
     } for similarity in similarities]), 200
 
-# Yeni bir Similarity oluştur
 @similarity_routes.route('/similarities', methods=['POST'])
 def create_similarity():
     data = request.get_json()
@@ -29,12 +27,11 @@ def create_similarity():
     similar_paper_id = data['SimilarPaperId']
     similarity_score = data['SimilarityScore']
 
-    # Benzerlik kaydını oluştur
     paper = Paper.query.get(paper_id)
     similar_paper = Paper.query.get(similar_paper_id)
 
     if not paper or not similar_paper:
-        return jsonify({'message': 'Geçersiz PaperId veya SimilarPaperId.'}), 404
+        return jsonify({'message': 'Not valid PaperId or SimilarPaperId.'}), 404
 
     similarity = Similarity(
         PaperId=paper_id,
@@ -48,11 +45,10 @@ def create_similarity():
     db.session.commit()
 
     return jsonify({
-        'message': 'Benzerlik kaydı başarıyla oluşturuldu.',
+        'message': 'Similarity record saved successfully.',
         'Similarity': similarity.to_dict()
     }), 201
 
-# ID'ye göre Similarity kaydını getir
 @similarity_routes.route('/similarities/<int:id>', methods=['GET'])
 def get_similarity(id):
     similarity = Similarity.query.get(id)
@@ -64,9 +60,8 @@ def get_similarity(id):
             'PaperTitle': similarity.PaperTitle,
             'SimilarPaperTitle': similarity.SimilarPaperTitle
         }), 200
-    return jsonify({"message": "Benzerlik kaydı bulunamadı"}), 404
+    return jsonify({"message": "Similarity record could not found"}), 404
 
-# Similarity kaydını güncelle
 @similarity_routes.route('/similarities/<int:id>', methods=['PUT'])
 def update_similarity(id):
     similarity = Similarity.query.get(id)
@@ -78,25 +73,24 @@ def update_similarity(id):
         db.session.commit()
 
         return jsonify({
-            'message': 'Benzerlik kaydı başarıyla güncellendi.',
+            'message': 'Similarity record could not be updated.',
             'Similarity': similarity.to_dict()
         }), 200
-    return jsonify({"message": "Benzerlik kaydı bulunamadı"}), 404
+    return jsonify({"message": "Similarity record could not found"}), 404
 
-# Similarity kaydını sil
 @similarity_routes.route('/similarities/<int:id>', methods=['DELETE'])
 def delete_similarity(id):
     similarity = Similarity.query.get(id)
     if similarity:
         db.session.delete(similarity)
         db.session.commit()
-        return jsonify({'message': 'Benzerlik kaydı başarıyla silindi.'}), 200
-    return jsonify({"message": "Benzerlik kaydı bulunamadı"}), 404
+        return jsonify({'message': 'Similarity record deleted'}), 200
+    return jsonify({"message": "Similarity record could not found"}), 404
 
 
 @similarity_routes.route('/<int:conference_id>/papers/save_similarities', methods=['POST'])
 def save_similarities(conference_id):
-    # Token kontrolü
+
     token = request.headers.get('token')
     if not token or token != config.Config.API_SECRET_TOKEN:
         return jsonify({'message': 'Unauthorized'}), 401
@@ -114,10 +108,9 @@ def save_similarities(conference_id):
 
 @similarity_routes.route('/<int:conference_id>/papers/get/similarities', methods=['GET'])
 def get_similarities_by_conference_id(conference_id):
-    # Konferansın Paper'larını al
+
     papers = Paper.query.filter_by(ConferenceId=conference_id, IsDeleted=False).all()
 
-    # Veritabanındaki benzerlikleri al
     similarities = Similarity.query.filter(
         (Similarity.PaperId.in_([paper.Id for paper in papers])) |
         (Similarity.SimilarPaperId.in_([paper.Id for paper in papers]))

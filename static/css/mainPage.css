@@ -5,7 +5,6 @@
     --accent-color: #007BFF;
 }
 
-/* Genel body */
 body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -70,7 +69,6 @@ body {
     backdrop-filter: blur(10px);
 }
 
-/* Speaker Card Styling */
 .speaker-card-container {
     display: flex;
     flex-wrap: wrap;
@@ -117,7 +115,7 @@ body {
     color: #444;
 }
 
-/* Add speaker photo */
+
 .speaker-photo {
     width: 100%;
     height: auto;
@@ -132,7 +130,7 @@ body {
 }
 
 button {
-    background-color: #6c757d; /* Gri renk */
+    background-color: #6c757d;
     color: white;
     padding: 12px 25px;
     border-radius: 8px;
@@ -143,5 +141,5 @@ button {
 }
 
 button:hover {
-    background-color: #5a6268; /* Hoverda daha koyu gri */
+    background-color: #5a6268;
 }

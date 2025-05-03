@@ -8,7 +8,6 @@ body {
     flex: 1;
 }
 
-/* Footer tasarımı */
 .site-footer {
     background-color: #2e2e2e;
     color: #f1f1f1;
@@ -67,7 +66,6 @@ body {
     margin-top: 20px;
 }
 
-/* Footer'daki konferanslar için grid */
 .conferences-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -82,7 +80,7 @@ body {
     font-weight: 600;
 }
 
-/* Mobil uyumluluk */
+
 @media (max-width: 768px) {
     .footer-container {
         flex-direction: column;

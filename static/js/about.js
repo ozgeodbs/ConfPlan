@@ -1,8 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Get the conference ID from the URL
+
     const conferenceId = window.location.pathname.split("/")[1];
 
-    // Fetch conference details
     fetch(`/conferences/${conferenceId}`)
         .then(response => response.json())
         .then(data => {
@@ -22,18 +21,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 day: "numeric"
             });
 
-            // Display conference info
             document.getElementById("title").textContent = data.Title;
             document.getElementById("conference-date").textContent = `${start} - ${end}`;
             document.getElementById("conference-location").textContent = data.Location;
             document.getElementById("conference-organizer").textContent = data.Organizer;
 
-            // Fetch papers (which include speaker info)
             fetch(`/${conferenceId}/speakers/get/all`)
                 .then(response => response.json())
                 .then(papers => {
                     const speakersContainer = document.getElementById("speakers-container");
-                    speakersContainer.innerHTML = "";  // Clear previous content if any
+                    speakersContainer.innerHTML = "";
 
                     papers.sort((a, b) => {
                         const firstNameA = a.Speaker ? a.Speaker.FirstName.toLowerCase() : '';
@@ -62,7 +59,6 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => console.error("Failed to fetch conference data:", error));
 });
 
-// Start marquee on load
 window.onload = function () {
     document.querySelector('.marquee')?.style.setProperty('--play', 'running');
 };

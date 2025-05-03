@@ -5,4 +5,4 @@ class Category(BaseModel):
     __tablename__ = 'Category'
 
     Id = Column(Integer, primary_key=True, autoincrement=True)
-    Title = Column(String(100), nullable=False)  # Title cannot be null
+    Title = Column(String(100), nullable=False)

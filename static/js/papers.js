@@ -17,12 +17,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             hallMap[h.Id] = h.Title;
         });
 
-        // Paperları gün + hall bazında grupla
         const scheduleByDateAndHall = {};
         papers.forEach(paper => {
             if (!paper.StartTime || !paper.HallId) return;
 
-            const dateKey = new Date(paper.StartTime).toISOString().split("T")[0]; // YYYY-MM-DD
+            const dateKey = new Date(paper.StartTime).toISOString().split("T")[0];
             if (!scheduleByDateAndHall[dateKey]) {
                 scheduleByDateAndHall[dateKey] = {};
             }
@@ -85,6 +84,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
     } catch (error) {
-        console.error("❌ Error fetching data:", error);
+        console.error("Error fetching data:", error);
     }
 });

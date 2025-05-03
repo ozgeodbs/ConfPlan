@@ -8,13 +8,10 @@ import generate_excel as ge
 def create_app():
     app = Flask(__name__)
 
-    # Konfigürasyonu uygula
     app.config.from_object(Config)
 
-    # Veritabanı başlat
     db.init_app(app)
 
-    # Routes dosyasını import et ve uygulamaya ekle
     from routes import speaker_routes, paper_routes, conference_routes, category_routes, hall_routes,similarity_routes
     app.register_blueprint(speaker_routes)
     app.register_blueprint(paper_routes)
@@ -63,7 +60,6 @@ def create_app():
 
     @app.route('/<int:conference_id>/papers')
     def calendar(conference_id):
-        # Konferansı al
         conference = Conference.query.get(conference_id)
         if not conference:
             return "Conference not found", 404
@@ -81,7 +77,6 @@ def create_app():
 
     @app.route('/<int:conference_id>/similarities')
     def similarities(conference_id):
-        # Konferansı al
         conference = Conference.query.get(conference_id)
         if not conference:
             return "Conference not found", 404
@@ -102,7 +97,6 @@ def create_app():
         return ge.generate_excel();
     return app
 
-# Eğer doğrudan çalıştırılıyorsa
 if __name__ == '__main__':
     app = create_app()
     migrate = Migrate(app, db)

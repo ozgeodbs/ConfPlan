@@ -7,13 +7,11 @@ import pandas as pd
 
 speaker_routes = Blueprint('speaker', __name__)
 
-# Tüm speakerları listele
 @speaker_routes.route('/speakers', methods=['GET'])
 def get_speakers():
     speakers = Speaker.query.all()
-    return jsonify([speaker.to_dict() for speaker in speakers])  # ✅ to_dict() ekledik
+    return jsonify([speaker.to_dict() for speaker in speakers])
 
-# Yeni bir speaker oluştur
 @speaker_routes.route('/speakers', methods=['POST'])
 def create_speaker():
     data = request.get_json()
@@ -26,10 +24,9 @@ def create_speaker():
         Phone=data.get('Phone', ''),
         PhotoUrl=data.get('PhotoUrl', '')
     )
-    new_speaker.save()  # Using the save method from BaseModel
+    new_speaker.save()
     return jsonify(new_speaker.to_dict()), 201
 
-# ID'ye göre speaker getir
 @speaker_routes.route('/speakers/<int:id>', methods=['GET'])
 def get_speaker(id):
     speaker = Speaker.query.get(id)
@@ -37,7 +34,6 @@ def get_speaker(id):
         return jsonify(speaker.to_dict())
     return jsonify({"message": "Speaker not found"}), 404
 
-# Speaker'ı güncelle
 @speaker_routes.route('/speakers/<int:id>', methods=['PUT'])
 def update_speaker(id):
     speaker = Speaker.query.get(id)
@@ -49,16 +45,15 @@ def update_speaker(id):
         speaker.Email = data.get('Email', speaker.Email)
         speaker.Phone = data.get('Phone', speaker.Phone)
         speaker.PhotoUrl = data.get('PhotoUrl', speaker.PhotoUrl)
-        speaker.update()  # Using the update method from BaseModel
+        speaker.update()
         return jsonify(speaker.to_dict())
     return jsonify({"message": "Speaker not found"}), 404
 
-# Speaker'ı sil
 @speaker_routes.route('/speakers/<int:id>', methods=['DELETE'])
 def delete_speaker(id):
     speaker = Speaker.query.get(id)
     if speaker and not speaker.IsDeleted:
-        speaker.delete()  # Using the delete method from BaseModel
+        speaker.delete()
         return jsonify({"message": "Speaker deleted successfully"})
     return jsonify({"message": "Speaker not found"}), 404
 
@@ -91,7 +86,7 @@ def import_speakers():
         phone = row.get('Phone')
         photo_url = row.get('PhotoUrl')
 
-        row_number = index + 2  # Excel rows start at 1, header is row 1
+        row_number = index + 2
 
         if not first_name or not isinstance(first_name, str):
             errors.append(f"Row {row_number}: FirstName is required and must be a string.")
@@ -103,7 +98,6 @@ def import_speakers():
             errors.append(f"Row {row_number}: Email is required and must be a string.")
             continue
 
-        # Check for duplicate email in DB
         existing = Speaker.query.filter_by(Email=email).first()
         if existing:
             errors.append(f"Row {row_number}: Email '{email}' already exists.")
@@ -132,17 +126,14 @@ def import_speakers():
 
 @speaker_routes.route('/<int:conference_id>/speakers/get/all')
 def get_speakers_by_conference(conference_id):
-    # İlgili konferanstaki Paper'ları getir
+
     papers = Paper.query.filter_by(ConferenceId=conference_id, IsDeleted=False).all()
 
-    # Paper'lardaki SpeakerId'leri al
     speaker_ids = {paper.SpeakerId for paper in papers}
 
-    # Speaker tablolarını al
     speakers = Speaker.query.filter(Speaker.Id.in_(speaker_ids), Speaker.IsDeleted == False).all()
     speaker_map = {s.Id: s for s in speakers}
 
-    # JSON olarak döndür
     return jsonify([
         {
             "PaperId": paper.Id,
@@ -165,7 +156,7 @@ def get_speakers_by_conference(conference_id):
 def get_speaker_conferences(speaker_id):
     papers = Paper.query.filter_by(SpeakerId=speaker_id, IsDeleted=False).all()
     conferences= []
-    for paper in papers:  # paper modelinde ilişki kurulmuş varsayımıyla
+    for paper in papers:
             conference = Conference.query.get(paper.ConferenceId)
             conferences.append({
                 "conference_title": conference.Title,

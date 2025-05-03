@@ -1,5 +1,4 @@
 from sqlalchemy import Column, Integer, Float, ForeignKey, String
-from sqlalchemy.orm import relationship
 from models.base import BaseModel
 from models.db import db
 
@@ -11,8 +10,8 @@ class Similarity(BaseModel):
     PaperId = Column(Integer, ForeignKey('Paper.Id'), nullable=False)
     SimilarPaperId = Column(Integer, ForeignKey('Paper.Id'), nullable=False)
     SimilarityScore = Column(Float, nullable=False)
-    PaperTitle = Column(String(255), nullable=False)  # Paper başlığı
-    SimilarPaperTitle = Column(String(255), nullable=False)  # Similar Paper başlığı
+    PaperTitle = Column(String(255), nullable=False)
+    SimilarPaperTitle = Column(String(255), nullable=False)
 
     paper = db.relationship('Paper', foreign_keys=[PaperId], backref='similarities')
     similar_paper = db.relationship('Paper', foreign_keys=[SimilarPaperId], backref='similar_to')

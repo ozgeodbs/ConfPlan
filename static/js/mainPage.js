@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 speakerContainer.classList.add("speaker-card");
 
                 const img = document.createElement('img');
-                img.src = speaker.PhotoUrl || '/static/defaultImage.png'; // Default avatar if no photo
+                img.src = speaker.PhotoUrl || '/static/defaultImage.png';
                 img.alt = `${speaker.FirstName} ${speaker.LastName}`;
                 img.classList.add("speaker-photo");
 
@@ -42,12 +42,11 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch(error => console.error('Error:', error));
 
-    // Konferans verilerini getir
     fetch(`/conferences/${conferenceId}`)
         .then(res => res.json())
         .then(data => {
             if (data.error) {
-                return console.warn("Konferans bulunamadı.");
+                return console.warn("Conference could not found.");
             }
 
             document.getElementById("conference-title").textContent = data.Title;
@@ -81,5 +80,5 @@ document.addEventListener("DOMContentLoaded", function () {
                 image.style.display = "block";
             }
         })
-        .catch(err => console.error("Konferans verisi alınamadı:", err));
+        .catch(err => console.error("Fetch error:", err));
 });

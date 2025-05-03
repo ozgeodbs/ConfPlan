@@ -13,7 +13,6 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Diğer konferansları getir
         fetch("/conferences")
             .then(res => res.json())
             .then(data => {
@@ -30,9 +29,8 @@
                     list.appendChild(li);
                 });
             })
-            .catch(error => console.error("Diğer konferanslar yüklenemedi:", error));
+            .catch(error => console.error("Error fetching other conferences:", error));
 
-        // Şu anki konferansı getir
         const pathSegments = window.location.pathname.split("/");
         const conferenceId = pathSegments[1];
 
@@ -47,6 +45,6 @@
                     Organizer: ${currentConference.Organizer}
                 `;
             })
-            .catch(error => console.error("Şu anki konferans bilgileri yüklenemedi:", error));
+            .catch(error => console.error("Error fetching data:", error));
     });
 </script>

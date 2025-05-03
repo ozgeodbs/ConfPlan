@@ -2,7 +2,7 @@ from sqlalchemy import Column, Boolean, DateTime, func
 from models.db import db
 
 class BaseModel(db.Model):
-    __abstract__ = True  # Bu sınıf bir temel sınıf olduğu için tabloya karşılık gelmez
+    __abstract__ = True
 
     IsDeleted = Column(Boolean, default=False)
     CreatedDate = Column(DateTime, default= func.now())
@@ -16,7 +16,6 @@ class BaseModel(db.Model):
         db.session.commit()
 
     def delete(self):
-        """Silme işlemi yerine IsDeleted flag'ını kullanarak soft delete işlemi yapılır."""
         self.IsDeleted = True
         db.session.commit()
 

@@ -1,4 +1,4 @@
-from .db import db  # db nesnesini içeri al
+from .db import db
 from .category import Category
 from .speaker import Speaker
 from .paper import Paper

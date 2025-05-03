@@ -50,7 +50,7 @@ a:hover {
 .speaker-info {
     display: flex;
     align-items: center;
-    gap: 2vh; /* Aradaki boşluk */
+    gap: 2vh;
     padding-bottom: 2vh;
 }
 

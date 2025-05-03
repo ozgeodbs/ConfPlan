@@ -7,13 +7,11 @@ import requests
 
 paper_routes = Blueprint('paper', __name__)
 
-# Tüm bildirileri listele
 @paper_routes.route('/papers', methods=['GET'])
 def get_papers():
-    papers = Paper.query.filter_by(IsDeleted=False).all()  # Assuming IsDeleted field exists
+    papers = Paper.query.filter_by(IsDeleted=False).all()
     return jsonify([paper.to_dict() for paper in papers]), 200
 
-# Yeni bir bildiri oluştur
 @paper_routes.route('/papers', methods=['POST'])
 def create_paper():
     data = request.get_json()
@@ -24,10 +22,9 @@ def create_paper():
         Duration=data['Duration'],
         Description=data.get('Description', '')
     )
-    new_paper.save()  # Assuming save() is defined in your base model
+    new_paper.save()
     return jsonify(new_paper.to_dict()), 201
 
-# ID'ye göre bildiri getir
 @paper_routes.route('/papers/<int:id>', methods=['GET'])
 def get_paper(id):
     paper = Paper.query.get(id)
@@ -35,7 +32,6 @@ def get_paper(id):
         return jsonify(paper.to_dict())
     return jsonify({"message": "Paper not found"}), 404
 
-# Bildiriyi güncelle
 @paper_routes.route('/papers/<int:id>', methods=['PUT'])
 def update_paper(id):
     paper = Paper.query.get(id)
@@ -47,20 +43,18 @@ def update_paper(id):
         paper.Duration = data.get('Duration', paper.Duration)
         paper.Description = data.get('Description', paper.Description)
 
-        paper.update()  # Assuming update() is defined in your base model
+        paper.update()
         return jsonify(paper.to_dict())
     return jsonify({"message": "Paper not found"}), 404
 
-# Bildiriyi sil
 @paper_routes.route('/papers/<int:id>', methods=['DELETE'])
 def delete_paper(id):
     paper = Paper.query.get(id)
     if paper and not paper.IsDeleted:
-        paper.delete()  # Assuming delete() is defined in your base model
+        paper.delete()
         return jsonify({"message": "Paper deleted successfully"})
     return jsonify({"message": "Paper not found"}), 404
 
-# 📌 Belirli bir konferansa ait bildirileri getir
 @paper_routes.route('/<int:conference_id>/papers/get/all', methods=['GET'])
 def get_papers_by_conference(conference_id):
     papers = Paper.query.filter_by(ConferenceId=conference_id, IsDeleted=False).all()
@@ -68,7 +62,6 @@ def get_papers_by_conference(conference_id):
         return jsonify([paper.to_dict() for paper in papers]), 200
     return jsonify({"message": "No papers found for this conference"}), 404
 
-# 📌 Belirli bir konferans ve konuşmacıya ait bildirileri getir
 @paper_routes.route('/<int:conference_id>/papers/speaker/<int:speaker_id>/get/all', methods=['GET'])
 def get_papers_by_conference_and_speaker(conference_id, speaker_id):
     papers = Paper.query.filter_by(ConferenceId=conference_id, SpeakerId=speaker_id, IsDeleted=False).all()
@@ -108,7 +101,6 @@ def import_papers():
         description = row.get('Description')
         hall_id = row.get('HallId')
 
-        # Zorunlu alanlar validasyonu
         if not title or not isinstance(title, str):
             errors.append(f"Row {row_number}: Title is required and must be a string.")
             continue
@@ -118,25 +110,21 @@ def import_papers():
             errors.append(f"Row {row_number}: Conference with ID {conference_id} not found or deleted.")
             continue
 
-        # Speaker Kontrolü
         speaker_response = requests.get(f"{config.Config.BASE_URL}/speakers/{speaker_id}")
         if speaker_response.status_code != 200:
             errors.append(f"Row {row_number}: Speaker with ID {speaker_id} not found or deleted.")
             continue
 
-        # Category Kontrolü
         category_response = requests.get(f"{config.Config.BASE_URL}/categories/{category_id}")
         if category_response.status_code != 200:
             errors.append(f"Row {row_number}: Category with ID {category_id} not found or deleted.")
             continue
 
-        # Hall Kontrolü
         hall_response = requests.get(f"{config.Config.BASE_URL}/halls/{hall_id}")
         if hall_response.status_code != 200:
             errors.append(f"Row {row_number}: Hall with ID {hall_id} not found or deleted.")
             continue
 
-        # Duration kontrolü (isteğe bağlı ama sayısal olmalı)
         if duration and not isinstance(duration, (int, float)):
             errors.append(f"Row {row_number}: Duration must be a number.")
             continue

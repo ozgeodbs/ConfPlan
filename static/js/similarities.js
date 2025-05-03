@@ -12,16 +12,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         const papers = await papersRes.json();
         const similarities = await similaritiesRes.json();
 
-        // Paper map oluşturma
         const paperMap = {};
         papers.forEach(p => {
             paperMap[p.Id] = {
                 ...p,
                 SimilarPapers: []
-            }; // Her paper için benzer papers listesi
+            };
         });
 
-        // Similarity data'sını ilişkilendir
         similarities.forEach(sim => {
             if (paperMap[sim.PaperId]) {
                 paperMap[sim.PaperId].SimilarPapers.push({
@@ -31,11 +29,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
 
-        // Tabloyu doldur
         const tableBody = document.querySelector("tbody");
-        tableBody.innerHTML = "";  // Tabloyu temizle
+        tableBody.innerHTML = "";
 
-        // Paperları döngü ile tabloya ekle
         Object.values(paperMap).forEach(paper => {
             const tr = document.createElement("tr");
             tr.innerHTML = `
@@ -55,6 +51,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
     } catch (error) {
-        console.error("❌ Error fetching data:", error);
+        console.error("Error fetching data:", error);
     }
 });

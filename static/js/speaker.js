@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const container = document.getElementById("speaker-details");
 
             if (speaker.message) {
-                container.innerHTML = "<p>Konuşmacı bulunamadı.</p>";
+                container.innerHTML = "<p>Speaker could not found.</p>";
                 return;
             }
 
@@ -17,10 +17,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     <img class="speaker-img-top" src="${speaker.PhotoUrl || '/static/img/default-avatar.png'}" alt="${speaker.FirstName} ${speaker.LastName}">
                     <div class="speaker-info-block">
                         <h2>${speaker.FirstName} ${speaker.LastName}</h2>
-                        <p class="bio">${speaker.Bio || 'Biyografi bulunmamaktadır.'}</p>
+                        <p class="bio">${speaker.Bio || 'Undefined'}</p>
                         <div class="speaker-contact">
                             <p><strong>Email:</strong> ${speaker.Email}</p>
-                            <p><strong>Telefon:</strong> ${speaker.Phone || 'Belirtilmemiş'}</p>
+                            <p><strong>Telefon:</strong> ${speaker.Phone || 'Undefined'}</p>
                         </div>
                     </div>
                 </div>
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch(error => {
             console.error("Hata:", error);
-            document.getElementById("speaker-details").innerHTML = "<p>Veri alınırken bir hata oluştu.</p>";
+            document.getElementById("speaker-details").innerHTML = "<p>Fetching error.</p>";
         });
 
     fetch(`/speakers/${speakerId}/conferences`)
@@ -51,6 +51,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             document.getElementById("speaker-details").appendChild(section);
         })
-        .catch(error => console.error("Konferans verisi alınamadı:", error));
+        .catch(error => console.error("Error fetching data:", error));
 
 });
