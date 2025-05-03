@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const conferenceId = window.location.pathname.split("/")[1];
-    const papersUrl = `/${conferenceId}/speakers/get/all`;  // tek endpoint
+    const papersUrl = `/${conferenceId}/speakers/get/all`;
     const hallUrl = `/${conferenceId}/halls`;
 
     try {
@@ -17,51 +17,71 @@ document.addEventListener("DOMContentLoaded", async () => {
             hallMap[h.Id] = h.Title;
         });
 
-        const papersByHall = {};
-        papers.forEach(p => {
-            if (!papersByHall[p.HallId]) {
-                papersByHall[p.HallId] = [];
+        // Paperları gün + hall bazında grupla
+        const scheduleByDateAndHall = {};
+        papers.forEach(paper => {
+            if (!paper.StartTime || !paper.HallId) return;
+
+            const dateKey = new Date(paper.StartTime).toISOString().split("T")[0]; // YYYY-MM-DD
+            if (!scheduleByDateAndHall[dateKey]) {
+                scheduleByDateAndHall[dateKey] = {};
             }
-            papersByHall[p.HallId].push(p);
+            if (!scheduleByDateAndHall[dateKey][paper.HallId]) {
+                scheduleByDateAndHall[dateKey][paper.HallId] = [];
+            }
+            scheduleByDateAndHall[dateKey][paper.HallId].push(paper);
         });
 
         const container = document.getElementById("schedule-tables");
         container.innerHTML = "";
 
-        halls.forEach(hall => {
-            const hallPapers = papersByHall[hall.Id] || [];
+        const sortedDates = Object.keys(scheduleByDateAndHall).sort();
 
-            const tableTitle = document.createElement("h3");
-            tableTitle.textContent = `Hall: ${hall.Title}`;
-            container.appendChild(tableTitle);
+        sortedDates.forEach(date => {
+            const dateTitle = document.createElement("h2");
+            dateTitle.textContent = `${new Date(date).toLocaleDateString()}`;
+            container.appendChild(dateTitle);
 
-            const table = document.createElement("table");
-            table.innerHTML = `
-                <thead>
-                    <tr>
-                        <th>Paper Title</th>
-                        <th>Speaker</th>
-                        <th>Start Time</th>
-                        <th>End Time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${hallPapers.map(paper => {
-                        const speakerName = paper.Speaker
-                            ? `${paper.Speaker.FirstName} ${paper.Speaker.LastName}`
-                            : "-";
-                        return `
-                            <tr>
-                                <td>${paper.Title}</td>
-                                <td>${speakerName}</td>
-                                <td>${paper.StartTime || '-'}</td>
-                                <td>${paper.EndTime || '-'}</td>
-                            </tr>
-                        `;
-                    }).join("")}
-                </tbody>
-            `;
-            container.appendChild(table);
+            const hallsOnThisDay = scheduleByDateAndHall[date];
+
+            halls.forEach(hall => {
+                const hallPapers = hallsOnThisDay[hall.Id] || [];
+                if (hallPapers.length === 0) return;
+
+                const tableTitle = document.createElement("h3");
+                tableTitle.textContent = `Hall: ${hall.Title}`;
+                container.appendChild(tableTitle);
+
+                const table = document.createElement("table");
+                table.innerHTML = `
+                    <thead>
+                        <tr>
+                            <th>Paper Title</th>
+                            <th>Speaker</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${hallPapers.map(paper => {
+                            const speakerName = paper.Speaker
+                                ? `${paper.Speaker.FirstName} ${paper.Speaker.LastName}`
+                                : "-";
+                            const start = new Date(paper.StartTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                            const end = new Date(paper.EndTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                            return `
+                                <tr>
+                                    <td>${paper.Title}</td>
+                                    <td>${speakerName}</td>
+                                    <td>${start}</td>
+                                    <td>${end}</td>
+                                </tr>
+                            `;
+                        }).join("")}
+                    </tbody>
+                `;
+                container.appendChild(table);
+            });
         });
 
     } catch (error) {
