@@ -1,176 +1,147 @@
 :root {
-    --main-bg-color: #ebebeb;
-    --menu-box-menu-bg-color: rgba(94, 137, 169, 0.85);
-    --menu-box-tickets-bg-color: #13b7ad;
-    --page-level-one-color: #01315c;
-    --page-level-two-color: #2a5a90;
-    --page-level-three-color: #0164bd;
-    --page-level-four-color: #13b7ad;
-    --page-level-five-color: #ced7e5;
-    --fest-box-tickets-bg-color: #41c1ab;
-    --devs-footer-bg-color: #427469;
-    --fest-footer-bg-color: #563175;
-    --devs-footer-button-bg-color: #ffe890;
-    --fest-footer-button-bg-color: #1766aa;
-    --devs-footer-button-fg-color: #000;
-    --fest-footer-button-fg-color: #fff;
-    --devs-count-btn-bg-color: #ffe890;
-    --fest-count-btn-bg-color: #1766aa;
-    --header-color: #232323;
-    --fest-count-btn-fg-color: #fff;
+    --main-bg-color: #f3f4f6;
+    --card-bg-color: #2c2c2c;
+    --text-light: #f0f0f0;
+    --accent-color: #007BFF;
 }
 
-button {
-    margin: 5px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background: #f9f9f9;
-    cursor: pointer;
-    z-index: 1000;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #f0f0f0; /* Slightly darker background on hover */
-}
-
-img {
-    width: 45%;
-    border-radius: 50%;
-    margin-bottom: 10px;
-}
-
+/* Genel body */
 body {
-    font-size: 16px;
-    padding: 0;
-    line-height: 1em;
-    font-family: Calibre, Helvetica, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    box-sizing: border-box;
-    background-color: var(--main-bg-color);
     margin: 0;
-    position: relative;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--main-bg-color);
+    color: var(--text-light);
 }
 
+.container {
+    max-width: 90%;
+    margin: 50px auto;
+    padding: 30px;
+    background: rgb(255,255,255);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
 
 .video-container {
     position: relative;
     width: 100%;
-    height: 80vh;
+    height: 86vh;
     overflow: hidden;
-    display: inline-flex;
-    background-color: whitesmoke;
-}
-
-.video-photo-container{
-    opacity: 40%;
-}
-
-#background-video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ensures the video covers the container */
-    z-index: -1;
+    display: flex;
+    align-items: center;
     justify-content: center;
 }
 
+.video-photo-container {
+    opacity: 0.85;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+#background-video,
 #conference-image {
-    display: none;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensures the video covers the container */
+    object-fit: cover;
     z-index: -1;
     border-radius: 0;
 }
 
-/* For video*/
-.main__header-canvas-video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
+#conference-image {
+    display: none;
 }
 
 .main__header-center {
-    display: block;
-    box-sizing: border-box;
-    margin: auto;
-    font-style: normal;
-    color: var(--main-bg-color);
-    font-size: 26px;
-    font-weight: 600;
+    z-index: 1;
     text-align: center;
-    line-height: 40px;
-    opacity: 100%;
-    background-color: black;
+    padding: 30px 60px;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #222;
+    max-width: 80%;
+    margin: 0 auto;
+    backdrop-filter: blur(10px);
 }
 
-.main__header-canvas-text {
-    position: absolute;
+/* Speaker Card Styling */
+.speaker-card-container {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 30px;
+}
+
+.speaker-card {
+    width: 250px;
+    height: 350px;
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.speaker-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.speaker-card .avatar-placeholder {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    background-color: #ddd;
+    border-radius: 50%;
+    display: flex;
     justify-content: center;
-    z-index: 1;
-    width: 100%;
-}
-
-#speakers-container{
-
-}
-
-.marquee-container {
-    overflow-x: hidden !important;
-    display: flex;
-    flex-direction: row !important;
-    position: relative;
-    background-color: lightgrey;
-}
-
-@keyframes marquee-animation {
-    from {
-        transform: translateX(100%);
-    }
-    to {
-        transform: translateX(-100%);
-    }
-}
-
-.marquee {
-    min-width: 100%;
-    z-index: 1;
-    display: flex;
-    animation: marquee-animation 40s linear infinite;
-    flex-direction: row !important;
     align-items: center;
-    animation-play-state: running !important;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: white;
+    background-color: #007BFF;
 }
 
-.marquee img {
-    height: 15vh;
-    width: 20vw;
-    padding: 2vw;
+.speaker-card .speaker-info h3 {
+    margin-top: 15px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #444;
 }
 
-.marquee-container:hover {
-    animation-play-state: paused;
+/* Add speaker photo */
+.speaker-photo {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    border: 3px solid #ccc;
+    transition: all 0.3s ease;
 }
 
-*, a, div, h1, h2, h3, h4, h5, h6, img, p, span {
-    margin: 0;
-    padding: 0;
-    line-height: 1em;
-    font-family: Calibre, Helvetica, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    box-sizing: border-box;
+.speaker-photo:hover {
+    border-color: #5a6268;
 }
 
+button {
+    background-color: #6c757d; /* Gri renk */
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #5a6268; /* Hoverda daha koyu gri */
+}

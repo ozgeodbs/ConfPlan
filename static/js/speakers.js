@@ -21,9 +21,13 @@ document.addEventListener("DOMContentLoaded", function () {
             grid.style.gap = "30px";
             grid.style.width = "100%";
 
+            const displayedSpeakerIds = new Set();
+
             data.forEach(paper => {
                 const speaker = paper.Speaker;
-                if (!speaker) return;
+                if (!speaker || displayedSpeakerIds.has(speaker.Id)) return;
+
+                displayedSpeakerIds.add(speaker.Id);
 
                 const speakerContainer = document.createElement('div');
                 speakerContainer.classList.add("speaker-card");

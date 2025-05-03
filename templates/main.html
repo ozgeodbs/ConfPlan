@@ -26,15 +26,23 @@
     </div>
 </div>
 
-<div id="speakers-container">
-    {% for speaker in speakers %}
-        <button onclick="goToSpeaker({{ speaker.Id }}, {{ conference_id }})">
-            {{ speaker.FirstName }} {{ speaker.LastName }}
-        </button>
-        <br>
-    {% endfor %}
+<div class="container">
+    <div id="speakers-container" class="speakers-wrapper">
+        <div class="speaker-card-container">
+            {% for speaker in speakers %}
+            <div class="speaker-card">
+                <div class="avatar-placeholder">
+                    <span>{{ speaker.FirstName[0] }}{{ speaker.LastName[0] }}</span> <!-- Initials -->
+                </div>
+                <div class="speaker-info">
+                    <h3>{{ speaker.FirstName }} {{ speaker.LastName }}</h3>
+                    <button onclick="goToSpeaker({{ speaker.Id }}, {{ conference_id }})">View Profile</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
-
 {% include 'footer.html' %}
 
 <script src="/static/js/mainPage.js"></script>
