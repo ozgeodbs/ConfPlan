@@ -51,7 +51,19 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             document.getElementById("conference-title").textContent = data.Title;
-            document.getElementById("conference-date").textContent = `${data.StartDate} - ${data.EndDate}`;
+
+            const start = new Date(data.StartDate).toLocaleDateString(undefined, {
+                year: "numeric",
+                month: "short",
+                day: "numeric"
+            });
+            const end = new Date(data.EndDate).toLocaleDateString(undefined, {
+                year: "numeric",
+                month: "short",
+                day: "numeric"
+            });
+
+            document.getElementById("conference-date").textContent = `${start} - ${end}`;
             document.getElementById("conference-location").textContent = data.Location;
 
             const video = document.getElementById("background-video");

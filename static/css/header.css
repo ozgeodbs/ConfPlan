@@ -67,7 +67,6 @@ header {
     display: block;
     width: 0;
     height: 2px;
-    background: #007BFF;
     transition: width 0.3s;
     position: absolute;
     bottom: 0;

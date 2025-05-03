@@ -21,7 +21,8 @@ create table Conference
     CreatedDate DATETIME,
     ChangedDate DATETIME,
     PhotoUrl    TEXT,
-    VideoUrl    TEXT
+    VideoUrl    TEXT,
+    LogoUrl     TEXT
 );
 
 create table Hall

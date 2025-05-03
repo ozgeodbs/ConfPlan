@@ -4,7 +4,9 @@
             <a href="{{ base_url }}/{{ conference_id }}" class="logo">
                 <img id="conference-logo">
             </a>
-            <span id="conference-title-header" class="conference-title"></span>
+            <a href="{{ base_url }}/{{ conference_id }}" class="logo">
+                <span id="conference-title-header" class="conference-title"></span>
+            </a>
         </div>
         <ul class="nav-links">
             <li><a href="{{ base_url }}/{{ conference_id }}/similarities">Similarities</a></li>
@@ -16,29 +18,29 @@
 </header>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const conferenceId = window.location.pathname.split("/")[1]; // URL'den ID'yi al
-    const titleElement = document.getElementById("conference-title-header");
-    const logoImg = document.getElementById("conference-logo");
+    document.addEventListener("DOMContentLoaded", function () {
+        const conferenceId = window.location.pathname.split("/")[1]; // URL'den ID'yi al
+        const titleElement = document.getElementById("conference-title-header");
+        const logoImg = document.getElementById("conference-logo");
 
-    fetch(`/conferences/${conferenceId}`) // API endpointine istek at
-        .then(response => response.json())
-        .then(data => {
-            if (data && data.Title) {
-                titleElement.textContent = data.Title;
-            } else {
-                titleElement.textContent = "";
-            }
+        fetch(`/conferences/${conferenceId}`) // API endpointine istek at
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.Title) {
+                    titleElement.textContent = data.Title;
+                } else {
+                    titleElement.textContent = "";
+                }
 
-            if (data && data.LogoUrl) {
-                logoImg.src = data.LogoUrl;
-                logoImg.style.border = "3px solid rgb(108, 117, 125)";
-                logoImg.style.borderRadius = "8px"; // isteğe bağlı
-            }
-        })
-        .catch(error => {
-            console.error("Konferans bilgileri alınamadı:", error);
-            titleElement.textContent = "Conference";
-        });
-});
+                if (data && data.LogoUrl) {
+                    logoImg.src = data.LogoUrl;
+                    logoImg.style.border = "3px solid rgb(108, 117, 125)";
+                    logoImg.style.borderRadius = "8px"; // isteğe bağlı
+                }
+            })
+            .catch(error => {
+                console.error("Konferans bilgileri alınamadı:", error);
+                titleElement.textContent = "Conference";
+            });
+    });
 </script>

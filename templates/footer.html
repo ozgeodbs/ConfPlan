@@ -1,14 +1,11 @@
 <footer class="site-footer">
     <div class="footer-container">
         <div class="footer-links">
-            <p>Conferences</p>
-            <ul id="other-conferences">
-            </ul>
+            <p>Other Conferences</p>
+            <ul id="other-conferences" class="conferences-grid"></ul>
         </div>
         <div class="footer-info">
-            <br> <br>
             <p id="current-conference-info"></p>
-            <br> <br>
             <p>&copy; 2025 Conference Portal. All rights reserved.</p>
         </div>
     </div>
@@ -16,41 +13,39 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        // Diğer konferansları getir
         fetch("/conferences")
             .then(res => res.json())
             .then(data => {
                 const list = document.getElementById("other-conferences");
-                list.innerHTML = ""; // varsa temizle
-
-                // Son 10 konferansı al
+                list.innerHTML = "";
                 const recentConferences = data.slice(0, 20);
 
                 recentConferences.forEach(conference => {
-                    const div = document.createElement("div");
+                    const li = document.createElement("li");
                     const a = document.createElement("a");
-
                     a.href = `/${conference.Id}`;
                     a.textContent = conference.Title;
-                    div.appendChild(a);
-                    list.appendChild(div);
+                    li.appendChild(a);
+                    list.appendChild(li);
                 });
             })
             .catch(error => console.error("Diğer konferanslar yüklenemedi:", error));
 
+        // Şu anki konferansı getir
         const pathSegments = window.location.pathname.split("/");
         const conferenceId = pathSegments[1];
 
-        fetch(`/conferences/${conferenceId}`) // Bu endpoint’i backend’de oluşturman gerekebilir
+        fetch(`/conferences/${conferenceId}`)
             .then(res => res.json())
             .then(currentConference => {
                 const currentConferenceInfo = document.getElementById("current-conference-info");
-
-                // Konferans bilgilerini footer'a ekle
                 currentConferenceInfo.innerHTML = `
-                <strong> ${currentConference.Title}</strong><br>
-                <strong> ${currentConference.Location}</strong><br>
-                <strong> ${currentConference.StartDate} - ${currentConference.EndDate}</strong>
-            `;
+                    <strong>${currentConference.Title}</strong><br>
+                    ${currentConference.Location}<br>
+                    ${new Date(currentConference.StartDate).toLocaleDateString()} - ${new Date(currentConference.EndDate).toLocaleDateString()}<br>
+                    Organizer: ${currentConference.Organizer}
+                `;
             })
             .catch(error => console.error("Şu anki konferans bilgileri yüklenemedi:", error));
     });
