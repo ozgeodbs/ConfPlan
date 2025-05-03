@@ -16,8 +16,8 @@ def generate_individual_excel(table_name, columns):
 def generate_excel():
     # Table columns for each table
     category_columns = ['Title']
-    conference_columns = ['Title', 'StartDate', 'EndDate', 'Location', 'Organizer', 'PhotoUrl', 'VideoUrl']
-    hall_columns = ['Capacity']
+    conference_columns = ['Title', 'StartDate', 'EndDate', 'Location', 'Organizer', 'PhotoUrl', 'VideoUrl','LogoUrl']
+    hall_columns = ['Title','ConferenceId','Capacity']
     speaker_columns = ['FirstName', 'LastName', 'Bio', 'Email', 'Phone', 'PhotoUrl']
     paper_columns = ['Title', 'ConferenceId', 'SpeakerId', 'CategoryId', 'Duration', 'Description', 'HallId']
 
