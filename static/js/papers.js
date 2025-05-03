@@ -12,35 +12,51 @@ document.addEventListener("DOMContentLoaded", async () => {
         const papers = await papersRes.json();
         const halls = await hallRes.json();
 
-        // Hall Map oluşturma: Hall Id'leri ile başlıkları eşleştir
         const hallMap = {};
         halls.forEach(h => {
             hallMap[h.Id] = h.Title;
         });
 
-        // Paper map oluşturma
-        const paperMap = {};
+        // Paper'ları salonlara göre grupla
+        const papersByHall = {};
         papers.forEach(p => {
-            paperMap[p.Id] = {
-                ...p,
-                HallTitle: hallMap[p.HallId] || '-'  // Her paper için ilgili salon başlığını al
-            };
+            if (!papersByHall[p.HallId]) {
+                papersByHall[p.HallId] = [];
+            }
+            papersByHall[p.HallId].push(p);
         });
 
-        // Tabloyu doldur
-        const tableBody = document.querySelector("tbody");
-        tableBody.innerHTML = "";  // Tabloyu temizle
+        // HTML'e tablo ekle
+        const container = document.getElementById("schedule-tables");
+        container.innerHTML = "";
 
-        // Paperları döngü ile tabloya ekle
-        Object.values(paperMap).forEach(paper => {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td>${paper.Title}</td>
-                <td>${paper.StartTime ? paper.StartTime : '-'}</td>
-                <td>${paper.EndTime ? paper.EndTime : '-'}</td>
-                <td>${paper.HallTitle}</td>
+        halls.forEach(hall => {
+            const hallPapers = papersByHall[hall.Id] || [];
+
+            const tableTitle = document.createElement("h3");
+            tableTitle.textContent = `Hall: ${hall.Title}`;
+            container.appendChild(tableTitle);
+
+            const table = document.createElement("table");
+            table.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>Paper Title</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${hallPapers.map(paper => `
+                        <tr>
+                            <td>${paper.Title}</td>
+                            <td>${paper.StartTime || '-'}</td>
+                            <td>${paper.EndTime || '-'}</td>
+                        </tr>
+                    `).join("")}
+                </tbody>
             `;
-            tableBody.appendChild(tr);
+            container.appendChild(table);
         });
 
     } catch (error) {
