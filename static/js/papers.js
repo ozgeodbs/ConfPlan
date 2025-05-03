@@ -1,37 +1,30 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const conferenceId = window.location.pathname.split("/")[1];
     const papersUrl = `/${conferenceId}/papers/get/all`;
-    const similaritiesUrl = `/${conferenceId}/papers/get/similarities`;
+    const hallUrl = `/${conferenceId}/halls`;
 
     try {
-        const [papersRes, similaritiesRes] = await Promise.all([
+        const [papersRes, hallRes] = await Promise.all([
             fetch(papersUrl),
-            fetch(similaritiesUrl)
+            fetch(hallUrl)
         ]);
 
         const papers = await papersRes.json();
-        const similarities = await similaritiesRes.json();
+        const halls = await hallRes.json();
 
-        console.log("📄 Papers:", papers);
-        console.log("🔁 Similarities:", similarities);
+        // Hall Map oluşturma: Hall Id'leri ile başlıkları eşleştir
+        const hallMap = {};
+        halls.forEach(h => {
+            hallMap[h.Id] = h.Title;
+        });
 
         // Paper map oluşturma
         const paperMap = {};
         papers.forEach(p => {
             paperMap[p.Id] = {
                 ...p,
-                SimilarPapers: []
-            }; // Her paper için benzer papers listesi
-        });
-
-        // Similarity data'sını ilişkilendir
-        similarities.forEach(sim => {
-            if (paperMap[sim.PaperId]) {
-                paperMap[sim.PaperId].SimilarPapers.push({
-                    title: sim.SimilarPaperTitle,
-                    similarity_score: parseFloat(sim.SimilarityScore).toFixed(2)
-                });
-            }
+                HallTitle: hallMap[p.HallId] || '-'  // Her paper için ilgili salon başlığını al
+            };
         });
 
         // Tabloyu doldur
@@ -45,16 +38,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <td>${paper.Title}</td>
                 <td>${paper.StartTime ? paper.StartTime : '-'}</td>
                 <td>${paper.EndTime ? paper.EndTime : '-'}</td>
-                <td>
-                    <ul>
-                        ${paper.SimilarPapers.map(sp => `
-                            <li>${sp.title} <br>
-                                <small>(Similarity: ${sp.similarity_score})</small>
-                            </li>
-
-                        `).join("")}
-                    </ul>
-                </td>
+                <td>${paper.HallTitle}</td>
             `;
             tableBody.appendChild(tr);
         });

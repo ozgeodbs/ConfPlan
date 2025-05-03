@@ -61,13 +61,6 @@ def create_app():
                 title="Speakers"
             )
 
-    @app.route('/<int:conference_id>/partners')
-    def partners(conference_id):
-        conference = Conference.query.get(conference_id)
-        if not conference:
-            return "Conference not found", 404
-        return render_template("partners.html", base_url=base_url, conference_id=conference.Id, title="Partners")
-
     @app.route('/<int:conference_id>/papers')
     def calendar(conference_id):
         # Konferansı al
@@ -81,6 +74,24 @@ def create_app():
 
         return render_template(
             "papers.html",
+            conference_id=conference.Id,
+            title="Calendar",
+            papers = [paper.to_dict() for paper in papers],
+        )
+
+    @app.route('/<int:conference_id>/similarities')
+    def similarities(conference_id):
+        # Konferansı al
+        conference = Conference.query.get(conference_id)
+        if not conference:
+            return "Conference not found", 404
+
+        papers = Paper.query.filter(Paper.ConferenceId == conference.Id).all()
+        if not papers:
+            return jsonify({"message": "No papers found for this conference"}), 404
+
+        return render_template(
+            "similarities.html",
             conference_id=conference.Id,
             title="Calendar",
             papers = [paper.to_dict() for paper in papers],

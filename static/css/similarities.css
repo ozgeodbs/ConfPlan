@@ -59,14 +59,13 @@ th {
 tr:nth-child(even) {
     background-color: #fcfcfc;
 }
+
 th:nth-child(1), td:nth-child(1) {
-    width: 40%;
+    width: 30%;
 }
 
-th:nth-child(2), td:nth-child(2),
-th:nth-child(3), td:nth-child(3),
-th:nth-child(4), td:nth-child(4) {
-    width: 20%;
+th:nth-child(2), td:nth-child(2){
+    width: 70%;
 }
 
 ul.similar-list {

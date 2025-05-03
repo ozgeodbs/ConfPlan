@@ -12,6 +12,13 @@ def get_halls():
     halls = Hall.query.filter_by(IsDeleted=False).all()  # Filter out deleted halls
     return jsonify([hall.to_dict() for hall in halls]), 200
 
+@hall_routes.route('/<int:conference_id>/halls', methods=['GET'])
+def get_conference_halls(conference_id):
+    halls = Hall.query.filter_by(ConferenceId=conference_id, IsDeleted=False).all()
+    if halls:
+        return jsonify([hall.to_dict() for hall in halls]), 200
+    return jsonify({"message": "No hall found for this conference"}), 404
+
 # Yeni bir salon oluştur
 @hall_routes.route('/halls', methods=['POST'])
 def create_hall():
