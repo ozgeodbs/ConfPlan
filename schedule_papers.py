@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 from models import Conference, Paper, Similarity, Hall
 
 
@@ -43,19 +43,28 @@ def schedule_papers(conference_id: int):
     for paper_id in remaining:
         groups.append({paper_id})
 
-    start_datetime = datetime.combine(conference.StartDate, datetime.min.time()) + timedelta(hours=9)
-    end_datetime = datetime.combine(conference.EndDate, datetime.min.time()) + timedelta(hours=17)
+    # Konferans tarihlerini al ve StartDate ve EndDate saatlerini kullan
+    start_datetime = datetime.combine(conference.StartDate, time(conference.StartDate.hour, conference.StartDate.minute))  # Başlangıç saati
+    end_datetime = datetime.combine(conference.StartDate, time(conference.EndDate.hour, conference.EndDate.minute))  # Bitiş saati
 
     current_time = start_datetime
     hall_index = 0
+    current_day = start_datetime.date()  # Başlangıç günü
 
+    # Paperları gruplara ayırıp zaman ve salonları ayarlıyoruz
     for group in groups:
         group_papers = [p for p in papers if p.Id in group]
+
         for paper in group_papers:
             duration = timedelta(minutes=paper.Duration or 30)
-            hall = halls[hall_index % len(halls)]
+            hall = halls[hall_index % len(halls)]  # Salonları döngüsel olarak seçiyoruz
 
-            # Zaman ve salon ata
+            # Zaman ve salon ataması
+            if current_time.date() > current_day:
+                current_day = current_time.date()  # Yeni bir gün başlıyor
+                current_time = datetime.combine(current_day, time(conference.StartDate.hour, conference.StartDate.minute))  # Yeni güne başla
+
+            # Paper'ın zamanını ve salonunu ayarla
             paper.StartTime = current_time
             paper.EndTime = current_time + duration
             paper.HallId = hall.Id
@@ -66,8 +75,8 @@ def schedule_papers(conference_id: int):
             current_time += duration
 
             # Eğer gün sonuna geldiysek bir sonraki gün ve salona geç
-            if current_time + duration > end_datetime:
-                current_time = start_datetime + timedelta(days=1)
-                hall_index += 1
+            if current_time >= end_datetime:
+                current_time = datetime.combine(current_time.date() + timedelta(days=1), time(conference.StartDate.hour, conference.StartDate.minute))
+                end_datetime = datetime.combine(end_datetime.date() + timedelta(days=1), time(conference.EndDate.hour, conference.EndDate.minute))
 
     return f"{len(papers)} papers scheduled and saved."
