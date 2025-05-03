@@ -1,60 +1,95 @@
-CREATE TABLE Category (
-    Id INTEGER PRIMARY KEY AUTOINCREMENT,
-    Title TEXT NOT NULL,
-    IsDeleted BOOLEAN DEFAULT 0,
-    CreatedDate TEXT DEFAULT CURRENT_TIMESTAMP,
-    ChangedDate TEXT DEFAULT CURRENT_TIMESTAMP
+create table Category
+(
+    Id          INTEGER
+        primary key autoincrement,
+    Title       VARCHAR(100) not null,
+    IsDeleted   BOOLEAN default 0,
+    CreatedDate DATETIME,
+    ChangedDate DATETIME
 );
 
-CREATE TABLE Speaker (
-    Id INTEGER PRIMARY KEY AUTOINCREMENT,
-    FirstName TEXT NOT NULL,
-    LastName TEXT NOT NULL,
-    Bio TEXT,
-    Email TEXT NOT NULL UNIQUE,
-    Phone TEXT,
-    PhotoUrl TEXT,
-    IsDeleted BOOLEAN DEFAULT 0,
-    CreatedDate TEXT DEFAULT CURRENT_TIMESTAMP,
-    ChangedDate TEXT DEFAULT CURRENT_TIMESTAMP,
+create table Conference
+(
+    Id          INTEGER
+        primary key autoincrement,
+    Title       VARCHAR(200) not null,
+    StartDate   DATE         not null,
+    EndDate     DATE         not null,
+    Location    VARCHAR(200) not null,
+    Organizer   VARCHAR(100) not null,
+    IsDeleted   BOOLEAN default 0,
+    CreatedDate DATETIME,
+    ChangedDate DATETIME,
+    PhotoUrl    TEXT,
+    VideoUrl    TEXT
 );
 
-CREATE TABLE Conference (
-    Id INTEGER PRIMARY KEY AUTOINCREMENT,
-    Title TEXT NOT NULL,
-    StartDate TEXT NOT NULL,
-    EndDate TEXT NOT NULL,
-    Location TEXT NOT NULL,
-    Organizer TEXT NOT NULL,
-    PhotoUrl TEXT,
-    VideoUrl TEXT,
-    IsDeleted BOOLEAN DEFAULT 0,
-    CreatedDate TEXT DEFAULT CURRENT_TIMESTAMP,
-    ChangedDate TEXT DEFAULT CURRENT_TIMESTAMP,
+create table Hall
+(
+    Id           INTEGER
+        primary key autoincrement,
+    Capacity     INTEGER      not null,
+    ConferenceId INTEGER      not null
+        references Conference,
+    Title        VARCHAR(255) not null,
+    IsDeleted    BOOLEAN  default 0,
+    CreatedDate  DATETIME default CURRENT_TIMESTAMP,
+    ChangedDate  DATETIME default CURRENT_TIMESTAMP
 );
 
-CREATE TABLE Hall (
-    Id INTEGER PRIMARY KEY AUTOINCREMENT,
-    Capacity INTEGER NOT NULL,
-    IsDeleted BOOLEAN DEFAULT 0,
-    CreatedDate TEXT DEFAULT CURRENT_TIMESTAMP,
-    ChangedDate TEXT DEFAULT CURRENT_TIMESTAMP,
+create table Speaker
+(
+    Id          INTEGER
+        primary key autoincrement,
+    FirstName   VARCHAR(100) not null,
+    LastName    VARCHAR(100) not null,
+    Bio         VARCHAR(255),
+    Email       VARCHAR(100) not null
+        unique,
+    Phone       VARCHAR(20),
+    PhotoUrl    VARCHAR(255),
+    IsDeleted   BOOLEAN default 0,
+    CreatedDate DATETIME,
+    ChangedDate DATETIME
 );
 
-CREATE TABLE Paper (
-    Id INTEGER PRIMARY KEY AUTOINCREMENT,
-    Title TEXT NOT NULL,
-    SpeakerId INTEGER NOT NULL,
-    CategoryId INTEGER NOT NULL,
-    Duration INTEGER,
-    Description TEXT,
-    HallId INTEGER NOT NULL,
-    ConferenceId INTEGER NOT NULL,
-    IsDeleted BOOLEAN DEFAULT 0,
-    CreatedDate TEXT DEFAULT CURRENT_TIMESTAMP,
-    ChangedDate TEXT DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (SpeakerId) REFERENCES Speaker(Id),
-    FOREIGN KEY (CategoryId) REFERENCES Category(Id),
-    FOREIGN KEY (HallId) REFERENCES Hall(Id),
-    FOREIGN KEY (ConferenceId) REFERENCES Conference(Id)
+create table Paper
+(
+    Id           INTEGER
+        primary key autoincrement,
+    Title        VARCHAR(255) not null,
+    SpeakerId    INTEGER      not null
+        references Speaker,
+    CategoryId   INTEGER      not null
+        references Category,
+    Duration     INTEGER,
+    Description  TEXT,
+    HallId       INTEGER      not null
+        references Hall,
+    ConferenceId INTEGER      not null
+        references Conference,
+    IsDeleted    BOOLEAN default 0,
+    CreatedDate  DATETIME,
+    ChangedDate  DATETIME,
+    StartTime    DATETIME,
+    EndTime      DATETIME
 );
+
+create table Similarity
+(
+    Id                INTEGER
+        primary key autoincrement,
+    PaperId           INTEGER not null
+        references Paper,
+    SimilarPaperId    INTEGER not null
+        references Paper,
+    SimilarityScore   FLOAT   not null,
+    PaperTitle        TEXT    not null,
+    SimilarPaperTitle TEXT    not null,
+    IsDeleted         BOOLEAN default 0,
+    CreatedDate       DATETIME,
+    ChangedDate       DATETIME,
+    constraint unique_similarity
+        unique (PaperId, SimilarPaperId)
+);
+
