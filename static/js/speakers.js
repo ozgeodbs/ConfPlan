@@ -1,5 +1,4 @@
 function goToSpeaker(speakerId, conferenceId) {
-    // Yeni URL'yi oluştur ve yönlendir
     window.location.href = `/${conferenceId}/speakers/${speakerId}`;
 }
 
@@ -7,7 +6,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const pathSegments = window.location.pathname.split("/");
     const conferenceId = pathSegments[1];
 
-    // Speakers bilgilerini al
     fetch(`/${conferenceId}/speakers/get/all`)
         .then(response => response.json())
         .then(data => {
@@ -33,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 speakerContainer.classList.add("speaker-card");
 
                 const img = document.createElement('img');
-                img.src = speaker.PhotoUrl || '/static/defaultImage.png'; // Default avatar if no photo
+                img.src = speaker.PhotoUrl || '/static/defaultImage.png';
                 img.alt = `${speaker.FirstName} ${speaker.LastName}`;
                 img.classList.add("speaker-photo");
 
