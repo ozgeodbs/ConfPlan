@@ -68,34 +68,52 @@ def schedule_papers(conference_id: int):
     # Her odanın (hall) müsaitlik takvimi: { hall_id: next_available_datetime }
     hall_schedule = { hall.Id: first_day_start for hall in halls }
 
+    # Her konuşmacının zaman çizelgesi
+    from bisect import bisect_right, insort
+    speaker_schedule = defaultdict(list)  # speaker_id -> list of (start, end)
+
     # Yeni planlama algoritması: Her paper'ı, en erken müsait odaya yerleştir.
     for group in groups:
-        # Aynı gruptaki paper'ları sırayla planlıyoruz.
         group_papers = [p for p in papers if p.Id in group]
         for paper in group_papers:
-            # En erken müsait odayı seç: key, hall_id; value, next available time
-            chosen_hall_id = min(hall_schedule, key=lambda h: hall_schedule[h])
-            chosen_time = hall_schedule[chosen_hall_id]
-            current_day = chosen_time.date()
-            # O günün bitiş zamanını hesapla
-            current_day_end = datetime.combine(current_day, daily_end)
+            speaker_id = paper.SpeakerId
             duration = timedelta(minutes=paper.Duration or 30)
-            # Eğer seçilen oda için müsait zaman + paper süresi o günün bitişini aşıyorsa,
-            # o odanın müsait zamanını bir sonraki güne ayarla.
-            if chosen_time + duration > current_day_end:
-                next_day = current_day + timedelta(days=1)
-                chosen_time = datetime.combine(next_day, daily_start)
-            # Paper’ın saatlerini ve salonunu ayarla
-            paper.StartTime = chosen_time
-            paper.EndTime = chosen_time + duration
-            paper.HallId = chosen_hall_id
-            paper.save()
-            # Odadaki sonraki müsait zamanı güncelle: paper bittiği zamandan itibaren
-            new_time = paper.EndTime
-            # Eğer yeni zaman yine o günün bitişini aşıyorsa, bir sonraki güne al
-            if new_time > current_day_end:
-                next_day = new_time.date() + timedelta(days=1)
-                new_time = datetime.combine(next_day, daily_start)
-            hall_schedule[chosen_hall_id] = new_time
+
+            scheduled = False
+            while not scheduled:
+                # En erken müsait odayı bul
+                chosen_hall_id = min(hall_schedule, key=lambda h: hall_schedule[h])
+                chosen_time = hall_schedule[chosen_hall_id]
+                current_day = chosen_time.date()
+                current_day_end = datetime.combine(current_day, daily_end)
+
+                # Eğer günün sonuna sığmıyorsa, bir sonraki güne geç
+                if chosen_time + duration > current_day_end:
+                    next_day = current_day + timedelta(days=1)
+                    hall_schedule[chosen_hall_id] = datetime.combine(next_day, daily_start)
+                    continue
+
+                # Konuşmacı bu zaman diliminde uygun mu?
+                speaker_times = speaker_schedule[speaker_id]
+                conflict = any(
+                    not (chosen_time + duration <= start or chosen_time >= end)
+                    for start, end in speaker_times
+                )
+
+                if conflict:
+                    # Aynı oda için sonraki zaman dilimine geç
+                    hall_schedule[chosen_hall_id] = chosen_time + timedelta(minutes=5)
+                    continue
+
+                # Her şey uygunsa paper'ı planla
+                paper.StartTime = chosen_time
+                paper.EndTime = chosen_time + duration
+                paper.HallId = chosen_hall_id
+                paper.save()
+
+                # Schedule güncelle
+                speaker_schedule[speaker_id].append((paper.StartTime, paper.EndTime))
+                hall_schedule[chosen_hall_id] = paper.EndTime
+                scheduled = True
 
     return f"{len(papers)} papers scheduled and saved."
