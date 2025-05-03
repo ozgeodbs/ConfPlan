@@ -86,7 +86,7 @@ def import_conferences():
     errors = []
     created = []
 
-    required_fields = ['Title', 'StartDate', 'EndDate', 'Location', 'Organizer', 'PhotoUrl', 'VideoUrl']
+    required_fields = ['Title', 'StartDate', 'EndDate', 'Location', 'Organizer']
 
     for index, row in df.iterrows():
         missing_fields = [field for field in required_fields if pd.isna(row.get(field))]
@@ -95,8 +95,32 @@ def import_conferences():
             continue
 
         try:
-            start_date = pd.to_datetime(row['StartDate']).date()
-            end_date = pd.to_datetime(row['EndDate']).date()
+            # Attempt to preprocess the dates
+            start_date_str = row['StartDate']
+            end_date_str = row['EndDate']
+
+            # Normalize any time with AM/PM to 24-hour format
+            def normalize_time(date_str):
+                try:
+                    # Try to parse the date directly
+                    return pd.to_datetime(date_str, errors='raise')
+                except Exception:
+                    # Handle conversion for cases like '14:00:00 AM'
+                    if 'AM' in date_str or 'PM' in date_str:
+                        # Strip the AM/PM and convert it to a 24-hour format
+                        date_str = date_str.replace('AM', '').replace('PM', '')
+                        return pd.to_datetime(date_str, errors='raise')
+                    else:
+                        return pd.to_datetime(date_str, errors='coerce')
+
+            # Convert StartDate and EndDate
+            start_date = normalize_time(start_date_str)
+            end_date = normalize_time(end_date_str)
+
+            # If conversion failed, it will be NaT (Not a Time), check for that
+            if pd.isna(start_date) or pd.isna(end_date):
+                errors.append(f"Row {index + 2}: Invalid date format in StartDate or EndDate")
+                continue
         except Exception:
             errors.append(f"Row {index + 2}: Invalid date format in StartDate or EndDate")
             continue
@@ -108,7 +132,8 @@ def import_conferences():
             Location=str(row['Location']).strip(),
             Organizer=str(row['Organizer']).strip(),
             PhotoUrl=str(row['PhotoUrl']).strip(),
-            VideoUrl=str(row['VideoUrl']).strip()
+            VideoUrl=str(row['VideoUrl']).strip(),
+            LogoUrl=str(row['LogoUrl']).strip(),
         )
 
         try:

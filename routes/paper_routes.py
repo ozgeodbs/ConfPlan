@@ -113,25 +113,25 @@ def import_papers():
             errors.append(f"Row {row_number}: Title is required and must be a string.")
             continue
 
-        conference_response = requests.get(f"/conference/{conference_id}")
+        conference_response = requests.get(f"{config.Config.BASE_URL}/conferences/{conference_id}")
         if conference_response.status_code != 200:
             errors.append(f"Row {row_number}: Conference with ID {conference_id} not found or deleted.")
             continue
 
         # Speaker Kontrolü
-        speaker_response = requests.get(f"/speaker/{speaker_id}")
+        speaker_response = requests.get(f"{config.Config.BASE_URL}/speakers/{speaker_id}")
         if speaker_response.status_code != 200:
             errors.append(f"Row {row_number}: Speaker with ID {speaker_id} not found or deleted.")
             continue
 
         # Category Kontrolü
-        category_response = requests.get(f"/category/{category_id}")
+        category_response = requests.get(f"{config.Config.BASE_URL}/categories/{category_id}")
         if category_response.status_code != 200:
             errors.append(f"Row {row_number}: Category with ID {category_id} not found or deleted.")
             continue
 
         # Hall Kontrolü
-        hall_response = requests.get(f"/hall/{hall_id}")
+        hall_response = requests.get(f"{config.Config.BASE_URL}/halls/{hall_id}")
         if hall_response.status_code != 200:
             errors.append(f"Row {row_number}: Hall with ID {hall_id} not found or deleted.")
             continue
