@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const conferenceId = window.location.pathname.split("/")[1];
-    const papersUrl = `/${conferenceId}/papers/get/all`;
+    const papersUrl = `/${conferenceId}/speakers/get/all`;  // tek endpoint
     const hallUrl = `/${conferenceId}/halls`;
 
     try {
@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             hallMap[h.Id] = h.Title;
         });
 
-        // Paper'ları salonlara göre grupla
         const papersByHall = {};
         papers.forEach(p => {
             if (!papersByHall[p.HallId]) {
@@ -26,7 +25,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             papersByHall[p.HallId].push(p);
         });
 
-        // HTML'e tablo ekle
         const container = document.getElementById("schedule-tables");
         container.innerHTML = "";
 
@@ -42,18 +40,25 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <thead>
                     <tr>
                         <th>Paper Title</th>
+                        <th>Speaker</th>
                         <th>Start Time</th>
                         <th>End Time</th>
                     </tr>
                 </thead>
                 <tbody>
-                    ${hallPapers.map(paper => `
-                        <tr>
-                            <td>${paper.Title}</td>
-                            <td>${paper.StartTime || '-'}</td>
-                            <td>${paper.EndTime || '-'}</td>
-                        </tr>
-                    `).join("")}
+                    ${hallPapers.map(paper => {
+                        const speakerName = paper.Speaker
+                            ? `${paper.Speaker.FirstName} ${paper.Speaker.LastName}`
+                            : "-";
+                        return `
+                            <tr>
+                                <td>${paper.Title}</td>
+                                <td>${speakerName}</td>
+                                <td>${paper.StartTime || '-'}</td>
+                                <td>${paper.EndTime || '-'}</td>
+                            </tr>
+                        `;
+                    }).join("")}
                 </tbody>
             `;
             container.appendChild(table);

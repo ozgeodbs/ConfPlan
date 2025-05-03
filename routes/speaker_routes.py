@@ -140,17 +140,24 @@ def get_speakers_by_conference(conference_id):
 
     # Speaker tablolarını al
     speakers = Speaker.query.filter(Speaker.Id.in_(speaker_ids), Speaker.IsDeleted == False).all()
+    speaker_map = {s.Id: s for s in speakers}
 
     # JSON olarak döndür
-    return jsonify([{
-        "Id": s.Id,
-        "FirstName": s.FirstName,
-        "LastName": s.LastName,
-        "Email": s.Email,
-        "Bio": s.Bio,
-        "PhotoUrl": s.PhotoUrl,
-        "Title": next((p.Title for p in papers if p.SpeakerId == s.Id), None)
-    } for s in speakers])
+    return jsonify([
+        {
+            "PaperId": paper.Id,
+            "Title": paper.Title,
+            "StartTime": paper.StartTime.isoformat() if paper.StartTime else None,
+            "EndTime": paper.EndTime.isoformat() if paper.EndTime else None,
+            "HallId": paper.HallId,
+            "Speaker": {
+                "Id": speaker.Id,
+                "FirstName": speaker.FirstName,
+                "LastName": speaker.LastName
+            } if (speaker := speaker_map.get(paper.SpeakerId)) else None
+        }
+        for paper in papers
+    ])
 
 
 @speaker_routes.route("/speakers/<int:speaker_id>/conferences")
