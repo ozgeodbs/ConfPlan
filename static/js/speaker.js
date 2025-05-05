@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             container.innerHTML = `
                 <div class="speaker-profile-vertical">
-                    <img class="speaker-img-top" src="${speaker.PhotoUrl || '/static/img/default-avatar.png'}" alt="${speaker.FirstName} ${speaker.LastName}">
+                    <img class="speaker-img-top" src="${speaker.PhotoUrl || '/static/defaultImage.png'}" alt="${speaker.FirstName} ${speaker.LastName}">
                     <div class="speaker-info-block">
                         <h2>${speaker.FirstName} ${speaker.LastName}</h2>
                         <p class="bio">${speaker.Bio || 'Undefined'}</p>
