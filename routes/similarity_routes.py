@@ -99,11 +99,10 @@ def save_similarities(conference_id):
     if not papers:
         return jsonify({"message": "No papers found for this conference"}), 404
 
-    similarities = similarity.save_similarities(papers)
+    similarity.save_similarities(papers)
 
     return jsonify({
-        'message': f'{len(similarities)} similarities saved successfully.',
-        'similarities': [s.to_dict() for s in similarities]
+        'message': f'Similarities saved successfully.'
     }), 201
 
 @similarity_routes.route('/<int:conference_id>/papers/get/similarities', methods=['GET'])

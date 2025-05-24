@@ -94,7 +94,7 @@ def schedule_papers(conference_id: int):
                 hall_schedule[chosen_hall_id] = paper.EndTime
                 scheduled = True
 
-    return f"{len(papers)} papers scheduled and saved."
+    return 200
 
 
 def send_to_external_scheduler(conference_id: int):
@@ -114,7 +114,7 @@ def send_to_external_scheduler(conference_id: int):
     }
 
     try:
-        response = requests.post(url, json=payload, timeout=10)
+        response = requests.post(url, json=payload, timeout=3)
         if response.status_code == 200:
             try:
                 data = response.json()

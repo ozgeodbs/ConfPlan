@@ -99,7 +99,6 @@ def import_papers():
         category_id = row.get('CategoryId')
         duration = row.get('Duration')
         description = row.get('Description')
-        hall_id = row.get('HallId')
 
         if not title or not isinstance(title, str):
             errors.append(f"Row {row_number}: Title is required and must be a string.")
@@ -120,11 +119,6 @@ def import_papers():
             errors.append(f"Row {row_number}: Category with ID {category_id} not found or deleted.")
             continue
 
-        hall_response = requests.get(f"{config.Config.BASE_URL}/halls/{hall_id}")
-        if hall_response.status_code != 200:
-            errors.append(f"Row {row_number}: Hall with ID {hall_id} not found or deleted.")
-            continue
-
         if duration and not isinstance(duration, (int, float)):
             errors.append(f"Row {row_number}: Duration must be a number.")
             continue
@@ -136,7 +130,7 @@ def import_papers():
             CategoryId=category_id,
             Duration=int(duration) if duration else None,
             Description=description.strip() if isinstance(description, str) else None,
-            HallId=hall_id
+            HallId=0
         )
 
         try:

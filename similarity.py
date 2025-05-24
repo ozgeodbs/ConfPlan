@@ -33,7 +33,6 @@ def calculate_similarities(papers):
 
 def save_similarities(papers):
     similarities = calculate_similarities(papers)
-    saved_similarities = []
 
     for similarity in similarities:
         similarity_score_rounded = round(similarity['similarity_score'], 2)
@@ -46,6 +45,3 @@ def save_similarities(papers):
         )
         similarity_entry.SimilarityScore =float(similarity_score_rounded)
         similarity_entry.save()
-        saved_similarities.append(similarity_entry)
-
-    return saved_similarities

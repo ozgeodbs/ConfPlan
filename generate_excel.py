@@ -17,7 +17,7 @@ def generate_excel():
     conference_columns = ['Title', 'StartDate', 'EndDate', 'Location', 'Organizer', 'PhotoUrl', 'VideoUrl','LogoUrl']
     hall_columns = ['Title','ConferenceId','Capacity']
     speaker_columns = ['FirstName', 'LastName', 'Bio', 'Email', 'Phone', 'PhotoUrl']
-    paper_columns = ['Title', 'ConferenceId', 'SpeakerId', 'CategoryId', 'Duration', 'Description', 'HallId']
+    paper_columns = ['Title', 'ConferenceId', 'SpeakerId', 'CategoryId', 'Duration', 'Description']
 
     try:
         category_buffer = generate_individual_excel('Categories', category_columns)
