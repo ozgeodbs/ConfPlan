@@ -1,0 +1,11 @@
+INSERT INTO Hall (Capacity, ConferenceId, Title, IsDeleted, CreatedDate, ChangedDate) VALUES (200, 1, 'Room 1', 0, '2025-03-23 13:52:58', '2025-03-23 13:52:58');
+INSERT INTO Hall (Capacity, ConferenceId, Title, IsDeleted, CreatedDate, ChangedDate) VALUES (150, 1, 'Room 2', 0, '2025-03-23 13:52:58', '2025-03-23 13:52:58');
+INSERT INTO Hall (Capacity, ConferenceId, Title, IsDeleted, CreatedDate, ChangedDate) VALUES (300, 1, 'Room 3', 0, '2025-03-23 13:52:58', '2025-03-23 13:52:58');
+INSERT INTO Hall (Capacity, ConferenceId, Title, IsDeleted, CreatedDate, ChangedDate) VALUES (250, 1, 'Room 4', 0, '2025-03-23 13:52:58', '2025-03-23 13:52:58');
+INSERT INTO Hall (Capacity, ConferenceId, Title, IsDeleted, CreatedDate, ChangedDate) VALUES (180, 3, 'Room 5', 0, '2025-03-23 13:52:58', '2025-03-23 13:52:58');
+INSERT INTO Hall (Capacity, ConferenceId, Title, IsDeleted, CreatedDate, ChangedDate) VALUES (220, 3, 'Room 6', 0, '2025-03-23 13:52:58', '2025-03-23 13:52:58');
+INSERT INTO Hall (Capacity, ConferenceId, Title, IsDeleted, CreatedDate, ChangedDate) VALUES (270, 3, 'Room 7', 0, '2025-03-23 13:52:58', '2025-03-23 13:52:58');
+INSERT INTO Hall (Capacity, ConferenceId, Title, IsDeleted, CreatedDate, ChangedDate) VALUES (320, 3, 'Room 8', 0, '2025-03-23 13:52:58', '2025-03-23 13:52:58');
+INSERT INTO Hall (Capacity, ConferenceId, Title, IsDeleted, CreatedDate, ChangedDate) VALUES (400, 3, 'Room 9', 0, '2025-03-23 13:52:58', '2025-03-23 13:52:58');
+INSERT INTO Hall (Capacity, ConferenceId, Title, IsDeleted, CreatedDate, ChangedDate) VALUES (500, 3, 'Room 10', 0, '2025-03-23 13:52:58', '2025-03-23 13:52:58');
+INSERT INTO Hall (Capacity, ConferenceId, Title, IsDeleted, CreatedDate, ChangedDate) VALUES (150, 2, 'fazil say conference room', 0, '2025-05-03 22:05:14', '2025-05-03 22:05:14');

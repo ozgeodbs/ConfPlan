@@ -1,0 +1,11 @@
+INSERT INTO Category (Title, IsDeleted, CreatedDate, ChangedDate) VALUES ('Artificial Intelligence', 0, '2025-03-23 13:51:54', '2025-03-23 13:51:54');
+INSERT INTO Category (Title, IsDeleted, CreatedDate, ChangedDate) VALUES ('Cyber Security', 0, '2025-03-23 13:51:54', '2025-03-23 13:51:54');
+INSERT INTO Category (Title, IsDeleted, CreatedDate, ChangedDate) VALUES ('Cloud Computing', 0, '2025-03-23 13:51:54', '2025-03-23 13:51:54');
+INSERT INTO Category (Title, IsDeleted, CreatedDate, ChangedDate) VALUES ('Data Science', 0, '2025-03-23 13:51:54', '2025-03-23 13:51:54');
+INSERT INTO Category (Title, IsDeleted, CreatedDate, ChangedDate) VALUES ('Software Engineering', 0, '2025-03-23 13:51:54', '2025-03-23 13:51:54');
+INSERT INTO Category (Title, IsDeleted, CreatedDate, ChangedDate) VALUES ('Machine Learning', 0, '2025-03-23 13:51:54', '2025-03-23 13:51:54');
+INSERT INTO Category (Title, IsDeleted, CreatedDate, ChangedDate) VALUES ('Internet of Things', 0, '2025-03-23 13:51:54', '2025-03-23 13:51:54');
+INSERT INTO Category (Title, IsDeleted, CreatedDate, ChangedDate) VALUES ('Blockchain', 0, '2025-03-23 13:51:54', '2025-03-23 13:51:54');
+INSERT INTO Category (Title, IsDeleted, CreatedDate, ChangedDate) VALUES ('Quantum Computing', 0, '2025-03-23 13:51:54', '2025-03-23 13:51:54');
+INSERT INTO Category (Title, IsDeleted, CreatedDate, ChangedDate) VALUES ('Big Data', 0, '2025-03-23 13:51:54', '2025-03-23 13:51:54');
+INSERT INTO Category (Title, IsDeleted, CreatedDate, ChangedDate) VALUES ('human  health', 0, '2025-05-03 21:57:25', '2025-05-03 21:57:25');

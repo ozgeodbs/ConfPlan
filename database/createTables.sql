@@ -58,16 +58,16 @@ create table Paper
 (
     Id           INTEGER
         primary key autoincrement,
-    Title        VARCHAR(255) not null,
-    SpeakerId    INTEGER      not null
+    Title        VARCHAR(255)      not null,
+    SpeakerId    INTEGER           not null
         references Speaker,
-    CategoryId   INTEGER      not null
+    CategoryId   INTEGER           not null
         references Category,
     Duration     INTEGER,
     Description  TEXT,
-    HallId       INTEGER      not null
+    HallId       INTEGER default 0 not null
         references Hall,
-    ConferenceId INTEGER      not null
+    ConferenceId INTEGER           not null
         references Conference,
     IsDeleted    BOOLEAN default 0,
     CreatedDate  DATETIME,
@@ -92,5 +92,20 @@ create table Similarity
     ChangedDate       DATETIME,
     constraint unique_similarity
         unique (PaperId, SimilarPaperId)
+);
+
+create table sqlite_master
+(
+    type     TEXT,
+    name     TEXT,
+    tbl_name TEXT,
+    rootpage INT,
+    sql      TEXT
+);
+
+create table sqlite_sequence
+(
+    name,
+    seq
 );
 
