@@ -1,5 +1,10 @@
+function goToSpeaker(speakerId, conferenceId) {
+    window.location.href = `/${conferenceId}/speakers/${speakerId}`;
+}
+
 document.addEventListener("DOMContentLoaded", function () {
-    const conferenceId = window.location.pathname.split("/").pop();
+    const pathSegments = window.location.pathname.split("/");
+    const conferenceId = pathSegments[1];
 
     fetch(`/${conferenceId}/speakers/get/all`)
         .then(response => response.json())
