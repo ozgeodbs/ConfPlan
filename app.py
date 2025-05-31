@@ -11,7 +11,7 @@ def create_app():
     app.config.from_object(Config)
 
     db.init_app(app)
-
+    migrate = Migrate(app, db)
     from routes import speaker_routes, paper_routes, conference_routes, category_routes, hall_routes,similarity_routes
     app.register_blueprint(speaker_routes)
     app.register_blueprint(paper_routes)
@@ -34,6 +34,13 @@ def create_app():
         if not conference:
             return "Conference not found", 404
         return render_template("about.html", base_url = base_url, conference_id=conference.Id, title="About")
+
+    @app.route('/<int:conference_id>/admin')
+    def admin(conference_id):
+        conference = Conference.query.get(conference_id)
+        if not conference:
+            return "Conference not found", 404
+        return render_template("admin.html", base_url = base_url, conference_id=conference.Id, title="Admin")
 
     @app.route('/<int:conference_id>/speakers', defaults={'speaker_id': None})
     @app.route('/<int:conference_id>/speakers/<int:speaker_id>')
@@ -99,5 +106,4 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    migrate = Migrate(app, db)
     app.run(debug=True)

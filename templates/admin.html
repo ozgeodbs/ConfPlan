@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="/static/css/header.css">
+    <link rel="stylesheet" href="/static/css/footer.css">
+    <link rel="stylesheet" href="/static/css/admin.css">
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <div class="container">
+        <h2>Admin Panel</h2>
+        <div class="admin-actions">
+            <button onclick="calculateSimilarities()">Calculate Similarities</button>
+            <button onclick="scheduleCalendar()">Schedule Calendar</button>
+            <button onclick="generateExcelTemplate()">Generate Excel Template</button>
+        </div>
+
+        <div id="result-container"></div>
+        <div class="button-group">
+            <button onclick="fetchData('categories')">Show Categories</button>
+            <button onclick="fetchData('speakers')">Show Speakers</button>
+            <button onclick="fetchData('conferences')">Show Conferences</button>
+            <button onclick="fetchData('halls', true)">Show Halls</button>
+            <button onclick="fetchData('papers', true)">Show Papers</button>
+        </div>
+
+        <div class="upload-section">
+            <div class="upload-card">
+                <label for="fileCategories">Import Categories</label>
+                <input type="file" id="fileCategories">
+                <button onclick="uploadExcel('categories')">Upload</button>
+            </div>
+            <div class="upload-card">
+                <label for="fileSpeakers">Import Speakers</label>
+                <input type="file" id="fileSpeakers">
+                <button onclick="uploadExcel('speakers')">Upload</button>
+            </div>
+            <div class="upload-card">
+                <label for="fileConferences">Import Conferences</label>
+                <input type="file" id="fileConferences">
+                <button onclick="uploadExcel('conferences')">Upload</button>
+            </div>
+            <div class="upload-card">
+                <label for="fileHalls">Import Halls</label>
+                <input type="file" id="fileHalls">
+                <button onclick="uploadExcel('halls')">Upload</button>
+            </div>
+            <div class="upload-card">
+                <label for="filePapers">Import Papers</label>
+                <input type="file" id="filePapers">
+                <button onclick="uploadExcel('papers')">Upload</button>
+            </div>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+
+<script src="/static/js/admin.js"></script>
+</body>
+</html>

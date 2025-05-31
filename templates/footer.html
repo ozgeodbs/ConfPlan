@@ -7,6 +7,7 @@
         <div class="footer-info">
             <p id="current-conference-info"></p>
             <p>&copy; 2025 Conference Portal. All rights reserved.</p>
+            <button href="/papers" id="admin-access-btn" class="admin-button">Admin Panel</button>
         </div>
     </div>
 </footer>
@@ -46,5 +47,15 @@
                 `;
             })
             .catch(error => console.error("Error fetching data:", error));
+
+        document.getElementById("admin-access-btn").addEventListener("click", function () {
+            const key = prompt("Please enter admin key:");
+            if (key === "60a5e082-f4d2-4284-91f6-7478a797f0ac") {
+                const conferenceId = window.location.pathname.split("/")[1];
+                window.location.href = `/${conferenceId}/admin`;
+            } else if (key) {
+                alert("Incorrect key.");
+            }
+        });
     });
 </script>
